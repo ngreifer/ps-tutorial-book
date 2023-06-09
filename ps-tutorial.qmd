@@ -1,0 +1,739 @@
+---
+title: "ps-tutorial"
+format: html
+bibliography: references.bib
+---
+
+## Introduction
+
+~~Propensity score analysis is a popular method of adjusting for confounding in observational studies, i.e., studies where patients are not randomly assigned into treatment groups. Despite its popularity in medical research, there are many nuances to the method that are often missed by researchers, including about the assumptions required, the quantities that can be estimated, and the correct procedure for performing and reporting an analysis. The goal of this guide is to summarize best practices in propensity score analysis for medical researchers, highlighting the decisions researchers must make to validly perform and interpret an analysis. This guide is not a substitute for a PhD in biostatistics or even a course in propensity score analysis; it should be seen as a starting point that synthesizes the existing literature and provides references for further reading to deepen one's understanding of the methods involved.~~
+
+~~In the same way a statistician cannot learn surgery well enough to perform it by reading a tutorial, nor should physicians be expected to perform a complex statistical analysis by reading one. However, a patient undergoing surgery would greatly benefit from understanding the risks, procedures, and possible outcomes of a surgery, even if they are not performing it themselves; similarly, a physician can be better prepared to work with a trained statistician after understanding the assumptions, decision points, and limitations of a statistical method.~~
+
+~~Although propensity score analysis is an analytic method, the keys to performing it well are to understand the theoretical and substantive considerations relevant to the method; therefore, this guide will focus on those aspects. For the more applied parts of the tutorial, R code and output will be presented to demonstrate the procedure.~~
+
+~~This document will be organized into the three basic steps of performing a propensity score analysis: 1) planning the analysis, 2) running the analysis, and 3) reporting the analysis. In *Planning the Analysis*, we will describe the conceptual steps that must be done to determine what options will be selected in subsequent steps and to align the analysis with the quantity of interest. In *Running the Analysis*, we provide step-by-step instructions for implementing the computational steps of performing the analysis, including fitting models and estimating quantities of interest; R code will be provided for this section to accompany the instructions. In *Reporting the Analysis*, we provide guidelines for reporting the results of an analysis, including information to include in tables and figures and information necessary for another researchers to replicate your findings.~~
+
+### ~~What is Propensity Score Analysis?~~
+
+~~Propensity score analysis is one of many methods that researchers can use to adjust for confounding when estimating the effect of a variable (e.g., a treatment) on an outcome. What distinguishes it from other methods are the assumptions it requires in order to be valid and the robustness to unknown features of the data. Broadly, propensity score analysis seeks to make the treatment independent of confounders so that the association between the treatment and outcome is unbiased for the causal effect of the treatment on the outcome. It does so using a new variable constructed as part of the analysis called the "propensity score", though there are modern variations that serve the same function but do not require the propensity score[^ps-tutorial-1]. Many introductory articles have been written about propensity score analysis, including @austinIntroductionPropensityScore2011, @harderPropensityScoreTechniques2010, @caliendoPracticalGuidanceImplementation2008, @shadishPrimerPropensityScore2010, and @benedettoStatisticalPrimerPropensity2018.~~
+
+[^ps-tutorial-1]: For the sake of this tutorial, we will classify all methods that manipulate the sample using observed variables to remove confounding to fall under the scope of "propensity score analysis", even though propensity scores are not always used to do this. Many of the best performing methods for this task do not use propensity scores at all.
+
+~~Consider a situation with a two-level treatment (e.g., treated and control) in which participants were free to select the treatment they received. In order to estimate the causal effect of the treatment on an outcome (e.g., death at 24 months), one needs to make these groups comparable on the variables that induce confounding (i.e., confounders, common causes of the treatment and outcome). Propensity score analysis involves dropping, weighting, or stratifying units in the sample so that in the adjusted sample, the treatment is independent from the variables used in the adjustment.~~
+
+~~Propensity score matching, the most popular method of propensity score analysis in medical research, described in @rosenbaumCentralRolePropensity1983, involves computing the propensity score for each unit (more details on that later), finding pairs of units that have similar values of the propensity score, and discarding from the sample all units without pairs. What is left is (ideally) a sample in which the distributions of the variables used to compute the propensity score are close to identical between the treated and control groups, just as they would be in a randomized experiment.~~
+
+~~The propensity score itself is a one-dimensional summary of the variables to be adjusted for, computed as the predicted probability of receiving treatment given the variables. The simplest and most common way to compute propensity scores is to run a logistic regression of treatment membership as the outcome and the variables as the predictors, and use the predicted probability of being treated as the propensity score for each unit. @rosenbaumCentralRolePropensity1983 proved that adjusting for the (true) propensity score is equivalent to adjusting for the variables used to compute the propensity score, which is what makes it such a powerful technique. In practice, though, the performance of the adjustment must be evaluated [@hoMatchingNonparametricPreprocessing2007], a process we describe in detail later.~~
+
+~~Propensity score analysis is common in medical research because researchers are often interested in the effect of a drug, vaccine, procedure, or surgery on patient outcomes (e.g., survival, readmission, hospital costs) but are not in the position to run a randomized control trial and have retrospective administrative data on patients receiving those treatments. Without adjustment, patients receiving treatment may be quite different from those not receiving treatment; they may be older, more likely to be a certain sex, more likely to be a certain race, more likely to have certain comorbidities, etc. Comparing treated and untreated patients on the specified outcome would not yield a valid estimate of the causal effect of the treatment on the outcome because any observed differences could be driven instead by differences in the distributions of the confounders. Propensity score analysis helps to isolate the effect of the treatment so that any observed difference in the outcome can only be attributed to treatment.~~
+
+## ~~Planning the Analysis~~
+
+~~The "fun" part of propensity score analysis is actually running the code on data, but there are critical decisions that need to be made before doing so. One needs to decide whether propensity score analysis is appropriate for answering the question of interest, what quantity is to be estimated, and whether the assumptions for the analysis can be met. The next sections describe making these decisions.~~
+
+### ~~Types of questions that can be answered~~
+
+~~There are several ways to ask causal questions: one is to ask what are the causes of observed variation in outcomes (e.g., why certain patients experience remission and others don't), and the other is to ask what the causal effect of one variable is on an outcome (e.g., whether taking aspirin reduces heart attack risk). Propensity score analysis is only appropriate for answering the second type of question, i.e., What is the effect of a treatment on an outcome? It is not useful for discovering predictors of an outcome, for developing clinical prediction models, for identifying which variables are important drivers of the outcome, etc. To perform propensity score analysis, you must have a **single** well-defined treatment.~~
+
+~~The type of quantity propensity score analysis is best suited to answer is the *total effect* of the treatment on the outcome. The total effect refers to an effect that ignores any intermediate pathways. For example, a drug might affect survival by stimulating the immune response in a patient; propensity score analysis can help answer the question of whether the treatment affects the immune response or whether the treatment affects survival, but it cannot answer the mechanistic question of whether the effect of treatment on the survival is due to its affect on the immune response. That type of question is a "mediation" question, and though propensity score analysis can play a role in such an analysis, in its basic and most common form, it is not able to answer such questions.~~
+
+~~Propensity score analysis is sometimes used in disparities research, i.e., to identify whether a disparity exists on a single patient dimension (e.g., sex or race) after controlling for differences in relevant variables between these groups. For example, one might notice that pain management prescription amounts differ between male and female patients with a given diagnosis; propensity score analysis can be used to create groups of male and female patients that look similar on variables that might be relevant to explaining away that disparity, such as age, comorbidities, weight, height, etc., so that the only explanation left for the disparity is a personal bias by prescribing physicians. This type of analysis has several problems and will not be discussed further here. However, it does identify that propensity score analysis can be used to create comparable groups no matter what those groups are to be used for; the analysis itself is agnostic to how those groups will be compared and whether that comparison represent a valid causal effect or disparity. It is the assumptions behind the analysis that allow for causal inference; these assumptions are described below.~~
+
+### ~~Choosing an estimand~~
+
+~~An estimand is simply the quantity being estimated, i.e., the quantity of interest from a study. Although one might simply say that the estimand is the treatment effect, there are nuances to an estimand that are critical to articulate to be able to validly interpret the resulting estimate and to be able to make choices in the analysis that target the estimand. The concept of an estimand is also present in randomized trials, and many of the considerations for these estimands also apply to those in observational studies, though there are some additional considerations. @kahanEliminatingAmbiguousTreatment2023 and @hanDefiningEstimandsClinical2023 provide nice overviews of the components of an estimand in clinical trials.~~
+
+~~Some components of estimand common to observational studies include who the effect is estimated for in the presence of noncompliance (e.g., just those who actually received the treatment or all those who were assigned treatment), how the effect is measured (e.g., as a risk ratio, hazard ratio, or odds ratio), the time scale of the outcome (e.g., death at 12 months or 24 months), and how intercurrent events (e.g., death before a non-death clinical endpoint) are incorporated. Two components of an estimand that are particularly important to consider in propensity score analysis are whether the effect is to be marginal or conditional and for which subset of the study population the effect is meant to generalize.~~
+
+#### ~~Marginal and conditional effects~~
+
+~~A marginal effect is a comparison between the expected potential outcome under treatment and the expected potential outcome under control. This is the same quantity estimated in randomized trials without blocking or covariate adjustment and is particularly useful for quantifying the overall effect of a policy or population-wide intervention. A conditional effect is the comparison between the expected potential outcomes in the treatment groups within strata. This is useful for identifying the effect of a treatment for an individual patient or a subset of the population.~~
+
+~~Although conditional effects are often more useful for clinical decision-making, they require far more assumptions about the relationship between confounders and the outcome and are not well suited for propensity score analysis. Estimating conditional effect either involves performing the analysis within subgroups of the sample (which can dramatically shrink the available data and yield imprecise estimates) or using an outcome model that presuppose a very specific and unrealistic functional form (e.g., using the coefficient on treatment in a logistic regression model with confounders included). We will focus instead on marginal effects, which can be estimated using the full dataset and don't require such assumptions.~~
+
+#### ~~The target population~~
+
+~~The target population refers to the population to which the effect is meant to generalize. Selecting this population is critical in propensity score analysis because it determines how specific steps of the analysis proceed and how to interpret them. There are four common estimands that can be targeted in propensity score analysis:~~
+
+-   ~~The average treatment effect in the population (ATE) - the average difference in outcomes between a scenario in which all units were treated and a scenario in which no units were treated. This is useful for determining universal policies or broadly understanding the effect of a treatment (e.g., Does this treatment work on average?).~~
+
+-   ~~The average treatment effect in the treated (ATT) - the average difference between the observed outcomes for the treated units and the outcomes the treated units would have had had they not been treated. It can be interpreted as the effect of withholding treatment from those who would otherwise receive it. This is useful for estimating the effects of potentially dangerous exposures or experimental procedures that would be given to patients like those currently receiving it.~~
+
+-   ~~The average treatment effect in the control (ATC) - the average difference between the observed outcomes for the untreated units and the outcomes the untreated units would have had had they been treated. It can be interpreted as the effect of expanding treatment to those who would not otherwise receive it.~~
+
+-   ~~The average treatment effect in the overlap (ATO) - the average difference in outcomes for those at clinical equipoise (i.e., the "overlap" population) were they to receive treatment and were they not to receive treatment. Although the scope of the ATO is limited and sometimes vague (i.e., because there are many ways to statistical define the overlap population), these estimates tend to be the least biased, most precise, and resistant to biases due to unobserved variables like patient frailty.~~
+
+~~These estimands, a guide of how to choose among them, and the specific techniques that can be used to estimate them are described in detail in @greiferChoosingEstimandWhen2021.~~
+
+### ~~Meeting assumptions~~
+
+~~There are a nuimber of assumptions that are critical to being able to interpret the effects estimated using propensity score analysis as causal. Other methods for estimating causal effects may involve different assumptions; the assumptions listed here apply only to propensity score analysis and other methods of adjustment that rely on adjusting for observed variables, such as regression adjustment [@matthayAlternativeCausalInference2020]. if these assumptions are violated, the link between the statistical quantity estimated by propensity score analysis and the causal quantity desired by the researcher is broken.~~
+
+~~Propensity score analysis should only be used to estimate causal effects when these assumptions are met. In this sense, propensity score analysis is not a "causal inference method", it is a method of estimating a statistical quantity (the adjusted association between the treatment and outcome), which can only be interpreted as a causal effect when these assumptions are met. The key assumptions are **satisfaction of the backdoor criterion**, **positivity**, and **consistency**. These are in addition to other assumptions that underlie the methods involved, such as assumptions about missing data if any are present and assumptions about correct measurement of the confounders, treatment, and outcome.~~
+
+#### ~~The backdoor criterion~~
+
+~~The backdoor criterion is that there are no "backdoor paths" from the treatment to the outcome. A backdoor path is a causal chain from the treatment to the outcome through a common cause of the treatment and outcome. Satisfaction of the backdoor criterion means that, conditional on the set of variables to be adjusted for, there are no backdoor paths from the treatment to the outcome, and the only association between the treatment and the outcome is due to the causal effect of the treatment on the outcome. In addition, no variables that induce bias have been adjusted for; these include variables caused by the treatment or the outcome. @vanderweelePrinciplesConfounderSelection2019 provides a clear guide on how to meet this assumption.~~
+
+~~Satisfaction of the backdoor criterion is also known as the assumption of "strong ignorability" [@rosenbaumCentralRolePropensity1983], "conditional exchangeability" [@hernanEstimatingCausalEffects2006], "section on observables", or, simply, no unmeasured confounding. Meeting this assumption requires a researcher to have collected a sufficient set of variables that closes all backdoor paths without opening any biasing paths. This assumption is often considered hard to meet when treatment has not been randomly assigned or the assignment mechanism is unknown, which is why methods that rely on this assumption when used in observational studies are often viewed with suspicion and why claiming causality from observational studies is dangerous.~~
+
+~~There are a few strategies for meeting this assumption. One is to include all measured variables in the analysis, hoping that the set of measured variables is sufficient to satisfy the criterion. This is known as the "kitchen sink" approach. When the temporal ordering of the variables is clear (i.e., it can be assured that all of the variables to be adjusted for precede treatment), this can be an effective strategy, especially if many variables jointly act as proxies for possibly unmeasured confounders [@brookhartConfoundingControlHealthcare2010a]. Another, more principled strategy is to draw a causal diagram, known as a DAG, that represents what is known about the causal system under study and can be used to select the specific variables that are and are not necessary to close all backdoor paths [@greenlandCausalDiagramsEpidemiologic1999]. Either way, researchers must be prepared to justify why they adjusted for the variables they did and why adjustment for these variables is sufficient to satisfy the backdoor criterion.~~
+
+#### ~~Positivity~~
+
+~~Positivity is the assumption that all units are eligible to be either treated or untreated [@westreichInvitedCommentaryPositivity2010]. The idea is that if some units are ineligible to be treated, it doesn't make sense to try to infer what would have happened to them had they been treated.~~
+
+~~Positivtiy is an assumption about treatment assignment, but there is an empirical version of it often known as "overlap" [@fogartyDiscreteOptimizationInterpretable2016]. Overlap is the extent to which the distributions of covariates in the treated and untreated groups overlap with each other. Even if positivity holds (i.e., all patients in the study population are theoretically eligible for either treatment), it may be that in the sample, there are patient profiles that are absent from one group [@westreichInvitedCommentaryPositivity2010]. In the absence of good overlap, it will be challenging or impossible to use propensity score analysis to make the treatment groups resemble each other on the measured confounders; one is forced either to extrapolate inferences about the groups or to change the target population to one with some overlap (e.g., by targeting the ATO) [@kingDangersExtremeCounterfactuals2006].~~
+
+#### ~~Consistency~~
+
+~~Consistency is the assumption that there are no unmeasured versions of treatment, i.e., that the treatment values are well-defined [@hernanDoesObesityShorten2008]. Consistency might be violated if there are multiple doses the treatment could take but it is only measured as its presence or absence [@coleConsistencyStatementCausal2009a]. A component of consistency is the stable unit treatment value assumption (SUTVA), which requires that the treatment statuses of other patients do not affect the outcomes of a given patient [@rosenbaumInterferenceUnitsRandomized2007]. This would also constitute a different "version" of treatment; for example, being given a vaccine when no other patients are vaccinated is a different version of the treatment than being given a vaccine when all other patients are vaccinated (assuming the patients can interact with each other) [@coleConsistencyStatementCausal2009a].~~
+
+~~When treatment versions are identifiable (e.g., a measured dose), there are extensions for propensity score analysis that can be used for multi-category or continuous treatments [@imaiCausalInferenceGeneral2004]. Methods have also been developed for estimating causal effects in the presence of interference, a SUTVA violation [@tchetgenCausalInferencePresence2012].~~
+
+### ~~Summary~~
+
+~~Propensity score analysis is not a general-purpose causal inference method; it is a statistical method that can be used to answer a specific type of question, i.e., the total effect of a treatment on an outcome. The research question must be articulated clearly with an estimand specified prior to the analysis. The estimand must consist not only of the components that are common to randomized trials (e.g., the effect measure, the time scale of the outcome, etc.) but also of the components that are more specific to the analysis of observational studies, which include whether the effect is marginal or conditional and to which target population the effect is meant to generalize. Theses choice are described clearly by @kahanEliminatingAmbiguousTreatment2023 and @greiferChoosingEstimandWhen2021, which are highly recommended.~~
+
+~~Propensity score analysis requires certain assumptions for the effect estimate to be validly interpreted as causal, which include satisfaction of the backdoor criterion, positivity, and consistency [@hernanEstimatingCausalEffects2006]. These assumptions must be assessed by appealing to substantive knowledge about the causal system under study and the variables that are available to the researcher. Satisfaction of the backdoor criterion requires that there is no unmeasured confounding and no variables caused by the treatment or outcome are adjusted for. Positivity requires that all units are eligible to receive either treatment. Consistency requires that there are no unmeasured versions of treatment, including version defined by the treatment status of other patients in the study. These assumptions and the choice required to satisfy and assess them are described in @vanderweelePrinciplesConfounderSelection2019, @westreichInvitedCommentaryPositivity2010, and @hernanDoesObesityShorten2008, which are highly recommended.~~
+
+## Running the Analysis
+
+In this section, we describe how to run a propensity score analysis. First, we describe the steps and the choices one must make in each step, and then we provide some examples for how to run the described analysis using R.
+
+### Basic steps
+
+The basic steps of the analysis are as follows:
+
+1.  Conceptual step - Selecting the desired estimand, assessing whether the assumptions can be met, and selecting the variables that must be adjusted for.
+
+2.  Conditioning step - Perform the matching, weighting, or subclassification, which may involve estimation of a propensity score or selection of parameters that govern the conditioning specification (e.g., the number of matches if doing matching).
+
+3.  Assessing quality - Assess to what degree the conditioning step was successful in achieving balance in the distribution of confounders while retaining the target estimand and maintaining precision of the estimate.
+
+4.  Respecification - If quality of the conditioning can be improved, respecify the conditioning step and assess quality again. Do this repeatedly until a good quality specification is found.
+
+5.  Estimate the treatment effect - Using the output of the final conditioning specification, estimate the treatment effect in a robust way that optimizes precision.
+
+6.  Assess sensitivity - Assess the degree to which unmeasured confounding could affect inferences and decide whether such confounding is a realistic threat.
+
+We will go through these steps in detail below.
+
+### ~~1. Conceptual Step~~
+
+~~First, one needs to decide on the desired estimand. The choice of which portion if the population to target should be driven primarily by the intended use of the study, even if such a use is not explicitly stated in the paper. For example, a study may examine the causal effect of the choice between traditional surgery. vs. minimally invasive surgery on recovery time. The implied policies being compared are a policy in which traditional surgery is always used and a policy in which minimially inviasve surgery is always used (even if the study does not intend to make such a sweeping policy). If a study is examining the effects of smoking on throat cancer, the implied policies being compared are a policy in which smokers continue smoking and one in which smokers no longer smoke. However, it may not be cohenert to investigate a policy in which non-smokers are made to smoke.~~
+
+~~The implied policy affects which estimand is chosen; for the first research question, the ATE might be of interest if there are few existing medical reasons to prefer one form of surgery to other, and the ATO might of interest if for most patients the choice is well understood but there are some patients for whom a definitive choice is less clear (i.e., those at equipoise). For the second research question, which examines a harmful exposure, the ATT is more of interest because it corresponds to a realistic policy, i.e., getting smokers to quit. To help match the research question to the estimand, see @greiferChoosingEstimandWhen2021.~~
+
+~~The target population of the estimand is not the only choice one must make. As previously described, one must consider the time scale of the outcome, the scale the treatment effect is to be measured, how the treatment should be defined, etc. These choices are completely separate from the method of analysis but must be chosen beforehand so the analysis can proceed. They should be driven primarily by substantive concerns, e.g., at what time scale the treatment is supposed to have an effect, the effect measure that will make the most sense for clinicians and stakeholders, the implied policy that is most realistic or informative, etc. In some cases, though, proceeding through the analysis will reveal that some of the chosen options cannot be upheld, and they can be respecified in a dynamic process that maximizes the utility of the resulting research while respecting the degree of information supplied in the data.~~
+
+~~After selecting a quantity to target, one must assess the assumptions required for causality, described previously. One must decide whether the data available are sufficient to satisfy the backdoor criterion, and, if so, which variables must be adjusted for and which must not be. For example, there may be a strong predictor of the outcome that is affected by the treatment; this variable should not be adjusted for because doing so would induce bias [@elwertEndogenousSelectionBias2014]. There may be a well-known confounder that is missing from the data because it was not collected in the database used; in that case, it must be made clear that the resulting estimates have no valid causal interpretation (tehrefore little utility for practice) or the research design can be changed to use a method that requires assumptions other than satisfaction of the backdoor criterion like instrumental variables analysis [@hernanInstrumentsCausalInference2006].~~
+
+~~One must assess whether consistency is met, i.e., whether there are no unmeasured versions of treatment. For example, if treatment is a binarized version of a truly continuous or multi-category variable, then the causal effect is not well defined and will not generalize to other categoirzation strategies. Using BMI as a treatment can incur this problem; defining treatment as having low vs. high BMI as determined by a cutoff assumes there is no difference among those with BMI just abovet he cutoff point and those with BMI far above the cutoff point. Instead, BMI might be considered as a continuous treatment, with methods appropriate for that treatment type used.~~
+
+~~Once the assumptions are determined to be met, one can proceed with the analysis of the data.~~
+
+### ~~2. Conditioning Step~~
+
+~~In the conditioning step, we perform the matching and weighting to the data, which adjusts the sample is such a way that (ideally) balance is achieved, i.e., the distributions of the covariates are similar between the treated and untreated groups. There are many options one can choose from in the conditioning step, such as which of the balancing methods is used and how each method is to be customized. Remember that the initial conditioning step does not need to be perfect because it will be respecified in Step 4. In Step 3, we discuss how to evaluate the choices made in the conditioning step.~~
+
+~~Some methods are more popular in certain fields; for example, medical research often uses matching whereas epidemiological research often uses weighting. In some cases, the popularity of methods in certain fields reflects real substantive demands, but in many cases it simply reflects trends and cultures or the specific methods emphasized in training materials for students. For example, epidemiological training emphasizes the use of weighting over matching [@hernanCausalInferenceWhat2020], even though they often serve the same purpose and perform equally well [@greiferMatchingMethodsConfounder2021a; @kushCovariateBalanceObservational2022].~~
+
+~~One key aspect to remember is that the basic or default method is almost never the best method and should not be used just because it is the most familiar or popular in a field. For example, 1:1 pair matching on the propensity score is a popular matching method in medical research, even though it is uniformly outperformed by genetic matching [@diamondGeneticMatchingEstimating2013] and very often performs worse than methods that are no more difficult to use, such as full matching [@austinOptimalFullMatching2015] and cardinality matching [@viscontiHandlingLimitedOverlap2018a]. Similarly, propensity score weighting often performs worse than modern optimization-based methods like entropy balancing [@hainmuellerEntropyBalancingCausal2012]. We will briefly explain these variations and how to choose among them below.~~
+
+~~First, we will describe weighting and then matching. The focus here will be on the choices one can make with these methods and how to make them rather than on the technical detail.~~
+
+#### ~~Weighting~~
+
+~~Weighting involves estimating a weight for each unit in the sample such that in the weighted sample, the covariates are balanced. Effect estimation proceeds by computing the weighted outcome means in each treatment group and computing their contrast or fitting a weighted outcome regression model with the treatment as a predictor. Weighting can be used to target any estimand, but the formulas for how the weights are computed depends on the estimand desired. Balancing weights function similarly to sampling weights; they shift the distribution of variables in the sample to resemble a target population. Sampling weights shift a sample to be representative of a national population, while balancing weighting shift each treatment group to resemble each other and a target population.~~
+
+~~The most basic form of weighting is propensity score weighting for the ATE, also known as inverse probability of treatment weighting (IPTW). The weights have the following formula:~~
+
+$$
+w_{ATE, i} = \begin{cases}
+  1/p_i, & \text{if } A_i = 1, \\
+  1/(1-p_i), & \text{if } A_i = 0
+\end{cases}
+$$
+
+~~where~~ $p_i$ ~~is an individual's propensity score and~~ $A_i$ ~~is an individual's treatment value, 1 if treated and 0 if untreated. They are known as "inverse probability" weights because the weights are equal to the inverse of the probability of receiving the treatment actually received. IPTW weights shift the distributions of both the treated and untreated groups to resemble that of the full sample and therefore each other.~~
+
+~~Propensity score weighting for the ATT is also known as standardized mortality ratio weighting, and the weights have the following formula:~~
+
+$$
+w_{ATT, i} = p_i \times w_{ATE, i} = \begin{cases}
+  1, & \text{if } A_i = 1, \\
+  p_i/(1-p_i), & \text{if } A_i = 0
+\end{cases}
+$$
+
+~~Weights for the ATT shift the distribution of the untreated units to resemble that of the treated units and leave the treated units untouched.~~
+
+~~Propensity score weighting for the ATO is also known as overlap weighting, and the weights have the following formula:~~
+
+$$
+w_{ATO, i} = p_i(1-p_i) \times w_{ATE, i} = \begin{cases}
+  1-p_i, & \text{if } A_i = 1, \\
+  p_i, & \text{if } A_i = 0
+\end{cases}
+$$
+
+~~Overlap weights upweight units most like those in the other treatment group. These weights also produce a weighted sample with the most precision of any weights.~~
+
+~~A choice that researchers must make when using propensity score weighting is how to estimate the propensity score. This choice affects the properties of the weights (i.e., the balance they induces and the precision in the weighted sample). The most common method is a logistic regression of the treatment on the covariates. Other popular methods involve machine learning methods like generalized boosted modeling (GBM), Bayesian additive regression trees (BART), and Super Learner, though any model that produces predicted class probabilities can be used to estimate propensity scores. Often, version of these methods incorporate balance optimization into the estimation of the weights; for example, a popular implementation of GBM choose the value of a tuning parameter based on that which minimizes an imbalance statistic [@mccaffreyPropensityScoreEstimation2004]. Logistic regression has a particular benefit when using overlap weights: the covariate means will be exactly balance between the treatment groups.~~
+
+~~Many modern methods skip the step of estimating a propensity score and estimate the weights directly. Examples of this technique include entropy balancing [@hainmuellerEntropyBalancingCausal2012; @zhaoEntropyBalancingDoubly2017], stable balancing weights [@zubizarretaStableWeightsThat2015], and energy balancing [@hulingEnergyBalancingCovariate2022]. This distinction is explored in detail by @chattopadhyayBalancingVsModeling2020. A popular weighting method, the covariate balancing propensity score (CBPS), combines optimization and logistic regression-based propensity score estimation [@imaiCovariateBalancingPropensity2014] (though this does not necessarily confer any benefits [@liPropensityScoreAnalysis2021a]). These optimization-based methods often exactly balance features of the distribution of covariates in the sample while retaining precision in the weighted sample, making them highly effective\^\[A common theme in many areas of statistics is that newer methods perform better than older methods in general. However, those newer methods are often less well studied and opaque or unheard of by applied researchers. Their absence from the applied literature and the popularity of older, more basic methods is not an indication that the basic methods should be preferred; rather, it often reflects the fear or ignorance by researchers and reviewers of newer, better performing methods.\].~~
+
+~~Weighting methods sometimes yield "extreme" weights, i.e., a few weights that take on a much larger value than the others and dominate the analysis, which can make balance worse and reduce precision. This can occur especially when weighting for the ATE, as small propensity scores in the treated group cause weights to be large when inverted. One approach to dealing with extreme weights in trimming the weights, which can either involve removing units with large weights or extreme propensity scores or setting the value of their weights to a smaller value (winsorizing). These methods often change the estimand from the ATE, in which case the ATO should be targeting using overlap weights instead.~~
+
+~~We explain how to choose among the variety of weighting methods in the section "Assessing quality". In short, the choice should depend on covariate balance, precision, and respect of the desired estimand. One does not need to choose a weighting method and commit to it; one can instead try many, assess their quality, and move forward with effect estimation using only the best among those compared.~~
+
+#### ~~Matching~~
+
+~~Matching involves dropping or reorganizing units into strata such that the remaining sample is balanced [@greiferMatchingMethodsConfounder2021a]. Examples include pair matching as described previously, pure subset selection (in which units are dropped from the sample but no pairing occurs), and subclassification, among many others. The outputs of a matching method are a set of matching weights and, if pairing or stratification is done, pair or stratum membership for each unit. Matching weights function identically to balancing weights as described above; indeed, matching can be seen as a restricted form of weighting, where that restriction can sometimes afford benefits in terms of robustness and precision. @stuartMatchingMethodsCausal2010 provides an excellent introduction to matching.~~
+
+~~Below, we briefly describe the two major forms of matching, stratification and subset seelction (including pair matching).~~
+
+##### ~~Stratification~~
+
+~~Stratification simply involves assigning units into strata such that within strata, the covariates are balanced between treatment groups. The most straightforward method of stratification is exact matching, in which sets of units with identical covariate values are placed into strata based on those values. Any units with no exact matches in the other treatment group are dropped. The remaining sample will be exactly balanced on all included covariates. In practice, continuous variable or categorical variables with many categories make exact matching impossible. One alternative is coarsened exact matching (CEM) [@iacusCausalInferenceBalance2012; @iacusMultivariateMatchingMethods2011], which is simply exact matching on coarsened version of the covariates. The degree of coarsening is controled by the researcher to strike a balancing between discarding units with no matches and ensuring the units within strata are relatively homogeneous in the covariates.~~
+
+~~Another alternative is propensity score subclassification, in which units are placed into strata based on their propensity score values. The number of strata is decided by the researcher; although early literature recommends as few as 5 subclasses, it is always best to try larger numbers of subclass to find the one that yields the highest quality matches.~~
+
+~~The result of stratification is a set of stratification weights. These are computed as follows: 1) compute the proportion of units in each stratum that are treated, 2) for each unit, assign to it this proportion in its stratum as a new stratum "propensity score", and 3) apply the propensity score weighting formulas above to the new stratum propensity score using the formula that corresponds to the desired estimand. In this way, stratification is a form of propensity score weighting in which the weights are estimated using a multi-step procedure rather than directly from the propensity scores. This method is known as marginal mean weighting through stratification [MMWS; @hongMarginalMeanWeighting2010] or fine stratification [@desaiPropensityscorebasedFineStratification2017].~~
+
+##### ~~Subset selection and pair matching~~
+
+~~Subset selection involves taking a subset of units from the original sample and dropping the rest, ideally in such a way that the remaining sample is balanced on the covariates. The most common method of subset selection is pair matching, in which treated units are paired with untreated units, and any unpaired units are dropped. There are a number of ways to customize pair matching to improve the balance and precision of the resulting sample:~~
+
+-   ~~**The distance measure use to compute the closeness between units**. The most common measure is the propensity score difference between each treated and untreated unit. Other distances include the Mahalanobis distance and its robust variant and the scaled Euclidean distance, which are computed from the covariates directly and do not require a propensity score, though a propensity score can be added as an additiona covariate in computing them. A powerful optimization-based matching method called genetic matching adjusts elements of the distance measure used in order to optimize the balance of the resulting sample. The best distance measure to use will depend on the unique features of the dataset [@ripolloneImplicationsPropensityScore2018], so several should be tried.~~
+
+-   ~~**The number of matches unit receives.** Each treated unit can receive one or more control units as a match, and this number can be chosen by the researcher. For example, one can request 2:1 matching instead of 1:1 matching, which increases the size of the resulting sample but may worsen balance because worse matches are being included. The number of matches each unit receives can be fixed across all units or varied [@mingSubstantialGainsBias2000].~~
+
+-   ~~**Whether matching is done with or without replacement.** One can choose whether untreated units can be reused as matches for multiple treated units. Matching with replacement often yields better balance and eliminates the effect of who gets matched first on the resulting sample. Matching with replacement can yield imprecision in the effect estimate when the same untreated unit is matched many times; the number of times each untreated unit can be matched can be limited. Inference after matching with replacement can be more challenging than when matching without replacement\^\[Although much early research into statistical inference for matching was done for matching with replacement, the inference methods required highly specific uses of matching and complicated estimators of standard errors [@abadieLargeSampleProperties2006; @abadieMatchingEstimatedPropensity2016]. The most applicable methods of inference for matching with replacement rely on simulation evidence and are only approximations [@hillIntervalEstimationTreatment2006].\].~~
+
+-   ~~**The order of matches.** When matching without replacement, the order that treated units are matched matters. There are a variety of ways one can specify this order with varying evidence supporting each choice [@rubinMatchingRemoveBias1973; @austinComparison12Algorithms2014], so it is best to try various orders. An alternative is to use optimal pair matching [@hansenOptimalFullMatching2006; @guComparisonMultivariateMatching1993], which optimizes a global distance criterion.~~
+
+-   ~~**Calipers and exact matching constraints.** A caliper is a limit on how far two units can be before they are disallowed from being matched. Using calipers can improve balance but decrease precision because additional units are discarded (i.e., those without any matches within the caliper) [@austinComparison12Algorithms2014]. It is very common to place a caliper on the propensity score, though it is also possible to place calipers on covariates directly. Though there has been some research into optimal caliper widths [@austinOptimalCaliperWidths2011], the best caliper will depend on the unique features of the dataset, and so many should be tried and evaluated. An exact matching constraint requires that two unit have identical values of the given covariate in order to be allowed to be matched. When calipers or exact matching constraints are used, balance often improves (sometimes dramatically), but discarding treated units changes the estimand to the ATO, which may not be desired [@greiferChoosingEstimandWhen2021; @rosenbaumBiasDueIncomplete1985]. Applying calipers can also make balance worse if good balance has already been achieved without them [@kingWhyPropensityScores2019].~~
+
+~~There are also methods of subset selection without pairing, such as cardinality and profile matching [@zubizarretaMatchingBalancePairing2014; @cohnProfileMatchingGeneralization2022]. These use optimization to find the largest matched sample that satisfies balance constraints set by the user and are starting to see broader use in medical research [e.g., @niknamUsingCardinalityMatching2022; @fortinIndirectCovariateBalance2022].~~
+
+##### ~~Full matching~~
+
+~~Full matching is an effective matching method that is somewhat of a cross between pair matching and stratification [@stuartUsingFullMatching2008; @hansenOptimalFullMatching2006]. Every unit in the sample is assigned to a stratum as with stratification methods, but the strata are formed based on the pairwise distances between units. Full matching tends to outperform other matching methods and can be customized in many of the same ways [@austinOptimalFullMatching2015; @austinEstimatingEffectTreatment2017]. Variations of full matching often run much faster than other matching algorithms [@savjeGeneralizedFullMatching2021]. Unlike other pair matching methods, full matching can be used to estimate the ATT, ATC, or ATE. Full matching can also been seen as a alternative to IPTW that can be more robust to misspecification [@austinPerformanceInverseProbability2017].~~
+
+### ~~3. Assessing quality~~
+
+~~A key step in propensity score analysis is assessing the quality of the matching or weighting specification. These methods are only effective at removing bias due to confounding when certain conditions are met, which we describe here. The three most important attributes used to assess a conditioning specification are 1) balance, 2) representativeness, and 3) effective sample size. We describe each of these below.~~
+
+#### ~~Balance~~
+
+~~Balance is the degree to which the treatment groups resemble each other on the covariates. A fully balanced sample is one in which the distributions of covariates in the treatment groups are identical. When balance is achieved, bias due to confounding by the observed confounders will be eliminated. Balance is central to the use of propensity score methods [@ben-michaelBalancingActCausal2021]; indeed, the entire point of using these methods is to achieve balance. The primary benefit of randomization is that confounders (both observed and unobserved) are balanced by design (in expectation); propensity score methods seek to mimic this quality by adjusting the sample so that balance is achieved.~~
+
+~~In theory, conditioning on the propensity score via matching or weighting should yield balance in the sample; this is the key balancing property of propesity scores and why they are popular in the first place. However, in practice, they don't always yield balance, which can be due to a number of factors, including incorrect specification of the propensity score model (if one is used), the conditonign method is not suited for the data used, or balance fundamentally cannot be achieved while retaining the desired estimand. Therefore, it is critical that balance be assessed before moving forward with effect estimation.~~
+
+~~This is what @hoMatchingNonparametricPreprocessing2007 describe as the "propensity score tautology": conditioning on a good propensity score yields balance in the sample, but whether a propensity score is good depends on whether it yields balance. The implication of this is that we cannot rely on the theoretical balancing properties of the propensity score; we need to ensure that the conditioning specification is doing its job.~~
+
+~~Full balance means balance not just on individual covariates but on the full, joint distribution of covariates. For example, it may not be enough to have the same proportion of women and the same proportion of Black patients in the treatment groups; full balance requires the same proportion of Black women, non-Black women, Black men, and non-Black men in the treatment groups. Full balance can be hard to achieve and hard to assess, so most balance assessment method focus on the "marginal" (i.e., single-covariate) distributions; if balance is not achieved on individual covariates, it is not achieved on the full joint distribution either.~~
+
+~~Balance can be assessed graphically or numerically, and among numerical assessments, there are univariate (one covariate at a time) and multivariate (multiple covariates at a time) statistics.~~
+
+##### ~~Graphical balance assessment~~
+
+~~The most straightforward assessment of whether the distribution of a cxovariates is the same in the two treatment groups is simply to plot the distributions and note any differences. Example of distribution plots include histograms, kernel density plots, empirical cumulative distribution function (eCDF) plots, and bar graphs (for categorical variables). Dramatic differences in these plots suggests severe imbalance that must be corrected.~~
+
+##### ~~Univariate balance statistics~~
+
+~~Univariate balance statistics describe the difference in the distributions of one covariate at a time numerically. For binary covariates, the difference in the proportion of each category across treatment groups is an example of univariate balance statistic (called the raw difference in proportion). For continuous variables, several univariate balance statistics are commonly used:~~
+
+-   ~~Standardized mean difference (SMD):~~ $\frac{\bar{x}_1-\bar{x}_0}{s}$~~, where~~ $s$ ~~is a measure of spread computed in the unadjusted sample. The SMD does not depend on the scale of the covariate and only assess differences in the covariate means, not other features of the distributions. Ideally these are as small as possible [@hoMatchingNonparametricPreprocessing2007], though some authors recommend that they should be below .1. SMDs are the most commonly reported balance statistic.~~
+
+-   ~~Variance ratios:~~ $s^2_1/s^2_0$~~. This complements the SMD by assessing balance on the variability of the distribution, not just the means. Ideally these are as close to 1 as possible.~~
+
+-   ~~Kolmogorov-Smirnov (KS) statistics:~~ $\text{max} \left( |F_1(x) - F_0(x)| \right)$~~, where~~ $F(x)$ ~~is the eCDF of~~ $x$~~. This assesses balance on the entire marginal distribution of the covariate, not just the means or variability. Ideally these are as small as possible.~~
+
+~~These statistics can also be computed not just on the covariate, but also on transformations of it, such as the square or cube or interactions between covariates.~~
+
+##### ~~Multivariate balance statistics~~
+
+~~A multivariate balance statistic is a single (scalar) number that attempts to summarize balance for a sample. They are used less often in assessing balance and more to compare between conditioning specifications. Examples include the largest or average absolute SMD across covariates and the largest or average KS statistic across covariates. Some multivariate balance statistics attempt to assess balance not just on the marginal covariate distributions but on the joint distribution; examples include the~~ $L_1$ ~~statistic, which sums raw differences in proportion across a multi-dimensional histogram of the covariates, and the energy distance, which computes the average distance between the joint covariate eCDFs. These statistics are not typically reported because their scale depends on the distribution and number of covariates, but they can be used to compare between specifications.~~
+
+##### ~~Don't use p-values~~
+
+~~One might be tempted to use a hypothesis test to assess whetehr the distributions of the covariates differs between groups. For example, one might use the p-value on a t-test, chi-square test, Mann-Whitney U test, or KS test to test whether two distributions are the same. Do not do this to assess balance in observational studies, either before or after conditioning. There are several reasons to avoid p-values:~~
+
+1.  ~~Hypothesis tests typically make reference to a population distribution, but balance is a quality of the sample~~
+
+2.  ~~Hypothesis tests depend on the sample size, so shrinking your smaple size (e.g., through subset selection) will appear to make balance better even if ti makes it worse~~
+
+3.  ~~P-values suggest a significance threshold that might be invalid;~~ $p = .1$ ~~might still indicate severe imbalance despite being nonsignificant (at the~~ $\alpha = .05$ ~~level).~~
+
+~~Instead, use the sample balance statistics described above.~~
+
+#### ~~Representativeness~~
+
+~~Representativeness refers to how generalizable an effect estimate is to the population for whom one wants to make inferences. Even if the original sample is representative of a meaningful population (e.g., all patients with a given disease), conditioning may distort the sample in such a way as to change its representativeness. The reason this is so critical to consider is that different methods exchange representativeness for balance; for example, matching with a caliper or using overlap weights both change the target population to one that differs from the full sample or one of the treatment groups, but in doing so general dramatically improve balance, especially when the groups are very different from each other.~~
+
+~~Representativeness can also be thought of as balance between the adjusted sample and the original sample (or target population), and can be assessed in the same way, i.e., by examining the differences in covariate distributions between the adjusted sample and the target population. Typically, this is done by simply examining the distribution of covariates in the adjusted sample and in the target population and assessing heuristically whether they are close enough for the inference to be informative.~~
+
+~~In some cases, representativeness is less important than ensuring groups are comparable, such as when attempting to discover whether treatment exists for any group rather than for a specific group [@maoPropensityScoreWeighting2018]. In these cases, ensuring representativeness is less critical, but it remains important to understand for which population the estimated effect generalizes.~~
+
+#### ~~Effective sample size~~
+
+~~Matching via subset selection discards units, which leaves the remaining sample smaller than the original sample. In some cases, many units are discarded, and the remaining sample is too small to detect effects. Thus, it is important that any matching method not only achieve balance (and representativeness) but also preserve sample size.~~
+
+~~It might seem like weighting, full matching, or subclassification would prevent this problem because no units are discarded with these methods, but the weights resulting from these methods actually do induce a decrease in precision similar to shrinking the sample size. To capture this effect, the effective sample size (ESS) is used, which corresponds to the size of an unweighted sample that carries as much precision as the weighted sample.~~
+
+~~The ESS is computed in each treatment group as~~ $\left(\sum_n{w}\right)^2/\sum_n{w_i^2}$~~. When weights are scaled to have a mean of 1 in each treatment group, the ESS can be written as~~ $\frac{n}{1+\text{Var}(w)}$~~, which makes it clear that as the variability of the weights increases, the ESS decreases. When all weights are equal to 1 (e.g., prior to estimating propensity score weights), the ESS is equal to the original sample size.~~
+
+~~When a weighting or matching specification yields an ESS that is too small to use for inference, this suggests a problem with the conditoning specification that should be rectified. A low ESS typcially arises from highly variable weights, which can occur when some units have very small or very large propensity scores; this is known as the problem of "extreme weights", for which multiple solutions have been proposed. These solutions include using a different model to estimate the weights (e.g., using logistic regression instead of a classification tree), changing the estimand (e.g., targeting the ATO rather than the ATE), trimming the weights (which can change the estimand as well), or using a method that specifically aims to reduce the variability of the weights, like stable balancing weights [@zubizarretaStableWeightsThat2015] or entropy balancing [@hainmuellerEntropyBalancingCausal2012].~~
+
+~~One often finds that balance, representativeness, and ESS pull in opposite directions, which requires users to manage a trade-off between bias, generalizability, and precision. For example, matching with a caliper often yields excellent balance, but by dropping units from both treatment groups worsens representativeness and decreases the ESS. Propensity score weighting for the ATE may ensure representativeness, but it may be hard to achieve balance, and if one does, it may be that that balance comes at the cost of a decreased ESS. There is no single method that can perfectly optimize all three, but the best methods allow the user to incorporate substantive information into making these trade-offs to best suit the data at hand and research question.~~
+
+### ~~4. Respecification~~
+
+~~If a given specification is not adequate in that balance is too poor, the effective sample size is too small, or the sample is no longer representatative of the target population, one must respecify. Respecification can involve changing some aspect of the conditioning strategy, such as changing a parameter involved in the matching or weighting or changing the model used to estimate propensity scores. Because there are so many parameters that can be changed and they can be changed in so many ways, it is impossible to give a complete account of the best way to respecify. One should try many specifications, examining patterns in how making those changes improves the quality of the resulting sample. As long as the outcome is not involved in this process, doing so will not invalidate inferences made at the end.~~
+
+~~There are some common tricks that can be used to nudge the respecification process in the right direction. Below are some common issues and some potential solutions.~~
+
+-   ~~Poor balance as measured by SMDs: consider using an optimization-based method, like entropy balancing or cardinality matching; use a method that changes the estimand, like caliper matching or overlap weighting~~
+
+-   ~~Poor balance beyond SMDs (e.g., on polynomial terms, variance ratios, or KS statistics): consider adding polynomial or interaction terms to the propensity score model; using a machine-learning method that flexibly models the propensity score; using an optimization-based method that balances the full distribution, like energy balancing; use coarsened exact matching to balance the full distribution approximately; add an exact matching constraint to a matching specification~~
+
+-   ~~Low ESS: use a method to regularize the propensity score model (e.g., ridge or lasso regression); increase the matching ratio; use an optimization-based method that maximizes the ESS (e.g., profile matching or stable balancing weights); relax the caliper (if used); trim extreme weights; use overlap weighting~~
+
+-   ~~Poor representativeness: use a method that strongly respects the estimand (e.g., entropy balancing, not cardinality matching, caliper matching, or overlap weighting); remove a caliper or exact matching restriction~~
+
+~~Having broad experience with the variety of matching and weighting methods available makes this process quick. Fortunately, the software we recommend and use in the examples, the R packages `MatchIt` and `WeightIt`, make switching between various specifications easy.~~
+
+~~To avoid endless respecification, it is a good idea to use methods design to optimize the evaluation criteria in a simple way. Often, the oldest and most commonly used methods are the worst in that that they perform poorly and require respecification to get right. For example, 1:1 propensity score matching with a caliper is the most commonly used propensity score method in medical research, but it is widely known to have many problems: 1) it hampers representativeness because the caliper discards units from both treatment groups [@rosenbaumBiasDueIncomplete1985], 2) it reduces the effecive sample size by droppign many units from hte sample, 3) it can make balance worse when used thoughtlessly [@kingWhyPropensityScores2019], and 4) it has many specification parameters that need to be adjusted arbitrarily (e.g., the propensity score model, caliper width, matching order, etc.). Another popular but old method, propensity score weighting, also has many problems, including inability to achieve balance, low ESS due to extreme weights, and reduced representativeness when measures are taken to rectify the other problems.~~
+
+~~Methods that consistently perform well include entropy balancing and energy balancing, as these ensure balance and representativeness without requiring major respecification. Entropy balsncing guarantees exact balance as measure by the SMD, but it may be necessary to include other terms to fully balance the covariate distributions. Energy balance balances the full covariate dsitribution, but can decrease ESS (though the trade-off between them can be managed with a single parameter). Though these methods are newer, they are beginning to see use in medical research [e.g., @bramante2022; @sharma2023] and should be the first line of defense when adjusting for confounders over poorly performing but older methods.~~
+
+### ~~5. Estimating the effect~~
+
+~~Once an adequate specification has been found, it comes time to estimate the treatment effect and its standard error. Because the goal of propensity score analysis is to mimic the qualities of a randomized trial, methods for estimating effects in randomized trials can be used in the conditioned data. The outcome type (e.g., binary, count, survival time) and estimand (e.g., risk difference, incidence ratio, hazard ratio) determine the specific method used to estimate the effect, but they generally follow the same structure. below, we'll describe how to estimate the effect and how to compute its standard error or confidence interval.~~
+
+#### ~~The effect estimate~~
+
+~~The simplest way to compute the treatment effect after matching or weighting is to computed the weighted mean of the outcome in each treatment group and contrast them to form the estimand of choice. For example, for a binary outcome of death by 6 months after propensity score weighting for the ATE, we can compute the weighted proportion of deaths in the treated group and the weighted proportion of deaths in the control group, which give us the expected potential outcomes under treatment and control for the full sampled population. We can compute the risk ratio by taking the ratio of these weighted proportions. Equally simple would be to run a weighted log-binomial regression of death by 6 months on the treatment and use the exponentiated coefficient on treatment as the estimated risk ratio.~~
+
+##### ~~Adjusting for covariates~~
+
+~~Further adjustment for covariates in the outcome model is a good idea as it improves precision at little to no cost and often reduces bias (though less so if the matching or weighting was effective)[^ps-tutorial-2]. However, it is important to do so using a specific procedure that does not distort the target estimand. This procedure is called "g-computation" [@snowdenImplementationGComputationSimulated2011], and its weighted variant is weighted g-computation [@vansteelandtInvitedCommentaryGComputation2011], which will be the focus of this section.~~
+
+[^ps-tutorial-2]: You may also hear about the potential for "double-robustness" [@danielDoubleRobustness2018; @kangDemystifyingDoubleRobustness2007], i.e., that the estimate is consistent if either the propensity score model or outcome model are correct, giving you two chances to get it right. I won't discuss this perspective because the perspective I take is that the conditioning should do all the work of balancing the covariates and removing bias, and the purpose of the outcome model is primarily to increase precision. Truly doubly-robust estimators involve different procedures, different modes of inference, and different priorities in assessment than traditional propensity score analysis.
+
+~~**Do not use the coefficient on treatment as an estimate of the treatment effect when covariates are included in the model**. This coefficient generally does not correspond to a valid marginal estimand and its interpretation depends on correct specification of the outcome model (and if we could do that, we wouldn't need propensity score analysis in the first place). G-computation is a method of computing a marginal treatment effect from a model that preserves the estimand, is agnostic to the form of the model, and doesn't require the model to be correctly specified to see the benefits of covariate adjustment.~~
+
+~~Generally, g-computation works as follows:~~
+
+1.  ~~Fit a model for the outcome given the treatment, covariates, and their interaction.~~
+
+2.  ~~Generate predicted values from this model for all units after setting their treatment status to treated, regardless of their actual treatment status; these are the estimated potential outcomes under treatment.~~
+
+3.  ~~Generate predicted values from this model for all units after setting their treatment status to control, regardless of their actual treatment status; these are the estimated potential outcomes under control.~~
+
+4.  ~~Compute the mean of the estimated potential outcomes under treatment and under control; these are the expected potential outcomes under treatment and control.~~
+
+5.  ~~Contrast the expected potential outcomes to arrive at a marginal treatment effect estimate.~~
+
+~~When weights are included, we need to adjust the procedure slightly: the outcome model should be fit as a weighted model and the expected potential outcomes under each treatment level should be computed as weighted means. This ensures the balancing properties of the weights are employed and the treatment effect generalizes to the correct target population.~~
+
+~~One of the primary benefits of g-computation is that the model and the estimand are completely divorced from each other, so one can fit the right model for the data regardless of which contrast is to be reported. For example, for a binary outcome, one can fit a logistic regression model but compute a risk difference using g-computation. Traditional approaches that rely on using the coefficient on treatment require the model to correspond to the desired contrast, which can yield bias if the model is not right for the data (e.g., a linear model for a binary outcome, which can produce predictions beyond 0 and 1).~~
+
+~~Another benefit of g-computation is that the procedure is exactly the same no matter what model is used for the outcome, how that model is parameterized (i.e., whether polynomials or interactions are included in the model), or how the data was conditioned (i.e., matching or weighting). This obviates the need for considering the interpretability of the original model or preprocessing the data to ensure coefficients have valid interpretations, such as using contrast coding or centering. This also opens the door to using outcome models that are traditionally challenging to interpret (e.g., probit regression instead of logistic regression for binary outcomes, splines to capture nonlinear covariate effects, or multi-part models like zero-inflated Poisson models for count outcomes).~~
+
+##### ~~Survival outcomes~~
+
+#### ~~Confidence intervals and standard errors~~
+
+~~Care needs to be taken when computing confidence intervals (CIs) and standard errors (SEs), as these may need to take into account multiple sources of variation, including from estimation of the propensity scores or weights, the matching, and the outcome. For some mething, analytic formulas for SEs have been developed, but for others we have to rely on approximations or computationally intense methods. When using g-computation, the treatment effect does not correspond to a coefficient in the model, so we also need to take into account how SE of the treatment effect is derived from the model coefficient SEs.~~
+
+~~There are two broad methods we can use for computing CIs and SEs after propensity score analysis: (cluster-) robust SEs and bootstrap CIs, which I described below. See table 1 for a summary of which method should be used in different circumstances.~~
+
+##### ~~Robust and cluster-robust SEs~~
+
+~~Also known as sandwich SEs (due to the form of the formula for computing them), heteroscedasticity-consistent SEs, or Huber-White SEs, robust SEs are an adjustment to the usual maximum likelihood or ordinary least squares SEs that are robust to violations of some of the assumptions required for usual SEs to be valid [@mackinnonHeteroskedasticityconsistentCovarianceMatrix1985]. Robust SEs have been shown to be conservative (i.e., yield overly large SEs and wide confidence intervals) for estimating the ATE after some forms of weighting [@robinsMarginalStructuralModels2000], though they can be either conservative or not for other weighting methods and estimands, such as for the ATT [@reifeisVarianceTreatmentEffect2020] or for entropy balancing [@chanGloballyEfficientNonparametric2016] . Robust SEs treat the estimated weights as if they were fixed and known, ignoring uncertainty in their estimation. Although they are quick and simple to estimate, they should be used with caution, and the bootstrap (described below) should be preferred in most cases.~~
+
+~~A version of robust SEs known as cluster-robust SEs [@liangLongitudinalDataAnalysis1986] can be used to account for dependence between observations within clusters (e.g., matched pairs). @abadieRobustPostMatchingInference2020 demonstrate analytically that cluster-robust SEs are generally valid after matching, whereas regular robust SEs can over- or under-estimate the true sampling variability of the effect estimator depending on the specification of the outcome model (if any) and degree of effect modification. A plethora of simulation studies have further confirmed the validity of cluster-robust SEs after matching [e.g., @austinUseBootstrappingWhen2014; @austinTypeErrorRates2009; @gayatPropensityScoreApplied2012; @wanMatchedUnmatchedAnalyses2019].~~
+
+~~To compute robust SEs after g-computation, a method known as the delta method is used; this is a way to compute the SEs of the derived quantities (the expected potential outcomes and their contrast) from the variance of the coefficients of the outcome models. For nonlinear models (e.g., logistic regression), the delta method is only an approximation subject to error (though in many cases this error is small and shrinks in large samples). Because the delta method relies on the variance of the coefficients from the outcome model, it is important to correctly estimate these variances.~~
+
+##### ~~Bootstrapping~~
+
+~~Bootstrapping is a technique used to simulate the sampling distribution of an estimator by repeatedly drawing samples with replacement and estimating the effect in each bootstrap sample [@efronBootstrapMethodsStandard1986; @carpenterBootstrapConfidenceIntervals2000]. From the bootstrap distribution, SEs and CIs can be computed in several ways, including using the standard deviation of the bootstrap estimates as the SE estimate or using the 2.5 and 97.5 percentiles as 95% CI bounds. Although @abadieFailureBootstrapMatching2008 found analytically that the bootstrap is inappropriate for matching, simulation evidence has found it to be adequate in many cases [@hillIntervalEstimationTreatment2006; @austinUseBootstrappingWhen2014; @austinEstimatingEffectTreatment2017].~~
+
+~~Traditionally, bootstrapping involves performing the entire estimation process in each bootstrap sample, including propensity score estimation, matching or weighting, and effect estimation. For weighting, the traditional bootstrap works very well and is generally the best method to use for estimating CIs [@chanGloballyEfficientNonparametric2016; @austinBootstrapVsAsymptotic2022]. For matching this method may be conservative for matching in some cases (i.e., they are wider than necessary to achieve nominal coverage) [@austinUseBootstrappingWhen2014]. More accurate intervals have been found when using the matched/cluster bootstrap described by @austinUseBootstrappingWhen2014 and @abadieRobustPostMatchingInference2020. The cluster bootstrap involves sampling matched pairs/strata of units from the matched sample (i.e., after the matching is already done) and estimating the effect within each sample composed of the sampled pairs.~~
+
+| ~~Method~~                                                                | ~~Use for SEs/CIs~~                         | ~~Notes~~                                                                                                                            |
+|--------------------|------------------|-----------------------------------|
+| ~~Pair matching w/o replacement and full matching~~                       | ~~Cluster bootstrap or cluster-robust SEs~~ |                                                                                                                                      |
+| ~~Pair matching w/ replacement~~                                          | ~~Robust SEs~~                              | ~~Traditional bootstrap performs well in simulations, but analytically is invalid; some analytical methods exist for special cases~~ |
+| ~~Other matching methods (including propensity score subclassification)~~ | ~~Bootstrap or robust SEs~~                 |                                                                                                                                      |
+| ~~Propensity score weighting for the ATE~~                                | ~~Bootstrap or robust SEs~~                 | ~~Robust SEs are conservative~~                                                                                                      |
+| ~~Propensity score weighting for the ATT~~                                | ~~Bootstrap~~                               | ~~Robust SEs can be conservative or anti-conservative~~                                                                              |
+
+: ~~Table 1. Conditioning methods and corresponding recommended methods for estimating SEs and CIs~~
+
+### ~~6. Sensitivity analysis~~
+
+~~Sensitivity analysis broadly refers to assessing the sensitivity of results to violations of some of the assumptions made. In propensity score analysis, it ususally refers to sensitivity to the assumption of satisfaction of the backdoor criterion, i.e., no unmeasured confoudning. There is no simple way to test whether observed results are confounded or not; instead, we assess how much our estimates would change for different degrees of hypothetical confounding and, in particular, how strong confounding would have ot be to change our inferences (i.e., on the presence or direction of the effect). Sensitivity analysis is an area of ongoing research; presently, there is no single best method to use or one that has achieved widespread adoption.~~
+
+@liuIntroductionSensitivityAnalysis2013 ~~provide an accessible introduction to sensitivity analysis, though much work has been done since. @dagostinomcgowanSensitivityAnalysesUnmeasured2022 provide a more modern review along with a description of software that implements many of the methods described. Perhaps the most common method of assessing sensitivity to unmeasured confounding is a single-number summary called the "E-value" [@vanderweeleSensitivityAnalysisObservational2017; @haneuseUsingEValueAssess2019], though it is also one of the most controversial and misinterpreted [@ioannidisLimitationsMisinterpretationsEValues2019; @vanderweeleCorrectingMisinterpretationsEValue2019]. The E-value is a transformation of the effect estimate that corresponds to the minimum strength of association (on the risk ratio scale) that a hypothetical unmeasured confounder would have to have with the treatment and outcome to fully explain away an observed effect estimate.~~
+
+~~Because there are no agreed-upon standards for reporting sensitivity to unmeasured confounding and the methods that exist either depend on the analysis method used or are on a particular (non-universal) scale, we cannot recommend a specific approach and instead recommend researchers attend carefully to developments in this area and follow the norms of their respective fields.~~
+
+### ~~Example~~
+
+~~Below, we'll demonstrate how to perform matching and weighting in R. We'll use the famous right-heart catheterization (RHC) dataset analyzed in XXX, which examines the effect of RHC on death by 60 days. XXX used 1:1 matching with a caliper to estimate the effect, which corresponds to an ATO (though they provided no justification for this choice of estimand). It turns out this matters quite a bit; the ATT, ATC, and ATE differ from each other and lead to different conclusions about the risk of RHC.~~
+
+~~The choice of estimand depends on the policy implied by the analysis. Are we interested in examining whether RHC is harmful and should be withheld from patients receiving it? If so, we are interested in the ATT of RHC. Are we interested in examining whether RHC would benefit patients not receiving it? If so, we are interested in the ATC of RHC. Are we interested in the average effect of RHC for the whole study population? If so, we are interested in the ATE of RHC.~~
+
+~~We'll assume that if we are making a causal inference about the effect of RHC, we have collected a sufficient set of variables to remove confounding. This may be a long list, but to keep the example short, we'll use a list of 13 covariates thought to be related to receipt of RHC and death at 60 days, all measured prior to receipt of RHC.~~
+
+~~Let's take a look at our dataset:~~
+
+```{r, include=FALSE}
+Hmisc::getHdata(rhc)
+rhc <- droplevels(rhc)
+rhc$death <- as.numeric(rhc$death == "Yes")
+rhc$RHC <- as.numeric(rhc$swang1 == "RHC")
+
+#Define treatment, outcome, and covariates
+#http://hbiostat.org/data/repo/rhc.html
+treat <- "RHC"
+outcome <- "death"
+covs <- c("aps1", "meanbp1", "pafi1", "crea1", "hema1", "paco21",
+          "surv2md1", "resp1","card", "edu", "age", "race", "sex")
+
+rhc <- rhc[c(covs, treat, outcome)]
+```
+
+```{r}
+summary(rhc)
+```
+
+~~Our treatment variable is `RHC` (1 for receipt, 0 for non-receipt), our outcome is `death` (1 for died at 60 days, 0 otherwise), and the other variables are covariates thought to remove confounding, which include a mix of continuous and categorical variables.~~
+
+~~Let's examine balance on the variables between the treatment groups using `cobalt`, which provides the function `bal.tab()` for creating a balance table containing balance statistics for each variables.~~
+
+```{r}
+library("cobalt")
+```
+
+~~We'll request the standardized mean difference by including `"m"` in the `stats` argument and setting `binary = "std"` (by default binary variables are not standardized) and we'll request KS statistics by including `"ks"` in `stats`. Supplying the treamtnet and covariates in the first argument using a formula and supplying the data set gives us the following:~~
+
+```{r}
+bal.tab(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+          paco21 + surv2md1 + resp1 + card + edu +
+          age + race + sex, data = rhc,
+        stats = c("m", "ks"), binary = "std")
+```
+
+~~We can see significant imbalances in many of the covariates, with high SMDs (greater than .1) and KS statistics (greater than .1, but there is no accepted threshold for these). We can also see the sample sizes for each treatment group. Note that because they are somewhat close in size (the control group is not even twice the size of the treatment group), this will limit the available matching options available and might affect our ability to achieve balance using methods that require a large pool of controls relative to the treated group.~~
+
+~~Other balance statistics can be requested, too, using the `stats` argument. It is straightforward to assess balance on particular transformations of covariates using the `addl` argument, e.g., `addl = ~age:educ` to assess balance on the interaction (i.e., product) of `age` and `educ`. We can also supply `int = TRUE` and `poly = 3`, for example, to assess balance on all pairwise interactions of covariates and all squares and cubes of the continuous covariates. This can make for large tables, but there are ways to keep them short and summarize them. For example, we can hide the balance table and request the number of covariates that fail to satisfy balance criteria and the covariates with the worst imbalance using code below:~~
+
+```{r}
+bal.tab(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+          paco21 + surv2md1 + resp1 + card + edu +
+          age + race + sex, data = rhc,
+        int = TRUE, poly = 3,
+        stats = c("m", "ks"), binary = "std",
+        thresholds = c(m = .1, ks = .1),
+        disp.bal.tab = FALSE)
+```
+
+~~We can see that many covariates and their transformations (interactions, squares, and cubes) are not balanced based on our criteria for SMDs or KS statistics. We'll use matching and weighting below to attempt to achieve balance on the covariates.~~
+
+#### ~~Matching~~
+
+~~To perform matching, we'll use the `MatchIt` package, which provides an interface to many forms of matching and allows for specification of many different options to customize the matching.~~
+
+```{r}
+library("MatchIt")
+```
+
+~~For matching, we'll focus on the ATT, though it is possible for some matching methods to target the ATE as well. The simplest method of matching is 1:1 nearest neighbor propensity score matching, which is the default using `matchit()`. For more details on this procedure, including effect estimation, see the `MatchIt` documentation and vignettes, which are extensive and go into much more detail than this documentation about the matching methods available and correct procedures for estimating effects.~~
+
+```{r}
+#1:1 NN propensity score matching w/o replacement
+m1 <- matchit(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                paco21 + surv2md1 + resp1 + card + edu +
+                age + race + sex, data = rhc)
+m1
+```
+
+~~We can use `summary()` in `MatchIt` to assess balance, but we'll stick with `cobalt`. We can just supply the `matchit` object to `bal.tab()`, which contains the treatment and covariate information.~~
+
+```{r}
+bal.tab(m1, stats = c("m", "ks"), binary = "std")
+```
+
+~~Although balanced improved, we still have covariates with unacceptable imbalance, and it is possible to do much better than simple 1:1 matching. XXX using matching with a caliper on the propensity score; here we'll do so as well, setting a caliper of .2 standard deviations of the logit of the propensity score, which is an arbitrary but often used caliper width:~~
+
+```{r}
+m2 <- matchit(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                paco21 + surv2md1 + resp1 + card + edu +
+                age + race + sex, data = rhc,
+              link = "linear.logit", caliper = .2)
+m2
+
+bal.tab(m1, stats = c("m", "ks"), binary = "std")
+```
+
+~~We can see that several treated units were discarded, which changes the estimand, though we do see major improvements in balance. There are many methods we can try to improve balance while retaining the estimand, but we'll use generalized full matching XXX by setting `method = "quick"`, which is fast and tends to perform well in a variety of settings[^ps-tutorial-3].~~
+
+[^ps-tutorial-3]: Optimal full matching (`method = "full"`) tends to work a bit better, but can be much slower for larger datasets.
+
+```{r}
+m3 <- matchit(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                paco21 + surv2md1 + resp1 + card + edu +
+                age + race + sex, data = rhc,
+              method = "quick")
+m3
+
+bal.tab(m3, stats = c("m", "ks"), binary = "std")
+```
+
+~~Balance is good and we retained the target estimand, but generalized full matching took a tool on the effective sample size (ESS) of our control group, which is now around 1000 (from around 3500). Even though generalized full matching retains the entire sample (i.e., not a single unit is dropped), the matching weights resulting from it have variability such that the ESS is much lower than the original sample size. There are ways to manage the balance-ESS trade-off that are specific to each matching method.~~
+
+~~Although balance isn't perfect and in theory could be improved with additional fine-tuning, we'll move forward with this matched sample to demonstrate effect estimation and reporting. First, we need to extract the matched sample from the `matchit` object using `match.data()`. This adds columns to the original dataset called `"distance"`, `"weights"`, and `"subclass"` containing the propensity score, matching weights, and matched strata (i.e., pair membership). When units are dropped in the matching (e.g., when using 1:1 matching), the output will only contain the units remaining in the matched sample[^ps-tutorial-4].~~
+
+[^ps-tutorial-4]: Note that this behavior, and the names of the new columns created, can be customized by the user.
+
+```{r}
+md <- match.data(m3)
+
+# Names of new dataset; note the three new variables at the end
+names(md)
+```
+
+~~To estimate the treatment effect, we need to proceed in two steps. First, we fit the outcome model to the matched sample including the matching weights. Second, we compute the treatment effect using g-computation. Our estimand will be the marginal risk ratio for the treated units (i.e., the ATT on the risk ratio scale). We will fit a logistic regression for the outcome, including covariates and their interactions with treatment in the model.~~
+
+```{r}
+fit <- glm(death ~ RHC * (aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                            paco21 + surv2md1 + resp1 + card + edu +
+                            age + race + sex),
+           data = md, weights = weights, family = quasibinomial)
+```
+
+~~There is no value in examining this outcome model; the coefficients are uninterpretable and provide no information about the effects of the included predictors on the outcome. This model can be arbitrarily complicated and is not designed to be a useful predictive model for the outcome. Its sole purpose is to increase the precision of the resulting effect estimate. We will compute the marginal risks under treatment for each group and compute the risk ratio. Here we specify arguments to `avg_predictions()` to use cluster-robust SEs that account for the matching and restrict the data to the treated units because we are estimating the ATT[^ps-tutorial-5]~~
+
+[^ps-tutorial-5]: In practice, it is okay to omit the `newdata` argument, especially when balance is excellent.
+
+```{r}
+library("marginaleffects")
+
+avg_predictions(fit, variables = "RHC",
+                wts = "weights",
+                vcov = ~subclass,
+                newdata = subset(md, RHC == 1))
+```
+
+~~We find marginal risks of .69 and .713 for the treated units under control and treatment, respectively. We can compute the risk ratio using the following:~~
+
+```{r}
+avg_comparisons(fit, variables = "RHC",
+                wts = "weights",
+                vcov = ~subclass,
+                newdata = subset(md, RHC == 1),
+                comparison = "lnratioavg",
+                transform = "exp")
+```
+
+~~From this we find a risk ratio of 1.04, indicating that the risk of death is 4% higher for those receiving RHC than had they not received it. The confidence interval for the risk ratio is (.989, 1.09), and the p-value for the test that the log risk ratio is equal to 0 (i.e., that the risk ratio is equal to 1) is .138, indicating no evidence for an effect of RHC in either direction.~~
+
+~~To report balance, we could include the final balance table above, a visual representation of it, or a summary of balance statistics (or combinations thereof). A clean visual representation of balance is in a Love plot, which can be requested as follows:~~
+
+```{r, fig.width = 7, fig.height=3.5}
+love.plot(m3, stats = c("m", "ks"), binary = "std",
+          drop.distance = TRUE, abs = TRUE)
+```
+
+~~See the `cobalt` documentation for more information on using `love.plot()` to make publication-ready plots.~~
+
+#### ~~Weighting~~
+
+~~Next, we'll use weighting to target the ATE of RHC on death[^ps-tutorial-6]. We'll use the `WeightIt` package, which provides an interface to many different weighting methods and has utilities for assessing the quality of the weights. For more details on this procedure, including effect estimation, see the `WeightIt` documentation and vignettes.~~
+
+[^ps-tutorial-6]: Note that the ATE can be targeted by matching (not 1:1 matching, but other methods) and the ATT and other estimands can be targeted by weighting; don't think matching is for the ATT and weighting is for the ATE. Use whichever method yields the best performance and would be best understood by your audience.
+
+```{r}
+library("WeightIt")
+```
+
+~~First we'll perform the most common weighting method, inverse probability weighting using a logistoc regression propensity score.~~
+
+```{r}
+w1 <- weightit(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                paco21 + surv2md1 + resp1 + card + edu +
+                age + race + sex, data = rhc,
+               estimand = "ATE")
+w1
+```
+
+~~We'll use `bal.tab()` again to assess balance.~~
+
+```{r}
+bal.tab(w1, stats = c("m", "ks"), binary = "std")
+```
+
+~~Balance look excellent using standard inverse probability weighting, and normally we might stop here. However, we'll carry on in search of even better balance. We'll use entropy balancing, which guarantees exact balance on the means of included covariates (but may not balance the rest of the covariate distributions).~~
+
+```{r}
+w2 <- weightit(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                paco21 + surv2md1 + resp1 + card + edu +
+                age + race + sex, data = rhc,
+               estimand = "ATE", method = "entropy")
+w2
+
+bal.tab(w2, binary = "std", int = TRUE,
+        poly = 4, thresholds = c(m = .05),
+        disp.bal.tab = FALSE)
+```
+
+~~Here we included interactions and up to fourth powers of the covariates to assess balance more fully on the covariate distributions; although balance after entropy balancing was excellent, it might still be possible to improve on it. We'll try energy balancing, which tends to have excellent performance at balancing the entire covariate distribution:~~
+
+```{r}
+w3 <- weightit(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                paco21 + surv2md1 + resp1 + card + edu +
+                age + race + sex, data = rhc,
+               estimand = "ATE", method = "energy")
+w3
+
+bal.tab(w3, binary = "std", int = TRUE,
+        poly = 4, thresholds = c(m = .05),
+        disp.bal.tab = FALSE)
+```
+
+~~We find that is indeed the case here. We'll carry on with our energy balancing results.~~
+
+~~To estimate the treatment effect, we will again use g-computation, aided by the `marginaleffects` package.~~
+
+```{r}
+library("marginaleffects")
+```
+
+~~First, we need to extract the weights from our `weightit` object, and then we fit the outcome model. Remember, this model is not to be interpreted.~~
+
+```{r}
+rhc$weights <- w3$weights
+
+fit <- glm(death ~ RHC * (aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                            paco21 + surv2md1 + resp1 + card + edu +
+                            age + race + sex),
+           data = rhc, weights = weights, family = quasibinomial)
+```
+
+~~Next we'll compute the marginal predictions and their ratio. Here we'll request robust standard errors, which are generally appropriate for weighting for the ATE (though they may be conservative).~~
+
+```{r}
+# Marginal predictions
+avg_predictions(fit, variables = "RHC",
+                wts = "weights",
+                vcov = "HC3")
+
+# Risk ratio
+avg_comparisons(fit, variables = "RHC",
+                wts = "weights",
+                vcov = "HC3",
+                comparison = "lnratioavg",
+                transform = "exp")
+```
+
+~~Here find evidence of a positive risk ratio overall, indicating that on average, receiving RHC increases the risk of death by 5%[^ps-tutorial-7].~~
+
+[^ps-tutorial-7]: Note, in this case, the conclusions would have been the same regardless of which weighting method we moved forward with.
+
+~~Again, it is useful to report balance to demonstrate the performance of the weights. Here, we could say that the largest SMD for the covariates was .004 and the largest KS statistic was .029, and the SMDs for all powers of the covariates up to 4 and two-way interactions were less than .021. The specific values for each covariate would not be required because this summary indicates that all covariates were balanced more than adequately.~~
+
+### ~~Advanced topics~~
+
+~~The sections above describe propensity score analysis in the simplest case, that of a binary treatment administered at a single time point. In reality, research is often more complicated, and more complicated research questions require adjustments to to this simple case. Below, I'll briefly outline some more complicated scenarios, including performing subgroup analysis, dealing with multi-category and continuous treatments, dealing with longitudinal/sequential treatments, and dealing with missing data.~~
+
+#### ~~Subgroup analysis~~
+
+~~Subgroup analysis is required to understand how treatments affect different types of patients and to be able to provide reasoned recommendations when information about patients is available (in contrast to the broad policy-based recommendations implied by the usual estimands). Subgroup analysis can be done simply by performing separate analyses within each subgroup [@greenExaminingModerationAnalyses2014], though in some case it can be beneficial to share information (e.g., estimation of the propensity score or outcome model) across subgroups [@dongSubgroupBalancingPropensity2020].~~
+
+~~It is also important to remember that performing subgroup analysis does not allow one to make a causal claim about the effect of subgroup membership on the treatment effect unless additional work is done to remove confounding from subgroup membership. For example, one may be interested in a subgroup analysis stratified by hospital. It may be that the treatment effect in one hospital differs from that in another, but that does not mean which hospital one goes to causes differences in the treatment effect (e.g., because of different quality of care); it may simply be that one hospital caters to patients for whom treatment is less effective (e.g., because of systemic issues that case people to suffer from comorbidities that change the treatment effect and live closer to one hospital than another). This distinction between a scenario in which subgroup membership causes treatment effect heterogeneity and one in which subgroup membership is merely associated with treatment effect heterogeneity is described in detail in [@vanderweeleDistinctionInteractionEffect2009].~~
+
+#### ~~Multi-category and continuous treatments~~
+
+~~Treatments do not have to be binary to be used with propensity score analysis. Methods also exist for multi-category and contionuous treatments. An example of a multi-category treatment might be drug type in a study comparing two drugs to each other and to control. [@strasserEstimatesSARSCoV2Omicron2022] considered virus variant a multi-category exposure when examining the effect of COVID subvariant (Delta, Omicron, and Omicron BA.2) on patient health outcomes. An example of a continuous treatment might be the effect of pollutant exposure on mortality, as examined by [@wuMatchingGeneralizedPropensity2022].~~
+
+##### ~~Multi-category treatments~~
+
+~~Estimating effects for multi-categroy treatment involves adjusting the smaple so that the distributions of covariates in all categories resemble each other and some target population correspdoning to the estimand of interest. This can be done using matching [@lopezEstimationCausalEffects2017] or weighting [@mccaffreyTutorialPropensityScore2013]. Instead of a single-valued propensity scoe, each unit has a vector-valued "generalized" propensity score corresponding to the probability of receiving each level of treatment [@imbensRolePropensityScore2000]. For example, for a three-level treatment, an individual unit may have a generalized propensity score of~~ $[.1, .4, .5]$~~. @mccaffreyTutorialPropensityScore2013 and @liPropensityScoreWeighting2019 describe how to use these generalized propensity scores to compute weights. Currently, weighting methods are better developed and easier to use than matching methods for multi-category treatments and are available in `WeightIt`.~~
+
+##### ~~Continuous treatments~~
+
+~~The usual estimand for a continuous treatment is the average dose-response function (ADRF), which links the expected potential outcome (i.e., the outcome were everyone assigned to a single treatment value) to the corresponding treatment level. Propensity score analysis for continuous treatments involves adjusting the sample so that the treatment is independent from the covariates. This can be done using matching [@wuMatchingGeneralizedPropensity2022] or weighting [@robinsMarginalStructuralModels2000; @zhuBoostingAlgorithmEstimating2015; @hulingIndependenceWeightsCausal2023a] (available in `WeightIt`). The propensity score is instead represented as a single-valued generalized propensity score corresponding to the conditional density of treatment given the covariates (i.e., rather than the probability, which would be 0 for a all values of a truly continuous treatment) [@hiranoPropensityScoreContinuous2005]. Balance is often assessed using the correlations between the treatment and each covariate in the adjusted sample [@austinAssessingCovariateBalance2019], though more holistic measures such as the distance covariance have also been developed [@hulingIndependenceWeightsCausal2023a]. To estimate the ADRF, one can fit a flexible model for the outcome given the treatment in the weighted sample.~~
+
+#### ~~Longitudinal/sequential treatments~~
+
+~~Methods have been developed for estimating the effect of a treatment that can occur at multiple time points. For example, @robinsMarginalStructuralModels2000 described methods for estimating the effect of zidovudine (AZT) treatment on mortality in HIV-infected patients, where treatment was defined each day since start of follow-up as the those dose of AZT received that day. These special methods must be used when confounding is time-varying, i.e., confounders of subsequent treatment and the outcome are themselves affected by previous treatments. Simply adjusting for these time-varying confounders by regression adjustment or standard propensity score analysis causes the same problems that adjusting for any post-treatment variable does.~~
+
+~~The methods used for adjusting for time-varying confounding are called "g-methods" and are described in @hernanCausalInferenceWhat2020. The simplest one is inverse probability weighting of marginal structural models, which essentially involves creating a propensity score weight at each time point and multiplying them together (available in `WeightIt`); ideally, this yields a scenario analogous to one in which treatment is randomized at each time point. @thoemmesPrimerInverseProbability2016 and @robinsMarginalStructuralModels2000 provide clear examples of the method.~~
+
+#### ~~Missing data~~
+
+~~Missing data is often present in the analysis of real datasets. There are a variety of reasons why data could be missing: an administrative error, loss to follow-up, or patient refusal to provide information are some examples. Handling missing data generally is a serious topic that requires expertise to do correctly, though there are mainstream methods that are commonly used and have been shown to be compatible with propensity score analysis and can yield accurate results if certain assumption about why the data are missing are met [@chamPropensityScoreAnalysis2016]. The most common methods for dealing with missing data in propensity score analysis are multiple imputation [@rubinMultipleImputationNonresponse2004] and censoring weights [@hernanCausalInferenceWhat2020, Ch 12.6].~~
+
+~~Multiple imputation involves making a guess about the true value of each missing value. This guess often comes from a predictive model that describes the relationships among variables in the data. Instead of making a single guess, multiple imputation involves making many guesses, each stored in a separate version of the dataset with the guesses filled in. The analysis occurs in each imputed dataset, and then the results are pooled across datasets to arrive at a final single estimate. Although there have been doubts about the best way to perform propensity score analysis with multiply imputed data, simulations frequently verify that the standard approach described above yields the most accurate results [@leyratPropensityScoreAnalysis2019]. The `MatchThem` package provides some utilities for matching and weighting with multiple imputed data [@pishgarMatchThemMatchingWeighting2021a], and `cobalt` supports assessing balance across imputations [@greiferCobaltCovariateBalance2020].~~
+
+~~Censoring weights is an alternative to imputation that is more commonly used when a single variable, e.g., the outcome, is missing for some units. Censoring weights discard any units with missing data and weight the remaining units to resemble the full sample (i.e., the original sample that included those with missing data) [@hernanCausalInferenceWhat2020, Ch 12.6]. Censoring weights are multiplied by propensity score weights when both are used to create a final set of weights that adjust for both confounding and censoring. Censoring weights are especially common with longitudinal treatments.~~
+
+## ~~Reporting the Analysis~~
+
+~~Reporting the analysis accurately and completely is critical to ensuring the audience can correctly interpret the results of a study and replicate the methodology. Failure to report the main analytical strategy is commonly noted on systematic reviews of the use of propensity score analysis in medical research. The main aspects to report are the balancing method and its performance, the procedure for estimating the effect, the effect itself, and limitations of the conclusions.~~
+
+~~There are often constraints on how much space one can use to describe results and methods, so it is okay to summarize some of this information, though ideally it should be available in its entirety somewhere in the article, possibly in supplementary materials.~~
+
+### ~~Reporting the balancing method and results~~
+
+~~The balancing method is central to the validity of the analysis, so its nature and performance must be reported for readers to be able to correctly interpret the results. Below are some of the qualities that should be reported:~~
+
+-   ~~The conditioning method used (e.g., matching, weighting, or subclassification) and the specifics of the method. For example, for matching, was optimal or nearest neighbor matching used? Was matching done with or without replacement? Were calipers or exact matching constraints applied? What was the distance measure used to define close matches? For weighting, was propensity score weighting or entropy balancing used? Were the weights trimmed?~~
+
+-   ~~How the propensity score, if any, was estimated. For example, was logistic regression used? Were any polynomial terms, interactions, or covariate transformations included in the model? Was generalized boostedm modeling (GBM) used? How were the tuning parameters selected (e.g., optimizing cross-validation accuracy or a multivariate measure of balance?).~~
+
+-   ~~The intended estimand and the estimand that resulted from the analysis. For example, perhaps the ATT was targeted using nearest neighbor matching, but the only way to achieve balance was with a caliper, which changes the estimand to the ATO. Or perhaps there was not enough overlap to estimate the ATE using entropy balancing so ATO weights were used instead. Ideally this also includes a rationale for the choice of estimand, which should be reflected in the body of the paper (e.g., if the paper implies a universal treatment policy or a policy applied only to a certain group of patients).~~
+
+-   ~~The covariate balance results of the conditioning procedure. Balance is often reported using a table or plot (e.g., a love/dot plot) that contains the balance statistics (e.g., SMD and KS statistic) for each covariate. Balance should also be summarized in a way that provides a more complete story than the univariate statistics computed on the original variables can tell, e.g., by mentioning the worst balance for all squares, cubes and fourth powers of the covariates and all two-way interactions (individual balance statistics on these do not need to be reported, but demonstrating that balance is achieved on these aspects of the covariate distribution lends more credibility to the results). For example, entropy balancing guarnatees SMDs of zero on all covariate and requested transformations thereof; simply mentioning this fact and that entropy balancing was successful provides just as much information as presenting SMDs for each covariate individually.~~
+
+-   ~~The effective sample size of the adjusted sample. This should be reported for each treatment group separately. A nonsignificant result found in a sample with a low ESS would be inteprrted exactly as it would be in an under-powered randomized trial, and it is important that readers understand the sample size context when judging the results off a study. The raw sample size does not provide this information; for example, weighting does not change the raw sample size but can dramtically reduce the effective sample size, and readers must be aware of that.~~
+
+~~Some of these aspects might be unfamiliar to a reader, and so it is useful to include a short description of them, especially if they are a newer method or would be confusing without proper context. For example, a sentence describing the use of entropy balancing might go as follows:~~
+
+> ~~To adjust for confounding by measured confounders, we used entropy balancing [@hainmuellerEntropyBalancingCausal2012], a version of propensity score weighting that guarantees exact balance on the covariate means while minimizing the variability of the weights without explicitly modeling a propensity score.~~
+
+~~A footnote describing the ESS might go as follows:~~
+
+> ~~The effective sample size in an estimate of the size of a hypothetical unweighted sample that carries the same precision of our weighted sample and reflects the loss in precision due to weighting, analogous to discarding units when matching.~~
+
+~~Of course, more detail on the methods is always better, but word count restrictions should not be an excuse for incompletely reporting the most critical part of a study's methodology.~~
+
+### ~~Reporting the effect estimation procedure~~
+
+~~It's also important to report the effect estimation procedure, as how the effect is estimated can affect its interpretation. The following elements should be reported:~~
+
+-   ~~The outcome model used. Was it a logistic, Cox, or Poisson regression model? Were covariates included? If so, how were covariates included (e.g., as main effects or fully interacted with treatment)? How were covariates selected to be in the model (e.g., all were included, only those thought to explain the most variability in the outcome, only those with some remaining imbalance, etc.)? One must also clarify how the weights were used in the model, i.e., by using a weighted regression.~~
+
+-   ~~The method of estimating the treatment effect from the model. Although in this document we have recommended g-computation, in some cases simply using the coefficient on treatment in the outcome model is sufficient for estimating the treatment effect (i.e., with linear outcome models or with models that lack any covariates). As previously mentioned, it is critical that the coefficient on treatment not be used as an effect estimate when covariates are included in the outcome model and the estimand is a marginal effect.~~
+
+-   ~~The method of computing the SEs and CIs. Was it by the delta method? Was a robust or cluster-robust standard error used? Was bootstrapping used? Was it the traditional bootstrap? How were CIs extracted from the bootstrap procedure (e.g., using percentiles or bias-correct and accelerated CIs)? Remember that under no circumstances should the maximum likelihood estimates of the SEs be used for inference; matching and weighting require special treatment of the estimates for them to be valid.~~
+
+### ~~Reporting the effect estimate~~
+
+~~Of course, one needs to report the effect estimate itself. Ideally the estimate and its CI are on a natural, interpretable scale (e.g., the risk ratio rather than the log odds ratio), though it may also be useful to include the scale on which inference is performed. For example, one may have computed the log risk ratio in order to compute its standard error and p-value for the test that it is equal to 0 (i.e., that the risk ratio is equal to 1), which can be reported, but the critical clinically useful measure is the risk ratio itself and its CI.~~
+
+### ~~Reporting limitations~~
+
+~~In order to provide context for the estimate and prevent misinterpretations, it is important to report the limitations of the study. Limitations often come in the form of assumptions that cannot be verified that would change the interpretation of the results if false. For example, if it is impossible to verify that all confounders of the treatment and outcome have been collected and adjusted for, the estimate cannot be interpreted as causal and may be biased for the true causal effect, in which case the inability to make a definitive causal claim is a limitation. If the most useful or desired estimand was the ATE, but aspects of the sample and analysis required that the ATO be estimated instead to preserve precision or achieve balance, the inability to generalize the effect to the intended population would be a limitation.~~
+
+~~These are in addition to the limitations you would report even in a clinical trial, e.g., with respect to measurement error in the treatment, covariates, or outcome, timing of the outcome, treatment compliance, missing data, etc. The limitations section fo a paper does not have to be long but anticipating criticism of the paper by acknowledging its limitations can go a long way in getting it accepted by reviewers.~~
+
+## References

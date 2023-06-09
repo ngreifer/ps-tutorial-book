@@ -1,0 +1,21 @@
+# Running the Analysis {#sec-running}
+
+In this section, we describe how to run a propensity score analysis. First, we describe the steps and the choices one must make in each step, and then we provide some examples for how to run the described analysis using R.
+
+## Basic steps
+
+The basic steps of the analysis are as follows:
+
+1.  Conceptual step - Selecting the desired estimand, assessing whether the assumptions can be met, and selecting the variables that must be adjusted for.
+
+2.  Conditioning step - Perform the matching, weighting, or subclassification, which may involve estimation of a propensity score or selection of parameters that govern the conditioning specification (e.g., the number of matches if doing matching).
+
+3.  Assessing quality - Assess to what degree the conditioning step was successful in achieving balance in the distribution of confounders while retaining the target estimand and maintaining precision of the estimate.
+
+4.  Respecification - If quality of the conditioning can be improved, respecify the conditioning step and assess quality again. Do this repeatedly until a good quality specification is found.
+
+5.  Estimate the treatment effect - Using the output of the final conditioning specification, estimate the treatment effect in a robust way that optimizes precision.
+
+6.  Assess sensitivity - Assess the degree to which unmeasured confounding could affect inferences and decide whether such confounding is a realistic threat.
+
+We will go through these steps in the next sections.

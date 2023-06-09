@@ -1,0 +1,111 @@
+# Matching {#sec-ex-matching}
+
+```{r, include = FALSE}
+rhc <- readRDS("rhc.rds")
+library("cobalt")
+```
+
+To perform matching, we'll use the `MatchIt` package, which provides an interface to many forms of matching and allows for specification of many different options to customize the matching. The `MatchIt` [documentation](https://kosukeimai.github.io/MatchIt/index.html) includes extensive examples and vignettes that should be used to supplement the example here. Much of the information here is simply lifted from this documentation.
+
+```{r}
+library("MatchIt")
+```
+
+For matching, we'll focus on the ATT, though it is possible for some matching methods to target the ATE as well. The simplest method of matching is 1:1 nearest neighbor propensity score matching, which is the default using `matchit()`. For more details on this procedure, including effect estimation, see the `MatchIt` documentation and vignettes.
+
+```{r}
+#1:1 NN propensity score matching w/o replacement
+m1 <- matchit(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                paco21 + surv2md1 + resp1 + card + edu +
+                age + race + sex, data = rhc)
+m1
+```
+
+We can use `summary()` in `MatchIt` to assess balance, but we'll stick with `cobalt`. We can just supply the `matchit` object to `bal.tab()`, which contains the treatment and covariate information.
+
+```{r}
+bal.tab(m1, stats = c("m", "ks"), binary = "std")
+```
+
+Although balanced improved, we still have covariates with unacceptable imbalance, and it is possible to do much better than simple 1:1 matching. @connorsEffectivenessRightHeart1996a used matching with a caliper on the propensity score; here we'll do so as well, setting a caliper of .2 standard deviations of the logit of the propensity score, which is an arbitrary but often used caliper width:
+
+```{r}
+m2 <- matchit(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                paco21 + surv2md1 + resp1 + card + edu +
+                age + race + sex, data = rhc,
+              link = "linear.logit", caliper = .2)
+m2
+
+bal.tab(m1, stats = c("m", "ks"), binary = "std")
+```
+
+We can see that several treated units were discarded, which changes the estimand, though we do see major improvements in balance. There are many methods we can try to improve balance while retaining the estimand, but we'll use generalized full matching [@savjeGeneralizedFullMatching2021] by setting `method = "quick"`, which is fast and tends to perform well in a variety of settings[^ex-match-1].
+
+[^ex-match-1]: Optimal full matching (`method = "full"`) tends to work a bit better, but can be much slower for larger datasets.
+
+```{r}
+m3 <- matchit(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                paco21 + surv2md1 + resp1 + card + edu +
+                age + race + sex, data = rhc,
+              method = "quick")
+m3
+
+bal.tab(m3, stats = c("m", "ks"), binary = "std")
+```
+
+Balance is good and we retained the target estimand, but generalized full matching took a tool on the effective sample size (ESS) of our control group, which is now around 1000 (from around 3500). Even though generalized full matching retains the entire sample (i.e., not a single unit is dropped), the matching weights resulting from it have variability such that the ESS is much lower than the original sample size. There are ways to manage the balance-ESS trade-off that are specific to each matching method.
+
+Although balance isn't perfect and could be improved with additional fine-tuning, we'll move forward with this matched sample to demonstrate effect estimation and reporting. First, we need to extract the matched sample from the `matchit` object using `match.data()`. This adds columns to the original dataset called `"distance"`, `"weights"`, and `"subclass"` containing the propensity score, matching weights, and matched strata (i.e., pair membership). When units are dropped in the matching (e.g., when using 1:1 matching), the output will only contain the units remaining in the matched sample[^ex-match-2].
+
+[^ex-match-2]: Note that this behavior, and the names of the new columns created, can be customized by the user.
+
+```{r}
+md <- match.data(m3)
+
+# Names of new dataset; note the three new variables at the end
+names(md)
+```
+
+To estimate the treatment effect, we need to proceed in two steps. First, we fit the outcome model to the matched sample including the matching weights. Second, we compute the treatment effect using g-computation. Our estimand will be the marginal risk ratio for the treated units (i.e., the ATT on the risk ratio scale). We will fit a logistic regression for the outcome, including covariates and their interactions with treatment in the model.
+
+```{r}
+fit <- glm(death ~ RHC * (aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                            paco21 + surv2md1 + resp1 + card + edu +
+                            age + race + sex),
+           data = md, weights = weights, family = quasibinomial)
+```
+
+There is no value in examining this outcome model; the coefficients are uninterpretable and provide no information about the effects of the included predictors on the outcome. This model can be arbitrarily complicated and is not designed to be a useful predictive model for the outcome. Its sole purpose is to increase the precision of the resulting effect estimate. We will compute the marginal risks under treatment for each group and compute the risk ratio using g-computation. Here we specify arguments to `avg_predictions()` to use cluster-robust SEs that account for the matching and restrict the data to the treated units because we are estimating the ATT[^ex-match-3].
+
+[^ex-match-3]: In practice, it is okay to omit the `newdata` argument, especially when balance is excellent.
+
+```{r}
+library("marginaleffects")
+
+avg_predictions(fit, variables = "RHC",
+                wts = "weights",
+                vcov = ~subclass,
+                newdata = subset(md, RHC == 1))
+```
+
+We find marginal risks of .69 and .713 for the treated units under control and treatment, respectively. We can compute the risk ratio using the following:
+
+```{r}
+avg_comparisons(fit, variables = "RHC",
+                wts = "weights",
+                vcov = ~subclass,
+                newdata = subset(md, RHC == 1),
+                comparison = "lnratioavg",
+                transform = "exp")
+```
+
+From this we find a risk ratio of 1.04, indicating that the risk of death is 4% higher for those receiving RHC than had they not received it. The confidence interval for the risk ratio is (.989, 1.09), and the p-value for the test that the log risk ratio is equal to 0 (i.e., that the risk ratio is equal to 1) is .138, indicating no evidence for an effect of RHC in either direction.
+
+To report balance, we could include the final balance table above, a visual representation of it, or a summary of balance statistics (or combinations thereof). A clean visual representation of balance is in a Love plot, which can be requested as follows:
+
+```{r, fig.width = 7, fig.height=3.5}
+love.plot(m3, stats = c("m", "ks"), binary = "std",
+          drop.distance = TRUE, abs = TRUE)
+```
+
+See the `cobalt` [documentation](https://ngreifer.github.io/cobalt/) for more information on using `love.plot()` to make publication-ready plots.

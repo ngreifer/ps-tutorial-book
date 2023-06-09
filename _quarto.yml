@@ -1,0 +1,45 @@
+project:
+  type: book
+
+book:
+  title: "Propensity Score Analysis for Medical Research: A Primer and Tutorial"
+  author: "Noah Greifer"
+  date: "6/8/2023"
+  page-navigation: true
+  chapters:
+    - index.qmd
+    - planning.qmd
+    - part: running.qmd
+      chapters:
+        - conceptual.qmd
+        - conditioning.qmd
+        - assessing.qmd
+        - respecification.qmd
+        - estimating.qmd
+        - sensitivity.qmd
+        - advanced.qmd
+    - reporting.qmd
+    - part: example.qmd
+      chapters:
+        - ex-match.qmd
+        - ex-weight.qmd
+    - conclusion.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: [cosmo, theme-dark.scss]
+    code-link: true
+
+    author-meta: "Noah Greifer"
+    callout-appearance: simple
+
+execute:
+  freeze: auto
+
+editor: visual
+

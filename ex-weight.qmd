@@ -1,0 +1,99 @@
+# Weighting {#sec-ex-weighting}
+
+```{r, include = FALSE}
+rhc <- readRDS("rhc.rds")
+library("cobalt")
+```
+
+Next, we'll use weighting to target the ATE of RHC on death[^ex-weight-1]. We'll use the `WeightIt` package, which provides an interface to many different weighting methods and has utilities for assessing the quality of the weights. For more details on this procedure, including effect estimation, see the `WeightIt` [documentation](https://ngreifer.github.io/WeightIt/) and vignettes.
+
+[^ex-weight-1]: Note that the ATE can be targeted by matching (not 1:1 matching, but other methods) and the ATT and other estimands can be targeted by weighting; don't think matching is for the ATT and weighting is for the ATE. Use whichever method yields the best performance and would be best understood by your audience.
+
+```{r}
+library("WeightIt")
+```
+
+First we'll perform the most common weighting method, inverse probability weighting using a logistic regression propensity score.
+
+```{r}
+w1 <- weightit(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                paco21 + surv2md1 + resp1 + card + edu +
+                age + race + sex, data = rhc,
+               estimand = "ATE")
+w1
+```
+
+We'll use `bal.tab()` again to assess balance.
+
+```{r}
+bal.tab(w1, stats = c("m", "ks"), binary = "std")
+```
+
+Balance look excellent using standard inverse probability weighting, and normally we might stop here. However, we'll carry on in search of even better balance. We'll use entropy balancing, which guarantees exact balance on the means of included covariates (but may not balance the rest of the covariate distributions).
+
+```{r}
+w2 <- weightit(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                paco21 + surv2md1 + resp1 + card + edu +
+                age + race + sex, data = rhc,
+               estimand = "ATE", method = "entropy")
+w2
+
+bal.tab(w2, binary = "std", int = TRUE,
+        poly = 4, thresholds = c(m = .05),
+        disp.bal.tab = FALSE)
+```
+
+Here we included interactions and up to fourth powers of the covariates to assess balance more fully on the covariate distributions; although balance after entropy balancing was excellent, it might still be possible to improve on it. We could request that entropy balancing additionally balance specific powers of the covariates using the `moments` and `int` arguments. Instead, we'll try energy balancing, which tends to have excellent performance at balancing the entire covariate distribution and doesn't require manually specifying components to balance (but it can be a bit slow on larger datasets).
+
+```{r}
+w3 <- weightit(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                paco21 + surv2md1 + resp1 + card + edu +
+                age + race + sex, data = rhc,
+               estimand = "ATE", method = "energy")
+w3
+
+bal.tab(w3, binary = "std", int = TRUE,
+        poly = 4, thresholds = c(m = .05),
+        disp.bal.tab = FALSE)
+```
+
+We find that energy balancing was successful at balancing the full covariate distribution. We'll carry on with our energy balancing results.
+
+To estimate the treatment effect, we will again use g-computation, aided by the `marginaleffects` package.
+
+```{r}
+library("marginaleffects")
+```
+
+First, we need to extract the weights from our `weightit` object, and then we fit the outcome model. Remember, this model is not to be interpreted.
+
+```{r}
+rhc$weights <- w3$weights
+
+fit <- glm(death ~ RHC * (aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+                            paco21 + surv2md1 + resp1 + card + edu +
+                            age + race + sex),
+           data = rhc, weights = weights, family = quasibinomial)
+```
+
+Next we'll compute the marginal predictions and their ratio. Here we'll request robust standard errors, which are generally appropriate for weighting for the ATE (though they may be conservative).
+
+```{r}
+# Marginal predictions
+avg_predictions(fit, variables = "RHC",
+                wts = "weights",
+                vcov = "HC3")
+
+# Risk ratio
+avg_comparisons(fit, variables = "RHC",
+                wts = "weights",
+                vcov = "HC3",
+                comparison = "lnratioavg",
+                transform = "exp")
+```
+
+Here find evidence of a positive risk ratio overall, indicating that on average, receiving RHC increases the risk of death by 5%[^ex-weight-2].
+
+[^ex-weight-2]: Note, in this case, the conclusions would have been the same regardless of which weighting method we moved forward with.
+
+Again, it is useful to report balance to demonstrate the performance of the weights. Here, we could say that the largest SMD for the covariates was .004 and the largest KS statistic was .029, and the SMDs for all powers of the covariates up to 4 and two-way interactions were less than .021. The specific values for each covariate would not be required because this summary indicates that all covariates were balanced more than adequately.

@@ -1,0 +1,63 @@
+# Example {#sec-example}
+
+Below, we'll demonstrate how to perform matching and weighting in R. We'll use the famous right-heart catheterization (RHC) dataset analyzed in XXX, which examines the effect of RHC on death by 60 days. @connorsEffectivenessRightHeart1996a used 1:1 matching with a caliper to estimate the effect, which corresponds to an ATO (though they provided no justification for this choice of estimand). It turns out this matters quite a bit; the ATT, ATC, and ATE differ from each other and lead to different conclusions about the risk of RHC.
+
+The choice of estimand depends on the policy implied by the analysis. Are we interested in examining whether RHC is harmful and should be withheld from patients receiving it? If so, we are interested in the ATT of RHC. Are we interested in examining whether RHC would benefit patients not receiving it? If so, we are interested in the ATC of RHC. Are we interested in the average effect of RHC for the whole study population? If so, we are interested in the ATE of RHC.
+
+We'll assume that if we are making a causal inference about the effect of RHC, we have collected a sufficient set of variables to remove confounding. This may be a long list, but to keep the example short, we'll use a list of 13 covariates thought to be related to receipt of RHC and death at 60 days, all measured prior to receipt of RHC.
+
+Let's take a look at our dataset:
+
+```{r, include=FALSE}
+Hmisc::getHdata("rhc")
+rhc <- droplevels(rhc)
+rhc$death <- as.numeric(rhc$death == "Yes")
+rhc$RHC <- as.numeric(rhc$swang1 == "RHC")
+
+#Define treatment, outcome, and covariates
+#http://hbiostat.org/data/repo/rhc.html
+treat <- "RHC"
+outcome <- "death"
+covs <- c("aps1", "meanbp1", "pafi1", "crea1", "hema1", "paco21",
+          "surv2md1", "resp1","card", "edu", "age", "race", "sex")
+
+rhc <- rhc[c(covs, treat, outcome)]
+saveRDS(rhc, "rhc.rds")
+```
+
+```{r}
+summary(rhc)
+```
+
+Our treatment variable is `RHC` (1 for receipt, 0 for non-receipt), our outcome is `death` (1 for died at 60 days, 0 otherwise), and the other variables are covariates thought to remove confounding, which include a mix of continuous and categorical variables.
+
+Let's examine balance on the variables between the treatment groups using `cobalt`, which provides the function `bal.tab()` for creating a balance table containing balance statistics for each variables.
+
+```{r}
+library("cobalt")
+```
+
+We'll request the standardized mean difference by including `"m"` in the `stats` argument and setting `binary = "std"` (by default binary variables are not standardized) and we'll request KS statistics by including `"ks"` in `stats`. Supplying the treatment and covariates in the first argument using a formula and supplying the data set gives us the following:
+
+```{r}
+bal.tab(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+          paco21 + surv2md1 + resp1 + card + edu +
+          age + race + sex, data = rhc,
+        stats = c("m", "ks"), binary = "std")
+```
+
+We can see significant imbalances in many of the covariates, with high SMDs (greater than .1) and KS statistics (greater than .1, but there is no accepted threshold for these). We can also see the sample sizes for each treatment group. Note that because they are somewhat close in size (the control group is not even twice the size of the treatment group), this will limit the available matching options available and might affect our ability to achieve balance using methods that require a large pool of controls relative to the treated group.
+
+Other balance statistics can be requested, too, using the `stats` argument. It is straightforward to assess balance on particular transformations of covariates using the `addl` argument, e.g., `addl = ~age:educ` to assess balance on the interaction (i.e., product) of `age` and `educ`. We can also supply `int = TRUE` and `poly = 3`, for example, to assess balance on all pairwise interactions of covariates and all squares and cubes of the continuous covariates. This can make for large tables, but there are ways to keep them short and summarize them. For example, we can hide the balance table and request the number of covariates that fail to satisfy balance criteria and the covariates with the worst imbalance using code below:
+
+```{r}
+bal.tab(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
+          paco21 + surv2md1 + resp1 + card + edu +
+          age + race + sex, data = rhc,
+        int = TRUE, poly = 3,
+        stats = c("m", "ks"), binary = "std",
+        thresholds = c(m = .1, ks = .1),
+        disp.bal.tab = FALSE)
+```
+
+We can see that many covariates and their transformations (interactions, squares, and cubes) are not balanced based on our criteria for SMDs or KS statistics. We'll use matching and weighting below to attempt to achieve balance on the covariates.
