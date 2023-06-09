@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Noah Greifer">
+
+<title>Propensity Score Analysis for Medical Research: A Primer and Tutorial - References</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./conclusion.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./references.html">References</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Propensity Score Analysis for Medical Research: A Primer and Tutorial</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./planning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Planning the Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./running.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Running the Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./conceptual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conceptual aspects of the analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./conditioning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conditioning: matching and weighting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./assessing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Assessing quality</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./respecification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Respecification</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./estimating.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Estimating the treatment effect</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sensitivity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./advanced.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced topics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Reporting the Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./example.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Example</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ex-match.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Matching</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ex-weight.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Weighting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">References</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-abadieLargeSampleProperties2006" class="csl-entry" role="listitem">
+Abadie, Alberto, and Guido W. Imbens. 2006. <span>“Large Sample
+Properties of Matching Estimators for Average Treatment Effects.”</span>
+<em>Econometrica</em> 74 (1): 235–67. <a href="https://doi.org/10.1111/j.1468-0262.2006.00655.x">https://doi.org/10.1111/j.1468-0262.2006.00655.x</a>.
+</div>
+<div id="ref-abadieFailureBootstrapMatching2008" class="csl-entry" role="listitem">
+———. 2008. <span>“On the Failure of the Bootstrap for Matching
+Estimators.”</span> <em>Econometrica</em> 76 (6): 1537–57. <a href="https://doi.org/10.3982/ECTA6474">https://doi.org/10.3982/ECTA6474</a>.
+</div>
+<div id="ref-abadieMatchingEstimatedPropensity2016" class="csl-entry" role="listitem">
+———. 2016. <span>“Matching on the Estimated Propensity Score.”</span>
+<em>Econometrica</em> 84 (2): 781–807. <a href="https://doi.org/10.3982/ECTA11293">https://doi.org/10.3982/ECTA11293</a>.
+</div>
+<div id="ref-abadieRobustPostMatchingInference2020" class="csl-entry" role="listitem">
+Abadie, Alberto, and Jann Spiess. 2020. <span>“Robust Post-Matching
+Inference.”</span> <em>Journal of the American Statistical
+Association</em> 0 (ja): 1–37. <a href="https://doi.org/10.1080/01621459.2020.1840383">https://doi.org/10.1080/01621459.2020.1840383</a>.
+</div>
+<div id="ref-austinTypeErrorRates2009" class="csl-entry" role="listitem">
+Austin, Peter C. 2009. <span>“Type <span>I Error Rates</span>,
+<span>Coverage</span> of <span>Confidence Intervals</span>, and
+<span>Variance Estimation</span> in <span>Propensity-Score Matched
+Analyses</span>.”</span> <em>The International Journal of
+Biostatistics</em> 5 (1). <a href="https://doi.org/10.2202/1557-4679.1146">https://doi.org/10.2202/1557-4679.1146</a>.
+</div>
+<div id="ref-austinOptimalCaliperWidths2011" class="csl-entry" role="listitem">
+———. 2011a. <span>“Optimal Caliper Widths for Propensity-Score Matching
+When Estimating Differences in Means and Differences in Proportions in
+Observational Studies.”</span> <em>Pharmaceutical Statistics</em> 10
+(2): 150–61. <a href="https://doi.org/10.1002/pst.433">https://doi.org/10.1002/pst.433</a>.
+</div>
+<div id="ref-austinIntroductionPropensityScore2011" class="csl-entry" role="listitem">
+———. 2011b. <span>“An Introduction to Propensity Score Methods for
+Reducing the Effects of Confounding in Observational Studies.”</span>
+<em>Multivariate Behavioral Research</em> 46 (3): 399–424. <a href="https://doi.org/10.1080/00273171.2011.568786">https://doi.org/10.1080/00273171.2011.568786</a>.
+</div>
+<div id="ref-austinComparison12Algorithms2014" class="csl-entry" role="listitem">
+———. 2014. <span>“A Comparison of 12 Algorithms for Matching on the
+Propensity Score.”</span> <em>Statistics in Medicine</em> 33 (6):
+1057–69. <a href="https://doi.org/10.1002/sim.6004">https://doi.org/10.1002/sim.6004</a>.
+</div>
+<div id="ref-austinAssessingCovariateBalance2019" class="csl-entry" role="listitem">
+———. 2019. <span>“Assessing Covariate Balance When Using the Generalized
+Propensity Score with Quantitative or Continuous Exposures.”</span>
+<em>Statistical Methods in Medical Research</em> 28 (5): 1365–77. <a href="https://doi.org/10.1177/0962280218756159">https://doi.org/10.1177/0962280218756159</a>.
+</div>
+<div id="ref-austinBootstrapVsAsymptotic2022" class="csl-entry" role="listitem">
+———. 2022. <span>“Bootstrap Vs Asymptotic Variance Estimation When Using
+Propensity Score Weighting with Continuous and Binary Outcomes.”</span>
+<em>Statistics in Medicine</em> 41 (22): 4426–43. <a href="https://doi.org/10.1002/sim.9519">https://doi.org/10.1002/sim.9519</a>.
+</div>
+<div id="ref-austinUseBootstrappingWhen2014" class="csl-entry" role="listitem">
+Austin, Peter C., and Dylan S. Small. 2014. <span>“The Use of
+Bootstrapping When Using Propensity-Score Matching Without Replacement:
+A Simulation Study.”</span> <em>Statistics in Medicine</em> 33 (24):
+4306–19. <a href="https://doi.org/10.1002/sim.6276">https://doi.org/10.1002/sim.6276</a>.
+</div>
+<div id="ref-austinOptimalFullMatching2015" class="csl-entry" role="listitem">
+Austin, Peter C., and Elizabeth A. Stuart. 2015. <span>“Optimal Full
+Matching for Survival Outcomes: A Method That Merits More Widespread
+Use.”</span> <em>Statistics in Medicine</em> 34 (30): 3949–67. <a href="https://doi.org/10.1002/sim.6602">https://doi.org/10.1002/sim.6602</a>.
+</div>
+<div id="ref-austinPerformanceInverseProbability2017" class="csl-entry" role="listitem">
+———. 2017a. <span>“The Performance of Inverse Probability of Treatment
+Weighting and Full Matching on the Propensity Score in the Presence of
+Model Misspecification When Estimating the Effect of Treatment on
+Survival Outcomes.”</span> <em>Statistical Methods in Medical
+Research</em> 26 (4): 1654–70. <a href="https://doi.org/10.1177/0962280215584401">https://doi.org/10.1177/0962280215584401</a>.
+</div>
+<div id="ref-austinEstimatingEffectTreatment2017" class="csl-entry" role="listitem">
+———. 2017b. <span>“Estimating the Effect of Treatment on Binary Outcomes
+Using Full Matching on the Propensity Score.”</span> <em>Statistical
+Methods in Medical Research</em> 26 (6): 2505–25. <a href="https://doi.org/10.1177/0962280215601134">https://doi.org/10.1177/0962280215601134</a>.
+</div>
+<div id="ref-benedettoStatisticalPrimerPropensity2018" class="csl-entry" role="listitem">
+Benedetto, Umberto, Stuart J Head, Gianni D Angelini, and Eugene H
+Blackstone. 2018. <span>“Statistical Primer: Propensity Score Matching
+and Its Alternatives<span></span>.”</span> <em>European Journal of
+Cardio-Thoracic Surgery</em> 53 (6): 1112–17. <a href="https://doi.org/10.1093/ejcts/ezy167">https://doi.org/10.1093/ejcts/ezy167</a>.
+</div>
+<div id="ref-ben-michaelBalancingActCausal2021" class="csl-entry" role="listitem">
+Ben-Michael, Eli, Avi Feller, David A. Hirshberg, and José R.
+Zubizarreta. 2021. <span>“The <span>Balancing Act</span> in <span>Causal
+Inference</span>.”</span> <em>arXiv:2110.14831 [Stat]</em>, October. <a href="https://arxiv.org/abs/2110.14831">https://arxiv.org/abs/2110.14831</a>.
+</div>
+<div id="ref-bramante2022" class="csl-entry" role="listitem">
+Bramante, Carolyn T., Steven G. Johnson, Victor Garcia, Michael D.
+Evans, Jeremy Harper, Kenneth J. Wilkins, Jared D. Huling, et al. 2022.
+<span>“Diabetes Medications and Associations with Covid-19 Outcomes in
+the N3C Database: A National Retrospective Cohort Study.”</span> Edited
+by Surasak Saokaew. <em>PLOS ONE</em> 17 (11): e0271574. <a href="https://doi.org/10.1371/journal.pone.0271574">https://doi.org/10.1371/journal.pone.0271574</a>.
+</div>
+<div id="ref-brookhartConfoundingControlHealthcare2010a" class="csl-entry" role="listitem">
+Brookhart, M. Alan, Til Stürmer, Robert J. Glynn, Jeremy Rassen, and
+Sebastian Schneeweiss. 2010. <span>“Confounding Control in Healthcare
+Database Research: Challenges and Potential Approaches.”</span>
+<em>Medical Care</em> 48 (6): S114–20. <a href="https://doi.org/10.1097/MLR.0b013e3181dbebe3">https://doi.org/10.1097/MLR.0b013e3181dbebe3</a>.
+</div>
+<div id="ref-cafriVarianceEstimationRisk2023" class="csl-entry" role="listitem">
+Cafri, Guy, and Peter C. Austin. 2023. <span>“Variance Estimation of the
+Risk Difference When Using Propensity<span>-</span>Score Matching and
+Weighting with Time<span>-</span>to<span>-</span>Event Outcomes.”</span>
+<em>Pharmaceutical Statistics</em>, May, pst.2317. <a href="https://doi.org/10.1002/pst.2317">https://doi.org/10.1002/pst.2317</a>.
+</div>
+<div id="ref-caliendoPracticalGuidanceImplementation2008" class="csl-entry" role="listitem">
+Caliendo, Marco, and Sabine Kopeinig. 2008. <span>“Some Practical
+Guidance for the Implementation of Propensity Score Matching.”</span>
+<em>Journal of Economic Surveys</em> 22 (1): 31–72. <a href="https://doi.org/10.1111/j.1467-6419.2007.00527.x">https://doi.org/10.1111/j.1467-6419.2007.00527.x</a>.
+</div>
+<div id="ref-carpenterBootstrapConfidenceIntervals2000" class="csl-entry" role="listitem">
+Carpenter, James, and John Bithell. 2000. <span>“Bootstrap Confidence
+Intervals: When, Which, What? A Practical Guide for Medical
+Statisticians.”</span> <em>Statistics in Medicine</em> 19 (9): 1141–64.
+<a href="https://doi.org/10.1002/(SICI)1097-0258(20000515)19:9<1141::AID-SIM479>3.0.CO;2-F">https://doi.org/10.1002/(SICI)1097-0258(20000515)19:9&lt;1141::AID-SIM479&gt;3.0.CO;2-F</a>.
+</div>
+<div id="ref-chamPropensityScoreAnalysis2016" class="csl-entry" role="listitem">
+Cham, Heining, and Stephen G. West. 2016. <span>“Propensity Score
+Analysis with Missing Data.”</span> <em>Psychological Methods</em> 21
+(3): 427–45. <a href="https://doi.org/10.1037/met0000076">https://doi.org/10.1037/met0000076</a>.
+</div>
+<div id="ref-chanGloballyEfficientNonparametric2016" class="csl-entry" role="listitem">
+Chan, Kwun Chuen Gary, Sheung Chi Phillip Yam, and Zheng Zhang. 2016.
+<span>“Globally Efficient Non-Parametric Inference of Average Treatment
+Effects by Empirical Balancing Calibration Weighting.”</span>
+<em>Journal of the Royal Statistical Society: Series B (Statistical
+Methodology)</em> 78 (3): 673–700. <a href="https://doi.org/10.1111/rssb.12129">https://doi.org/10.1111/rssb.12129</a>.
+</div>
+<div id="ref-chattopadhyayBalancingVsModeling2020" class="csl-entry" role="listitem">
+Chattopadhyay, Ambarish, Christopher H. Hase, and José R. Zubizarreta.
+2020. <span>“Balancing Vs Modeling Approaches to Weighting in
+Practice.”</span> <em>Statistics in Medicine</em> 39 (24): 3227–54. <a href="https://doi.org/10.1002/sim.8659">https://doi.org/10.1002/sim.8659</a>.
+</div>
+<div id="ref-cohnProfileMatchingGeneralization2022" class="csl-entry" role="listitem">
+Cohn, Eric R., and José R. Zubizarreta. 2022. <span>“Profile Matching
+for the Generalization and Personalization of Causal Inferences.”</span>
+<em>Epidemiology</em> 33 (5): 678. <a href="https://doi.org/10.1097/EDE.0000000000001517">https://doi.org/10.1097/EDE.0000000000001517</a>.
+</div>
+<div id="ref-coleConsistencyStatementCausal2009a" class="csl-entry" role="listitem">
+Cole, Stephen R., and Constantine E. Frangakis. 2009. <span>“The
+Consistency Statement in Causal Inference: A Definition or an
+Assumption?”</span> <em>Epidemiology</em> 20 (1): 3–5. <a href="https://doi.org/10.1097/EDE.0b013e31818ef366">https://doi.org/10.1097/EDE.0b013e31818ef366</a>.
+</div>
+<div id="ref-connorsEffectivenessRightHeart1996a" class="csl-entry" role="listitem">
+Connors, Alfred F, Neal V Dawson, Frank E Harrell, Douglas Wagner,
+Norman Desbiens, Lee Goldman, Albert W Wu, et al. 1996. <span>“The
+Effectiveness of Right Heart Catheterization in the Initial Care of
+Critically III Patients.”</span> <em>JAMA: The Journal of the American
+Medical Association</em> 276 (11): 889. <a href="https://doi.org/10.1001/jama.1996.03540110043030">https://doi.org/10.1001/jama.1996.03540110043030</a>.
+</div>
+<div id="ref-dagostinomcgowanSensitivityAnalysesUnmeasured2022" class="csl-entry" role="listitem">
+D’Agostino McGowan, Lucy. 2022. <span>“Sensitivity Analyses for
+Unmeasured Confounders.”</span> <em>Current Epidemiology Reports</em> 9
+(4): 361–75. <a href="https://doi.org/10.1007/s40471-022-00308-6">https://doi.org/10.1007/s40471-022-00308-6</a>.
+</div>
+<div id="ref-danielDoubleRobustness2018" class="csl-entry" role="listitem">
+Daniel, Rhian M. 2018. <span>“Double Robustness.”</span> In, 1–14.
+American Cancer Society. <a href="https://doi.org/10.1002/9781118445112.stat08068">https://doi.org/10.1002/9781118445112.stat08068</a>.
+</div>
+<div id="ref-desaiPropensityscorebasedFineStratification2017" class="csl-entry" role="listitem">
+Desai, Rishi J., Kenneth J. Rothman, Brian .T Bateman, Sonia
+Hernandez-Diaz, and Krista F. Huybrechts. 2017. <span>“A
+Propensity-Score-Based Fine Stratification Approach for Confounding
+Adjustment When Exposure Is Infrequent:”</span> <em>Epidemiology</em> 28
+(2): 249–57. <a href="https://doi.org/10.1097/EDE.0000000000000595">https://doi.org/10.1097/EDE.0000000000000595</a>.
+</div>
+<div id="ref-diamondGeneticMatchingEstimating2013" class="csl-entry" role="listitem">
+Diamond, Alexis, and Jasjeet S. Sekhon. 2013. <span>“Genetic Matching
+for Estimating Causal Effects: A General Multivariate Matching Method
+for Achieving Balance in Observational Studies.”</span> <em>Review of
+Economics and Statistics</em> 95 (3): 932945. <a href="https://doi.org/10.1162/REST_a_00318">https://doi.org/10.1162/REST_a_00318</a>.
+</div>
+<div id="ref-dongSubgroupBalancingPropensity2020" class="csl-entry" role="listitem">
+Dong, Jing, Junni L Zhang, Shuxi Zeng, and Fan Li. 2020. <span>“Subgroup
+Balancing Propensity Score.”</span> <em>Statistical Methods in Medical
+Research</em> 29 (3): 659–76. <a href="https://doi.org/10.1177/0962280219870836">https://doi.org/10.1177/0962280219870836</a>.
+</div>
+<div id="ref-efronBootstrapMethodsStandard1986" class="csl-entry" role="listitem">
+Efron, B., and R. Tibshirani. 1986. <span>“Bootstrap Methods for
+Standard Errors, Confidence Intervals, and Other Measures of Statistical
+Accuracy.”</span> <em>Statistical Science</em> 1 (1): 54–75. <a href="https://www.jstor.org/stable/2245500">https://www.jstor.org/stable/2245500</a>.
+</div>
+<div id="ref-elwertEndogenousSelectionBias2014" class="csl-entry" role="listitem">
+Elwert, Felix, and Christopher Winship. 2014. <span>“Endogenous
+Selection Bias: The Problem of Conditioning on a Collider
+Variable.”</span> <em>Annual Review of Sociology</em> 40 (1): 31–53. <a href="https://doi.org/10.1146/annurev-soc-071913-043455">https://doi.org/10.1146/annurev-soc-071913-043455</a>.
+</div>
+<div id="ref-fogartyDiscreteOptimizationInterpretable2016" class="csl-entry" role="listitem">
+Fogarty, Colin B., Mark E. Mikkelsen, David F. Gaieski, and Dylan S.
+Small. 2016. <span>“Discrete Optimization for Interpretable Study
+Populations and Randomization Inference in an Observational Study of
+Severe Sepsis Mortality.”</span> <em>Journal of the American Statistical
+Association</em> 111 (514): 447–58. <a href="https://doi.org/10.1080/01621459.2015.1112802">https://doi.org/10.1080/01621459.2015.1112802</a>.
+</div>
+<div id="ref-fortinIndirectCovariateBalance2022" class="csl-entry" role="listitem">
+Fortin, Stephen P., and Martijn Schuemie. 2022. <span>“Indirect
+Covariate Balance and Residual Confounding: <span>An</span> Applied
+Comparison of Propensity Score Matching and Cardinality
+Matching.”</span> <em>Pharmacoepidemiology and Drug Safety</em> 31 (12):
+1242–52. <a href="https://doi.org/10.1002/pds.5510">https://doi.org/10.1002/pds.5510</a>.
+</div>
+<div id="ref-gayatPropensityScoreApplied2012" class="csl-entry" role="listitem">
+Gayat, Etienne, Matthieu Resche-Rigon, Jean-Yves Mary, and Raphaël
+Porcher. 2012. <span>“Propensity Score Applied to Survival Data Analysis
+Through Proportional Hazards Models: A <span>Monte Carlo</span>
+Study.”</span> <em>Pharmaceutical Statistics</em> 11 (3): 222–29. <a href="https://doi.org/10.1002/pst.537">https://doi.org/10.1002/pst.537</a>.
+</div>
+<div id="ref-greenExaminingModerationAnalyses2014" class="csl-entry" role="listitem">
+Green, Kerry M., and Elizabeth A. Stuart. 2014. <span>“Examining
+Moderation Analyses in Propensity Score Methods: Application to
+Depression and Substance Use.”</span> <em>Journal of Consulting and
+Clinical Psychology</em>, Advances in data analytic methods, 82 (5):
+773–83. <a href="https://doi.org/10.1037/a0036515">https://doi.org/10.1037/a0036515</a>.
+</div>
+<div id="ref-greenlandCausalDiagramsEpidemiologic1999" class="csl-entry" role="listitem">
+Greenland, Sander, Judea Pearl, and James M. Robins. 1999. <span>“Causal
+Diagrams for Epidemiologic Research.”</span> <em>Epidemiology</em> 10
+(1): 37–48. <a href="https://www.jstor.org/stable/3702180">https://www.jstor.org/stable/3702180</a>.
+</div>
+<div id="ref-greiferCobaltCovariateBalance2020" class="csl-entry" role="listitem">
+Greifer, Noah. 2020. <em>Cobalt: Covariate Balance Tables and
+Plots</em>. <a href="https://CRAN.R-project.org/package=cobalt">https://CRAN.R-project.org/package=cobalt</a>.
+</div>
+<div id="ref-greiferMatchingMethodsConfounder2021a" class="csl-entry" role="listitem">
+Greifer, Noah, and Elizabeth A Stuart. 2021a. <span>“Matching Methods
+for Confounder Adjustment: An Addition to the
+Epidemiologist<span>’</span>s Toolbox.”</span> <em>Epidemiologic
+Reviews</em>, June, mxab003. <a href="https://doi.org/10.1093/epirev/mxab003">https://doi.org/10.1093/epirev/mxab003</a>.
+</div>
+<div id="ref-greiferChoosingEstimandWhen2021" class="csl-entry" role="listitem">
+Greifer, Noah, and Elizabeth A. Stuart. 2021b. <span>“Choosing the
+Estimand When Matching or Weighting in Observational Studies.”</span>
+<em>arXiv:2106.10577 [Stat]</em>, June. <a href="https://arxiv.org/abs/2106.10577">https://arxiv.org/abs/2106.10577</a>.
+</div>
+<div id="ref-guComparisonMultivariateMatching1993" class="csl-entry" role="listitem">
+Gu, Xing Sam, and Paul R. Rosenbaum. 1993. <span>“Comparison of
+Multivariate Matching Methods: Structures, Distances, and
+Algorithms.”</span> <em>Journal of Computational and Graphical
+Statistics</em> 2 (4): 405. <a href="https://doi.org/10.2307/1390693">https://doi.org/10.2307/1390693</a>.
+</div>
+<div id="ref-hainmuellerEntropyBalancingCausal2012" class="csl-entry" role="listitem">
+Hainmueller, J. 2012. <span>“Entropy Balancing for Causal Effects: A
+Multivariate Reweighting Method to Produce Balanced Samples in
+Observational Studies.”</span> <em>Political Analysis</em> 20 (1):
+25–46. <a href="https://doi.org/10.1093/pan/mpr025">https://doi.org/10.1093/pan/mpr025</a>.
+</div>
+<div id="ref-hanDefiningEstimandsClinical2023" class="csl-entry" role="listitem">
+Han, Shasha, and Xiao-Hua Zhou. 2023. <span>“Defining Estimands in
+Clinical Trials: A Unified Procedure.”</span> <em>Statistics in
+Medicine</em>, March, sim.9702. <a href="https://doi.org/10.1002/sim.9702">https://doi.org/10.1002/sim.9702</a>.
+</div>
+<div id="ref-haneuseUsingEValueAssess2019" class="csl-entry" role="listitem">
+Haneuse, Sebastien, Tyler J. VanderWeele, and David Arterburn. 2019.
+<span>“Using the e-Value to Assess the Potential Effect of Unmeasured
+Confounding in Observational Studies.”</span> <em>JAMA</em> 321 (6):
+602–3. <a href="https://doi.org/10.1001/jama.2018.21554">https://doi.org/10.1001/jama.2018.21554</a>.
+</div>
+<div id="ref-hansenOptimalFullMatching2006" class="csl-entry" role="listitem">
+Hansen, Ben B, and Stephanie Olsen Klopfer. 2006. <span>“Optimal Full
+Matching and Related Designs via Network Flows.”</span> <em>Journal of
+Computational and Graphical Statistics</em> 15 (3): 609–27. <a href="https://doi.org/10.1198/106186006X137047">https://doi.org/10.1198/106186006X137047</a>.
+</div>
+<div id="ref-harderPropensityScoreTechniques2010" class="csl-entry" role="listitem">
+Harder, Valerie S., Elizabeth A. Stuart, and James C. Anthony. 2010.
+<span>“Propensity Score Techniques and the Assessment of Measured
+Covariate Balance to Test Causal Associations in Psychological
+Research.”</span> <em>Psychological Methods</em> 15 (3): 234–49. <a href="https://doi.org/10.1037/a0019623">https://doi.org/10.1037/a0019623</a>.
+</div>
+<div id="ref-hernanHazardsHazardRatios2010" class="csl-entry" role="listitem">
+Hernán, Miguel A. 2010. <span>“The Hazards of Hazard Ratios.”</span>
+<em>Epidemiology (Cambridge, Mass.)</em> 21 (1): 13–15. <a href="https://doi.org/10.1097/EDE.0b013e3181c1ea43">https://doi.org/10.1097/EDE.0b013e3181c1ea43</a>.
+</div>
+<div id="ref-hernanInstrumentsCausalInference2006" class="csl-entry" role="listitem">
+Hernán, Miguel A., and James M. Robins. 2006a. <span>“Instruments for
+Causal Inference: An Epidemiologist’s Dream?”</span>
+<em>Epidemiology</em> 17 (4): 360–72. <a href="https://doi.org/10.1097/01.ede.0000222409.00878.37">https://doi.org/10.1097/01.ede.0000222409.00878.37</a>.
+</div>
+<div id="ref-hernanCausalInferenceWhat2020" class="csl-entry" role="listitem">
+Hernán, Miguel A, and James M Robins. 2020. <em>Causal Inference: What
+If</em>. Boca Raton: Chapman &amp; Hall/CRC. <a href="https://cdn1.sph.harvard.edu/wp-content/uploads/sites/1268/2020/01/ci_hernanrobins_21jan20.pdf">https://cdn1.sph.harvard.edu/wp-content/uploads/sites/1268/2020/01/ci_hernanrobins_21jan20.pdf</a>.
+</div>
+<div id="ref-hernanEstimatingCausalEffects2006" class="csl-entry" role="listitem">
+Hernán, Miguel A, and James M. Robins. 2006b. <span>“Estimating Causal
+Effects from Epidemiological Data.”</span> <em>Journal of Epidemiology
+and Community Health (1979-)</em> 60 (7): 578–86. <a href="http://www.jstor.org/stable/40795098">http://www.jstor.org/stable/40795098</a>.
+</div>
+<div id="ref-hernanDoesObesityShorten2008" class="csl-entry" role="listitem">
+Hernán, Miguel A, and S L Taubman. 2008. <span>“Does Obesity Shorten
+Life? The Importance of Well-Defined Interventions to Answer Causal
+Questions.”</span> <em>International Journal of Obesity</em> 32 (S3):
+S8–14. <a href="https://doi.org/10.1038/ijo.2008.82">https://doi.org/10.1038/ijo.2008.82</a>.
+</div>
+<div id="ref-hillIntervalEstimationTreatment2006" class="csl-entry" role="listitem">
+Hill, Jennifer, and Jerome P. Reiter. 2006. <span>“Interval Estimation
+for Treatment Effects Using Propensity Score Matching.”</span>
+<em>Statistics in Medicine</em> 25 (13): 2230–56. <a href="https://doi.org/10.1002/sim.2277">https://doi.org/10.1002/sim.2277</a>.
+</div>
+<div id="ref-hiranoPropensityScoreContinuous2005" class="csl-entry" role="listitem">
+Hirano, Keisuke, and Guido W. Imbens. 2005. <span>“The Propensity Score
+with Continuous Treatments.”</span> In, edited by Andrew Gelman and
+Xiao-Li Meng, 73–84. Chichester, UK: John Wiley &amp; Sons, Ltd. <a href="https://doi.org/10.1002/0470090456.ch7">https://doi.org/10.1002/0470090456.ch7</a>.
+</div>
+<div id="ref-hoMatchingNonparametricPreprocessing2007" class="csl-entry" role="listitem">
+Ho, Daniel E., Kosuke Imai, Gary King, and Elizabeth A. Stuart. 2007.
+<span>“Matching as Nonparametric Preprocessing for Reducing Model
+Dependence in Parametric Causal Inference.”</span> <em>Political
+Analysis</em> 15 (3): 199–236. <a href="https://doi.org/10.1093/pan/mpl013">https://doi.org/10.1093/pan/mpl013</a>.
+</div>
+<div id="ref-hongMarginalMeanWeighting2010" class="csl-entry" role="listitem">
+Hong, Guanglei. 2010. <span>“Marginal Mean Weighting Through
+Stratification: Adjustment for Selection Bias in Multilevel
+Data.”</span> <em>Journal of Educational and Behavioral Statistics</em>
+35 (5): 499–531. <a href="https://doi.org/10.3102/1076998609359785">https://doi.org/10.3102/1076998609359785</a>.
+</div>
+<div id="ref-hulingIndependenceWeightsCausal2023a" class="csl-entry" role="listitem">
+Huling, Jared D., Noah Greifer, and Guanhua Chen. 2023.
+<span>“Independence Weights for Causal Inference with Continuous
+Treatments.”</span> <em>Journal of the American Statistical
+Association</em> 0 (ja): 1–25. <a href="https://doi.org/10.1080/01621459.2023.2213485">https://doi.org/10.1080/01621459.2023.2213485</a>.
+</div>
+<div id="ref-hulingEnergyBalancingCovariate2022" class="csl-entry" role="listitem">
+Huling, Jared D., and Simon Mak. n.d. <span>“Energy Balancing of
+Covariate Distributions.”</span> <a href="https://doi.org/10.48550/arXiv.2004.13962">https://doi.org/10.48550/arXiv.2004.13962</a>.
+</div>
+<div id="ref-iacusMultivariateMatchingMethods2011" class="csl-entry" role="listitem">
+Iacus, Stefano M., Gary King, and Giuseppe Porro. 2011.
+<span>“Multivariate Matching Methods That Are Monotonic Imbalance
+Bounding.”</span> <em>Journal of the American Statistical
+Association</em> 106 (493): 345–61. <a href="https://doi.org/10.1198/jasa.2011.tm09599">https://doi.org/10.1198/jasa.2011.tm09599</a>.
+</div>
+<div id="ref-iacusCausalInferenceBalance2012" class="csl-entry" role="listitem">
+———. 2012. <span>“Causal Inference Without Balance Checking: Coarsened
+Exact Matching.”</span> <em>Political Analysis</em> 20 (1): 1–24. <a href="https://doi.org/10.1093/pan/mpr013">https://doi.org/10.1093/pan/mpr013</a>.
+</div>
+<div id="ref-imaiCovariateBalancingPropensity2014" class="csl-entry" role="listitem">
+Imai, Kosuke, and Marc Ratkovic. 2014. <span>“Covariate Balancing
+Propensity Score.”</span> <em>Journal of the Royal Statistical Society:
+Series B (Statistical Methodology)</em> 76 (1): 243263. <a href="https://doi.org/10.1111/rssb.12027">https://doi.org/10.1111/rssb.12027</a>.
+</div>
+<div id="ref-imaiCausalInferenceGeneral2004" class="csl-entry" role="listitem">
+Imai, Kosuke, and David A. Van Dyk. 2004. <span>“Causal Inference with
+General Treatment Regimes: Generalizing the Propensity Score.”</span>
+<em>Journal of the American Statistical Association</em> 99 (467):
+854–66. <a href="https://www.jstor.org/stable/27590455">https://www.jstor.org/stable/27590455</a>.
+</div>
+<div id="ref-imbensRolePropensityScore2000" class="csl-entry" role="listitem">
+Imbens, Guido W. 2000. <span>“The Role of the Propensity Score in
+Estimating Dose-Response Functions.”</span> <em>Biometrika</em> 87 (3):
+706–10. <a href="https://www.jstor.org/stable/2673642">https://www.jstor.org/stable/2673642</a>.
+</div>
+<div id="ref-ioannidisLimitationsMisinterpretationsEValues2019" class="csl-entry" role="listitem">
+Ioannidis, John P. A., Yuan Jin Tan, and Manuel R. Blum. 2019.
+<span>“Limitations and Misinterpretations of e-Values for Sensitivity
+Analyses of Observational Studies.”</span> <em>Annals of Internal
+Medicine</em> 170 (2): 108–11. <a href="https://doi.org/10.7326/M18-2159">https://doi.org/10.7326/M18-2159</a>.
+</div>
+<div id="ref-kahanEliminatingAmbiguousTreatment2023" class="csl-entry" role="listitem">
+Kahan, Brennan C, Suzie Cro, Fan Li, and Michael O Harhay. 2023.
+<span>“Eliminating Ambiguous Treatment Effects Using Estimands.”</span>
+<em>American Journal of Epidemiology</em>, February, kwad036. <a href="https://doi.org/10.1093/aje/kwad036">https://doi.org/10.1093/aje/kwad036</a>.
+</div>
+<div id="ref-kangDemystifyingDoubleRobustness2007" class="csl-entry" role="listitem">
+Kang, Joseph D. Y., and Joseph L. Schafer. 2007. <span>“Demystifying
+Double Robustness: A Comparison of Alternative Strategies for Estimating
+a Population Mean from Incomplete Data.”</span> <em>Statistical
+Science</em> 22 (4): 523–39. <a href="https://doi.org/10.1214/07-STS227">https://doi.org/10.1214/07-STS227</a>.
+</div>
+<div id="ref-kingWhyPropensityScores2019" class="csl-entry" role="listitem">
+King, Gary, and Richard Nielsen. 2019. <span>“Why Propensity Scores
+Should Not Be Used for Matching.”</span> <em>Political Analysis</em>,
+May, 1–20. <a href="https://doi.org/10.1017/pan.2019.11">https://doi.org/10.1017/pan.2019.11</a>.
+</div>
+<div id="ref-kingDangersExtremeCounterfactuals2006" class="csl-entry" role="listitem">
+King, Gary, and Langche Zeng. 2006. <span>“The Dangers of Extreme
+Counterfactuals.”</span> <em>Political Analysis</em> 14 (2): 131–59. <a href="https://doi.org/10.1093/pan/mpj004">https://doi.org/10.1093/pan/mpj004</a>.
+</div>
+<div id="ref-kushCovariateBalanceObservational2022" class="csl-entry" role="listitem">
+Kush, Joseph M., Elise T. Pas, Rashelle J. Musci, and Catherine P.
+Bradshaw. 2022. <span>“Covariate Balance for Observational Effectiveness
+Studies: A Comparison of Matching and Weighting.”</span> <em>Journal of
+Research on Educational Effectiveness</em> 0 (0): 1–24. <a href="https://doi.org/10.1080/19345747.2022.2110545">https://doi.org/10.1080/19345747.2022.2110545</a>.
+</div>
+<div id="ref-leyratPropensityScoreAnalysis2019" class="csl-entry" role="listitem">
+Leyrat, Clémence, Shaun R Seaman, Ian R White, Ian Douglas, Liam Smeeth,
+Joseph Kim, Matthieu Resche-Rigon, James R Carpenter, and Elizabeth J
+Williamson. 2019. <span>“Propensity Score Analysis with Partially
+Observed Covariates: How Should Multiple Imputation Be Used?”</span>
+<em>Statistical Methods in Medical Research</em> 28 (1): 3–19. <a href="https://doi.org/10.1177/0962280217713032">https://doi.org/10.1177/0962280217713032</a>.
+</div>
+<div id="ref-liPropensityScoreWeighting2019" class="csl-entry" role="listitem">
+Li, Fan, and Fan Li. 2019. <span>“Propensity Score Weighting for Causal
+Inference with Multiple Treatments.”</span> <em>The Annals of Applied
+Statistics</em> 13 (4): 2389–2415. <a href="https://doi.org/10.1214/19-AOAS1282">https://doi.org/10.1214/19-AOAS1282</a>.
+</div>
+<div id="ref-liPropensityScoreAnalysis2021a" class="csl-entry" role="listitem">
+Li, Yan, and Liang Li. 2021. <span>“Propensity Score Analysis Methods
+with Balancing Constraints: A Monte Carlo Study.”</span> <em>Statistical
+Methods in Medical Research</em> 30 (4): 1119–42. <a href="https://doi.org/10.1177/0962280220983512">https://doi.org/10.1177/0962280220983512</a>.
+</div>
+<div id="ref-liangLongitudinalDataAnalysis1986" class="csl-entry" role="listitem">
+Liang, Kung-Yee, and Scott L. Zeger. 1986. <span>“Longitudinal Data
+Analysis Using Generalized Linear Models.”</span> <em>Biometrika</em> 73
+(1): 13–22. <a href="https://doi.org/10.1093/biomet/73.1.13">https://doi.org/10.1093/biomet/73.1.13</a>.
+</div>
+<div id="ref-liuIntroductionSensitivityAnalysis2013" class="csl-entry" role="listitem">
+Liu, Weiwei, S. Janet Kuramoto, and Elizabeth A. Stuart. 2013. <span>“An
+Introduction to Sensitivity Analysis for Unobserved Confounding in
+Nonexperimental Prevention Research.”</span> <em>Prevention Science</em>
+14 (6): 570–80. <a href="https://doi.org/10.1007/s11121-012-0339-5">https://doi.org/10.1007/s11121-012-0339-5</a>.
+</div>
+<div id="ref-lopezEstimationCausalEffects2017" class="csl-entry" role="listitem">
+Lopez, Michael J., and Roee Gutman. 2017. <span>“Estimation of Causal
+Effects with Multiple Treatments: A Review and New Ideas.”</span>
+<em>Statistical Science</em> 32 (3): 432–54. <a href="https://doi.org/10.1214/17-STS612">https://doi.org/10.1214/17-STS612</a>.
+</div>
+<div id="ref-mackinnonHeteroskedasticityconsistentCovarianceMatrix1985" class="csl-entry" role="listitem">
+MacKinnon, James G, and Halbert White. 1985. <span>“Some
+Heteroskedasticity-Consistent Covariance Matrix Estimators with Improved
+Finite Sample Properties.”</span> <em>Journal of Econometrics</em> 29
+(3): 305–25. <a href="https://doi.org/10.1016/0304-4076(85)90158-7">https://doi.org/10.1016/0304-4076(85)90158-7</a>.
+</div>
+<div id="ref-maoPropensityScoreWeighting2018" class="csl-entry" role="listitem">
+Mao, Huzhang, Liang Li, and Tom Greene. 2018. <span>“Propensity Score
+Weighting Analysis and Treatment Effect Discovery.”</span>
+<em>Statistical Methods in Medical Research</em>, June, 096228021878117.
+<a href="https://doi.org/10.1177/0962280218781171">https://doi.org/10.1177/0962280218781171</a>.
+</div>
+<div id="ref-matthayAlternativeCausalInference2020" class="csl-entry" role="listitem">
+Matthay, Ellicott C., Erin Hagan, Laura M. Gottlieb, May Lynn Tan, David
+Vlahov, Nancy E. Adler, and M. Maria Glymour. 2020. <span>“Alternative
+Causal Inference Methods in Population Health Research: Evaluating
+Tradeoffs and Triangulating Evidence.”</span> <em>SSM - Population
+Health</em> 10 (April): 100526. <a href="https://doi.org/10.1016/j.ssmph.2019.100526">https://doi.org/10.1016/j.ssmph.2019.100526</a>.
+</div>
+<div id="ref-mccaffreyTutorialPropensityScore2013" class="csl-entry" role="listitem">
+McCaffrey, Daniel F., Beth Ann Griffin, Daniel Almirall, Mary Ellen
+Slaughter, Rajeev Ramchand, and Lane F. Burgette. 2013. <span>“A
+Tutorial on Propensity Score Estimation for Multiple Treatments Using
+Generalized Boosted Models.”</span> <em>Statistics in Medicine</em> 32
+(19): 3388–3414. <a href="https://doi.org/10.1002/sim.5753">https://doi.org/10.1002/sim.5753</a>.
+</div>
+<div id="ref-mccaffreyPropensityScoreEstimation2004" class="csl-entry" role="listitem">
+McCaffrey, Daniel F., Greg Ridgeway, and Andrew R. Morral. 2004.
+<span>“Propensity Score Estimation With Boosted Regression for
+Evaluating Causal Effects in Observational Studies.”</span>
+<em>Psychological Methods</em> 9 (4): 403–25. <a href="https://doi.org/10.1037/1082-989X.9.4.403">https://doi.org/10.1037/1082-989X.9.4.403</a>.
+</div>
+<div id="ref-mingSubstantialGainsBias2000" class="csl-entry" role="listitem">
+Ming, Kewei, and Paul R. Rosenbaum. 2000. <span>“Substantial Gains in
+Bias Reduction from Matching with a Variable Number of Controls.”</span>
+<em>Biometrics</em> 56 (1): 118–24. <a href="https://doi.org/10.1111/j.0006-341X.2000.00118.x">https://doi.org/10.1111/j.0006-341X.2000.00118.x</a>.
+</div>
+<div id="ref-niknamUsingCardinalityMatching2022" class="csl-entry" role="listitem">
+Niknam, Bijan A., and Jose R. Zubizarreta. 2022. <span>“Using
+<span>Cardinality Matching</span> to <span>Design Balanced</span> and
+<span>Representative Samples</span> for <span>Observational
+Studies</span>.”</span> <em>JAMA</em> 327 (2): 173–74. <a href="https://doi.org/10.1001/jama.2021.20555">https://doi.org/10.1001/jama.2021.20555</a>.
+</div>
+<div id="ref-pakInterpretabilityCancerClinical2017" class="csl-entry" role="listitem">
+Pak, Kyongsun, Hajime Uno, Dae Hyun Kim, Lu Tian, Robert C. Kane,
+Masahiro Takeuchi, Haoda Fu, Brian Claggett, and Lee-Jen Wei. 2017.
+<span>“Interpretability of Cancer Clinical Trial Results Using
+Restricted Mean Survival Time as an Alternative to the Hazard
+Ratio.”</span> <em>JAMA Oncology</em> 3 (12): 1692. <a href="https://doi.org/10.1001/jamaoncol.2017.2797">https://doi.org/10.1001/jamaoncol.2017.2797</a>.
+</div>
+<div id="ref-pishgarMatchThemMatchingWeighting2021a" class="csl-entry" role="listitem">
+Pishgar, Farhad, Noah Greifer, Clémence Leyrat, and Elizabeth Stuart.
+2021. <span>“MatchThem:: Matching and Weighting After Multiple
+Imputation.”</span> <em>The R Journal</em> 13 (2): 292305. <a href="https://doi.org/10.32614/RJ-2021-073">https://doi.org/10.32614/RJ-2021-073</a>.
+</div>
+<div id="ref-reifeisVarianceTreatmentEffect2020" class="csl-entry" role="listitem">
+Reifeis, Sarah A., and Michael G. Hudgens. 2020. <span>“On Variance of
+the Treatment Effect in the Treated Using Inverse Probability
+Weighting.”</span> <em>arXiv:2011.11874 [Stat]</em>, November. <a href="http://arxiv.org/abs/2011.11874">http://arxiv.org/abs/2011.11874</a>.
+</div>
+<div id="ref-ripolloneImplicationsPropensityScore2018" class="csl-entry" role="listitem">
+Ripollone, John E., Krista F. Huybrechts, Kenneth J. Rothman, Ryan E.
+Ferguson, and Jessica M. Franklin. 2018. <span>“Implications of the
+Propensity Score Matching Paradox in Pharmacoepidemiology.”</span>
+<em>American Journal of Epidemiology</em> 187 (9): 1951–61. <a href="https://doi.org/10.1093/aje/kwy078">https://doi.org/10.1093/aje/kwy078</a>.
+</div>
+<div id="ref-robinsMarginalStructuralModels2000" class="csl-entry" role="listitem">
+Robins, James M., Miguel Ángel Hernán, and Babette Brumback. 2000.
+<span>“Marginal Structural Models and Causal Inference in
+Epidemiology.”</span> <em>Epidemiology</em> 11 (5): 550–60. <a href="https://doi.org/10.1097/00001648-200009000-00011">https://doi.org/10.1097/00001648-200009000-00011</a>.
+</div>
+<div id="ref-rosenbaumInterferenceUnitsRandomized2007" class="csl-entry" role="listitem">
+Rosenbaum, Paul R. 2007. <span>“Interference Between Units in Randomized
+Experiments.”</span> <em>Journal of the American Statistical
+Association</em> 102 (477): 191–200. <a href="https://doi.org/10.1198/016214506000001112">https://doi.org/10.1198/016214506000001112</a>.
+</div>
+<div id="ref-rosenbaumCentralRolePropensity1983" class="csl-entry" role="listitem">
+Rosenbaum, Paul R., and Donald B. Rubin. 1983. <span>“The Central Role
+of the Propensity Score in Observational Studies for Causal
+Effects.”</span> <em>Biometrika</em> 70 (1): 41–55. <a href="https://doi.org/10.1093/biomet/70.1.41">https://doi.org/10.1093/biomet/70.1.41</a>.
+</div>
+<div id="ref-rosenbaumBiasDueIncomplete1985" class="csl-entry" role="listitem">
+———. 1985. <span>“The Bias Due to Incomplete Matching.”</span>
+<em>Biometrics</em> 41 (1): 103–16. <a href="https://doi.org/10.2307/2530647">https://doi.org/10.2307/2530647</a>.
+</div>
+<div id="ref-rubinMatchingRemoveBias1973" class="csl-entry" role="listitem">
+Rubin, Donald B. 1973. <span>“Matching to Remove Bias in Observational
+Studies.”</span> <em>Biometrics</em> 29 (1): 159–83. <a href="https://doi.org/10.2307/2529684">https://doi.org/10.2307/2529684</a>.
+</div>
+<div id="ref-rubinMultipleImputationNonresponse2004" class="csl-entry" role="listitem">
+———. 2004. <em>Multiple Imputation for Nonresponse in Surveys</em>.
+Wiley Classics Library. Hoboken, N.J: Wiley-Interscience.
+</div>
+<div id="ref-savjeGeneralizedFullMatching2021" class="csl-entry" role="listitem">
+Sävje, Fredrik, Michael J. Higgins, and Jasjeet S. Sekhon. 2021.
+<span>“Generalized Full Matching.”</span> <em>Political Analysis</em> 29
+(4): 423–47. <a href="https://doi.org/10.1017/pan.2020.32">https://doi.org/10.1017/pan.2020.32</a>.
+</div>
+<div id="ref-shadishPrimerPropensityScore2010" class="csl-entry" role="listitem">
+Shadish, William R., and Peter M. Steiner. 2010. <span>“A Primer on
+Propensity Score Analysis.”</span> <em>Newborn and Infant Nursing
+Reviews</em>, Quantitative research methodology, 10 (1): 19–26. <a href="https://doi.org/10.1053/j.nainr.2009.12.010">https://doi.org/10.1053/j.nainr.2009.12.010</a>.
+</div>
+<div id="ref-sharma2023" class="csl-entry" role="listitem">
+Sharma, Mayur, Truong H. Do, Elise F. Palzer, Jared D. Huling, and Clark
+C. Chen. 2023. <span>“Comparable Safety Profile Between Neuro-Oncology
+Procedures Involving Stereotactic Needle Biopsy (SNB) Followed by Laser
+Interstitial Thermal Therapy (LITT) and LITT Alone Procedures.”</span>
+<em>Journal of Neuro-Oncology</em> 162 (1): 147–56. <a href="https://doi.org/10.1007/s11060-023-04275-w">https://doi.org/10.1007/s11060-023-04275-w</a>.
+</div>
+<div id="ref-snowdenImplementationGComputationSimulated2011" class="csl-entry" role="listitem">
+Snowden, Jonathan M., Sherri Rose, and Kathleen M. Mortimer. 2011.
+<span>“Implementation of G-Computation on a Simulated Data Set:
+Demonstration of a Causal Inference Technique.”</span> <em>American
+Journal of Epidemiology</em> 173 (7): 731–38. <a href="https://doi.org/10.1093/aje/kwq472">https://doi.org/10.1093/aje/kwq472</a>.
+</div>
+<div id="ref-stensrudWhyTestProportional2020a" class="csl-entry" role="listitem">
+Stensrud, Mats J., and Miguel A. Hernán. 2020. <span>“Why Test for
+Proportional Hazards?”</span> <em>JAMA</em> 323 (14): 1401–2. <a href="https://doi.org/10.1001/jama.2020.1267">https://doi.org/10.1001/jama.2020.1267</a>.
+</div>
+<div id="ref-strasserEstimatesSARSCoV2Omicron2022" class="csl-entry" role="listitem">
+Strasser, Zachary H., Noah Greifer, Aboozar Hadavand, Shawn N. Murphy,
+and Hossein Estiri. 2022. <span>“Estimates of SARS-CoV-2 Omicron BA.2
+Subvariant Severity in New England.”</span> <em>JAMA Network Open</em> 5
+(10): e2238354. <a href="https://doi.org/10.1001/jamanetworkopen.2022.38354">https://doi.org/10.1001/jamanetworkopen.2022.38354</a>.
+</div>
+<div id="ref-stuartMatchingMethodsCausal2010" class="csl-entry" role="listitem">
+Stuart, Elizabeth A. 2010. <span>“Matching Methods for Causal Inference:
+A Review and a Look Forward.”</span> <em>Statistical Science</em> 25
+(1): 1–21. <a href="https://doi.org/10.1214/09-STS313">https://doi.org/10.1214/09-STS313</a>.
+</div>
+<div id="ref-stuartUsingFullMatching2008" class="csl-entry" role="listitem">
+Stuart, Elizabeth A., and Kerry M. Green. 2008. <span>“Using Full
+Matching to Estimate Causal Effects in Nonexperimental Studies:
+Examining the Relationship Between Adolescent Marijuana Use and Adult
+Outcomes.”</span> <em>Developmental Psychology</em>, New methods for new
+questions in developmental psychology, 44 (2): 395–406. <a href="https://doi.org/10.1037/0012-1649.44.2.395">https://doi.org/10.1037/0012-1649.44.2.395</a>.
+</div>
+<div id="ref-stuartPrognosticScorebasedBalance2013" class="csl-entry" role="listitem">
+Stuart, Elizabeth A., Brian K. Lee, and Finbarr P. Leacy. 2013.
+<span>“Prognostic Score-Based Balance Measures Can Be a Useful
+Diagnostic for Propensity Score Methods in Comparative Effectiveness
+Research.”</span> <em>Journal of Clinical Epidemiology</em> 66 (8): S84.
+<a href="https://doi.org/10.1016/j.jclinepi.2013.01.013">https://doi.org/10.1016/j.jclinepi.2013.01.013</a>.
+</div>
+<div id="ref-tchetgenCausalInferencePresence2012" class="csl-entry" role="listitem">
+Tchetgen, Eric J Tchetgen, and Tyler J VanderWeele. 2012. <span>“On
+Causal Inference in the Presence of Interference.”</span>
+<em>Statistical Methods in Medical Research</em> 21 (1): 55–75. <a href="https://doi.org/10.1177/0962280210386779">https://doi.org/10.1177/0962280210386779</a>.
+</div>
+<div id="ref-thoemmesPrimerInverseProbability2016" class="csl-entry" role="listitem">
+Thoemmes, Felix J., and Anthony D. Ong. 2016. <span>“A Primer on Inverse
+Probability of Treatment Weighting and Marginal Structural
+Models.”</span> <em>Emerging Adulthood</em> 4 (1): 40–59. <a href="https://doi.org/10.1177/2167696815621645">https://doi.org/10.1177/2167696815621645</a>.
+</div>
+<div id="ref-vanderweeleDistinctionInteractionEffect2009" class="csl-entry" role="listitem">
+VanderWeele, Tyler J. 2009. <span>“On the Distinction Between
+Interaction and Effect Modification.”</span> <em>Epidemiology</em> 20
+(6): 863–71. <a href="https://www.jstor.org/stable/25662776">https://www.jstor.org/stable/25662776</a>.
+</div>
+<div id="ref-vanderweelePrinciplesConfounderSelection2019" class="csl-entry" role="listitem">
+———. 2019. <span>“Principles of Confounder Selection.”</span>
+<em>European Journal of Epidemiology</em> 34 (3): 211–19. <a href="https://doi.org/10.1007/s10654-019-00494-6">https://doi.org/10.1007/s10654-019-00494-6</a>.
+</div>
+<div id="ref-vanderweeleSensitivityAnalysisObservational2017" class="csl-entry" role="listitem">
+VanderWeele, Tyler J., and Peng Ding. 2017. <span>“Sensitivity Analysis
+in Observational Research: Introducing the E-Value.”</span> <em>Annals
+of Internal Medicine</em> 167 (4): 268. <a href="https://doi.org/10.7326/M16-2607">https://doi.org/10.7326/M16-2607</a>.
+</div>
+<div id="ref-vanderweeleCorrectingMisinterpretationsEValue2019" class="csl-entry" role="listitem">
+VanderWeele, Tyler J., Maya B. Mathur, and Peng Ding. 2019.
+<span>“Correcting Misinterpretations of the e-Value.”</span> <em>Annals
+of Internal Medicine</em> 170 (2): 131–32. <a href="https://doi.org/10.7326/M18-3112">https://doi.org/10.7326/M18-3112</a>.
+</div>
+<div id="ref-vansteelandtInvitedCommentaryGComputation2011" class="csl-entry" role="listitem">
+Vansteelandt, Stijn, and Niels Keiding. 2011. <span>“Invited Commentary:
+G-Computation<span></span>lost in Translation?”</span> <em>American
+Journal of Epidemiology</em> 173 (7): 739–42. <a href="https://doi.org/10.1093/aje/kwq474">https://doi.org/10.1093/aje/kwq474</a>.
+</div>
+<div id="ref-viscontiHandlingLimitedOverlap2018a" class="csl-entry" role="listitem">
+Visconti, Giancarlo, and José R. Zubizarreta. 2018. <span>“Handling
+Limited Overlap in Observational Studies with Cardinality
+Matching.”</span> <em>Observational Studies</em> 4 (1): 217–49. <a href="https://doi.org/10.1353/obs.2018.0012">https://doi.org/10.1353/obs.2018.0012</a>.
+</div>
+<div id="ref-wanMatchedUnmatchedAnalyses2019" class="csl-entry" role="listitem">
+Wan, Fei. 2019. <span>“Matched or Unmatched Analyses with
+Propensity-Scorematched Data?”</span> <em>Statistics in Medicine</em> 38
+(2): 289–300. <a href="https://doi.org/10.1002/sim.7976">https://doi.org/10.1002/sim.7976</a>.
+</div>
+<div id="ref-westreichInvitedCommentaryPositivity2010" class="csl-entry" role="listitem">
+Westreich, Daniel, and Stephen R. Cole. 2010. <span>“Invited Commentary:
+Positivity in Practice.”</span> <em>American Journal of
+Epidemiology</em> 171 (6): 674–77. <a href="https://doi.org/10.1093/aje/kwp436">https://doi.org/10.1093/aje/kwp436</a>.
+</div>
+<div id="ref-wuMatchingGeneralizedPropensity2022" class="csl-entry" role="listitem">
+Wu, Xiao, Fabrizia Mealli, Marianthi-Anna Kioumourtzoglou, Francesca
+Dominici, and Danielle Braun. 2022. <span>“Matching on Generalized
+Propensity Scores with Continuous Exposures.”</span> <em>Journal of the
+American Statistical Association</em> 0 (0): 1–29. <a href="https://doi.org/10.1080/01621459.2022.2144737">https://doi.org/10.1080/01621459.2022.2144737</a>.
+</div>
+<div id="ref-zhaoEntropyBalancingDoubly2017" class="csl-entry" role="listitem">
+Zhao, Qingyuan, and Daniel Percival. 2017. <span>“Entropy Balancing Is
+Doubly Robust.”</span> <em>Journal of Causal Inference</em> 5 (1). <a href="https://doi.org/10.1515/jci-2016-0010">https://doi.org/10.1515/jci-2016-0010</a>.
+</div>
+<div id="ref-zhuBoostingAlgorithmEstimating2015" class="csl-entry" role="listitem">
+Zhu, Yeying, Donna L. Coffman, and Debashis Ghosh. 2015. <span>“A
+Boosting Algorithm for Estimating Generalized Propensity Scores with
+Continuous Treatments.”</span> <em>Journal of Causal Inference</em> 3
+(1). <a href="https://doi.org/10.1515/jci-2014-0022">https://doi.org/10.1515/jci-2014-0022</a>.
+</div>
+<div id="ref-zubizarretaStableWeightsThat2015" class="csl-entry" role="listitem">
+Zubizarreta, José R. 2015. <span>“Stable Weights That Balance Covariates
+for Estimation with Incomplete Outcome Data.”</span> <em>Journal of the
+American Statistical Association</em> 110 (511): 910–22. <a href="https://doi.org/10.1080/01621459.2015.1023805">https://doi.org/10.1080/01621459.2015.1023805</a>.
+</div>
+<div id="ref-zubizarretaMatchingBalancePairing2014" class="csl-entry" role="listitem">
+Zubizarreta, José R., Ricardo D. Paredes, and Paul R. Rosenbaum. 2014.
+<span>“Matching for Balance, Pairing for Heterogeneity in an
+Observational Study of the Effectiveness of for-Profit and
+Not-for-Profit High Schools in <span>Chile</span>.”</span> <em>The
+Annals of Applied Statistics</em> 8 (1): 204–31. <a href="https://doi.org/10.1214/13-AOAS713">https://doi.org/10.1214/13-AOAS713</a>.
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./conclusion.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Conclusion</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

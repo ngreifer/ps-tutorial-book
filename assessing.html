@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Noah Greifer">
+
+<title>Propensity Score Analysis for Medical Research: A Primer and Tutorial - 4&nbsp; Assessing quality</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./respecification.html" rel="next">
+<link href="./conditioning.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./running.html">Running the Analysis</a></li><li class="breadcrumb-item"><a href="./assessing.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Assessing quality</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Propensity Score Analysis for Medical Research: A Primer and Tutorial</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./planning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Planning the Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./running.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Running the Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./conceptual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conceptual aspects of the analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./conditioning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conditioning: matching and weighting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./assessing.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Assessing quality</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./respecification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Respecification</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./estimating.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Estimating the treatment effect</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sensitivity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./advanced.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced topics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Reporting the Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./example.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Example</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ex-match.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Matching</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ex-weight.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Weighting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-balance" id="toc-sec-balance" class="nav-link active" data-scroll-target="#sec-balance"><span class="header-section-number">4.1</span> Covariate Balance</a>
+  <ul class="collapse">
+  <li><a href="#graphical-balance-assessment" id="toc-graphical-balance-assessment" class="nav-link" data-scroll-target="#graphical-balance-assessment"><span class="header-section-number">4.1.1</span> Graphical balance assessment</a></li>
+  <li><a href="#univariate-balance-statistics" id="toc-univariate-balance-statistics" class="nav-link" data-scroll-target="#univariate-balance-statistics"><span class="header-section-number">4.1.2</span> Univariate balance statistics</a></li>
+  <li><a href="#multivariate-balance-statistics" id="toc-multivariate-balance-statistics" class="nav-link" data-scroll-target="#multivariate-balance-statistics"><span class="header-section-number">4.1.3</span> Multivariate balance statistics</a></li>
+  <li><a href="#dont-use-p-values" id="toc-dont-use-p-values" class="nav-link" data-scroll-target="#dont-use-p-values"><span class="header-section-number">4.1.4</span> Don’t use p-values</a></li>
+  </ul></li>
+  <li><a href="#sec-representativeness" id="toc-sec-representativeness" class="nav-link" data-scroll-target="#sec-representativeness"><span class="header-section-number">4.2</span> Representativeness</a></li>
+  <li><a href="#sec-ess" id="toc-sec-ess" class="nav-link" data-scroll-target="#sec-ess"><span class="header-section-number">4.3</span> Effective sample size</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-assessing" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Assessing quality</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>A key step in propensity score analysis is assessing the quality of the matching or weighting specification. These methods are only effective at removing bias due to confounding when certain conditions are met, which we describe here. The three most important attributes used to assess a conditioning specification are 1) balance, 2) representativeness, and 3) effective sample size. We describe each of these in the following sections.</p>
+<section id="sec-balance" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="sec-balance"><span class="header-section-number">4.1</span> Covariate Balance</h2>
+<p>Balance is the degree to which the treatment groups resemble each other on the covariates. A fully balanced sample is one in which the distributions of covariates in the treatment groups are identical. When balance is achieved, bias due to confounding by the observed confounders will be eliminated. Balance is central to the use of propensity score methods <span class="citation" data-cites="ben-michaelBalancingActCausal2021">(<a href="references.html#ref-ben-michaelBalancingActCausal2021" role="doc-biblioref">Ben-Michael et al. 2021</a>)</span>; indeed, the entire point of using these methods is to achieve balance. The primary benefit of randomization is that confounders (both observed and unobserved) are balanced by design (in expectation); propensity score methods seek to mimic this quality by adjusting the sample so that balance is achieved.</p>
+<p>In theory, conditioning on the propensity score via matching or weighting should yield balance in the sample; this is the key balancing property of propensity scores and why they are popular in the first place. However, in practice, they don’t always yield balance, which can be due to a number of factors, including incorrect specification of the propensity score model (if one is used), the conditioning method is not suited for the data used, or balance fundamentally cannot be achieved while retaining the desired estimand. Therefore, it is critical that balance be assessed before moving forward with effect estimation.</p>
+<p>This is what <span class="citation" data-cites="hoMatchingNonparametricPreprocessing2007">Ho et al. (<a href="references.html#ref-hoMatchingNonparametricPreprocessing2007" role="doc-biblioref">2007</a>)</span> describe as the “propensity score tautology”: conditioning on a good propensity score yields balance in the sample, but whether a propensity score is good depends on whether it yields balance. The implication of this is that we cannot rely on the theoretical balancing properties of the propensity score; we need to ensure that the conditioning specification is doing its job.</p>
+<p>Full balance means balance not just on individual covariates but on the full, joint distribution of covariates. For example, it may not be enough to have the same proportion of women and the same proportion of Black patients in the treatment groups; full balance requires the same proportion of Black women, non-Black women, Black men, and non-Black men in the treatment groups. Full balance can be hard to achieve and hard to assess, so most balance assessment method focus on the “marginal” (i.e., single-covariate) distributions; if balance is not achieved on individual covariates, it is not achieved on the full joint distribution either.</p>
+<p>Balance can be assessed graphically or numerically, and among numerical assessments, there are univariate (one covariate at a time) and multivariate (multiple covariates at a time) statistics.</p>
+<section id="graphical-balance-assessment" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="graphical-balance-assessment"><span class="header-section-number">4.1.1</span> Graphical balance assessment</h3>
+<p>The most straightforward assessment of whether the distribution of a cxovariates is the same in the two treatment groups is simply to plot the distributions and note any differences. Example of distribution plots include histograms, kernel density plots, empirical cumulative distribution function (eCDF) plots, and bar graphs (for categorical variables). Dramatic differences in these plots suggests severe imbalance that must be corrected.</p>
+</section>
+<section id="univariate-balance-statistics" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="univariate-balance-statistics"><span class="header-section-number">4.1.2</span> Univariate balance statistics</h3>
+<p>Univariate balance statistics describe the difference in the distributions of one covariate at a time numerically. For binary covariates, the difference in the proportion of each category across treatment groups is an example of univariate balance statistic (called the raw difference in proportion). For continuous variables, several univariate balance statistics are commonly used:</p>
+<ul>
+<li><p>Standardized mean difference (SMD): <span class="math inline">\(\frac{\bar{x}_1-\bar{x}_0}{s}\)</span>, where <span class="math inline">\(s\)</span> is a measure of spread computed in the unadjusted sample. The SMD does not depend on the scale of the covariate and only assess differences in the covariate means, not other features of the distributions. Ideally these are as small as possible <span class="citation" data-cites="hoMatchingNonparametricPreprocessing2007">(<a href="references.html#ref-hoMatchingNonparametricPreprocessing2007" role="doc-biblioref">Ho et al. 2007</a>)</span>, though some authors recommend that they should be below .1. SMDs are the most commonly reported balance statistic.</p></li>
+<li><p>Variance ratios: <span class="math inline">\(s^2_1/s^2_0\)</span>. This complements the SMD by assessing balance on the variability of the distribution, not just the means. Ideally these are as close to 1 as possible.</p></li>
+<li><p>Kolmogorov-Smirnov (KS) statistics: <span class="math inline">\(\text{max} \left( |F_1(x) - F_0(x)| \right)\)</span>, where <span class="math inline">\(F(x)\)</span> is the eCDF of <span class="math inline">\(x\)</span>. This assesses balance on the entire marginal distribution of the covariate, not just the means or variability. Ideally these are as small as possible.</p></li>
+</ul>
+<p>These statistics can also be computed not just on the covariate, but also on transformations of it, such as the square or cube or interactions between covariates.</p>
+<p>Balance should not be assessed on the propensity score itself; not only is this a conceptually invalid way to assess balance <span class="citation" data-cites="hoMatchingNonparametricPreprocessing2007">(<a href="references.html#ref-hoMatchingNonparametricPreprocessing2007" role="doc-biblioref">Ho et al. 2007</a>)</span> because a propensity score can only be considered useful when it balances the covariates, empirically there is no association between balance on the propensity score and low bias in the effect estimation <span class="citation" data-cites="stuartPrognosticScorebasedBalance2013">(<a href="references.html#ref-stuartPrognosticScorebasedBalance2013" role="doc-biblioref">Stuart, Lee, and Leacy 2013</a>)</span>. The propensity score is sometimes used a heuristic to assess overlap (e.g., to assess whether the failure of propensity score weighting or matching is due to large differences in the propensity score distribution between groups) and to assess why a matching method might be failing (e.g., if nearest neighbor matching cannot even balance the propensity scores, it has little hope for balancing the covariates).</p>
+</section>
+<section id="multivariate-balance-statistics" class="level3" data-number="4.1.3">
+<h3 data-number="4.1.3" class="anchored" data-anchor-id="multivariate-balance-statistics"><span class="header-section-number">4.1.3</span> Multivariate balance statistics</h3>
+<p>A multivariate balance statistic is a single (scalar) number that attempts to summarize balance for a sample. They are used less often in assessing balance and more to compare between conditioning specifications. Examples include the largest or average absolute SMD across covariates and the largest or average KS statistic across covariates. Some multivariate balance statistics attempt to assess balance not just on the marginal covariate distributions but on the joint distribution; examples include the <span class="math inline">\(L_1\)</span> statistic, which sums raw differences in proportion across a multi-dimensional histogram of the covariates, and the energy distance, which computes the average distance between the joint covariate eCDFs. These statistics are not typically reported because their scale depends on the distribution and number of covariates, but they can be used to compare between specifications.</p>
+</section>
+<section id="dont-use-p-values" class="level3" data-number="4.1.4">
+<h3 data-number="4.1.4" class="anchored" data-anchor-id="dont-use-p-values"><span class="header-section-number">4.1.4</span> Don’t use p-values</h3>
+<p>One might be tempted to use a hypothesis test to assess whetehr the distributions of the covariates differs between groups. For example, one might use the p-value on a t-test, chi-square test, Mann-Whitney U test, or KS test to test whether two distributions are the same. Do not do this to assess balance in observational studies, either before or after conditioning. There are several reasons to avoid p-values:</p>
+<ol type="1">
+<li><p>Hypothesis tests typically make reference to a population distribution, but balance is a quality of the sample</p></li>
+<li><p>Hypothesis tests depend on the sample size, so shrinking your smaple size (e.g., through subset selection) will appear to make balance better even if ti makes it worse</p></li>
+<li><p>P-values suggest a significance threshold that might be invalid; <span class="math inline">\(p = .1\)</span> might still indicate severe imbalance despite being nonsignificant (at the <span class="math inline">\(\alpha = .05\)</span> level).</p></li>
+</ol>
+<p>Instead, use the sample balance statistics described above.</p>
+</section>
+</section>
+<section id="sec-representativeness" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="sec-representativeness"><span class="header-section-number">4.2</span> Representativeness</h2>
+<p>Representativeness refers to how generalizable an effect estimate is to the population for whom one wants to make inferences. Even if the original sample is representative of a meaningful population (e.g., all patients with a given disease), conditioning may distort the sample in such a way as to change its representativeness. The reason this is so critical to consider is that different methods exchange representativeness for balance; for example, matching with a caliper or using overlap weights both change the target population to one that differs from the full sample or one of the treatment groups, but in doing so general dramatically improve balance, especially when the groups are very different from each other.</p>
+<p>Representativeness can also be thought of as balance between the adjusted sample and the original sample (or target population), and can be assessed in the same way, i.e., by examining the differences in covariate distributions between the adjusted sample and the target population. Typically, this is done by simply examining the distribution of covariates in the adjusted sample and in the target population and assessing heuristically whether they are close enough for the inference to be informative.</p>
+<p>In some cases, representativeness is less important than ensuring groups are comparable, such as when attempting to discover whether treatment exists for any group rather than for a specific group <span class="citation" data-cites="maoPropensityScoreWeighting2018">(<a href="references.html#ref-maoPropensityScoreWeighting2018" role="doc-biblioref">Mao, Li, and Greene 2018</a>)</span>. In these cases, ensuring representativeness is less critical, but it remains important to understand for which population the estimated effect generalizes.</p>
+</section>
+<section id="sec-ess" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="sec-ess"><span class="header-section-number">4.3</span> Effective sample size</h2>
+<p>Matching via subset selection discards units, which leaves the remaining sample smaller than the original sample. In some cases, many units are discarded, and the remaining sample is too small to detect effects. Thus, it is important that any matching method not only achieve balance (and representativeness) but also preserve sample size.</p>
+<p>It might seem like weighting, full matching, or subclassification would prevent this problem because no units are discarded with these methods, but the weights resulting from these methods actually do induce a decrease in precision similar to shrinking the sample size. To capture this effect, the effective sample size (ESS) is used, which corresponds to the size of an unweighted sample that carries as much precision as the weighted sample.</p>
+<p>The ESS is computed in each treatment group as <span class="math inline">\(\left(\sum_n{w}\right)^2/\sum_n{w_i^2}\)</span>. When weights are scaled to have a mean of 1 in each treatment group, the ESS can be written as <span class="math inline">\(\frac{n}{1+\text{Var}(w)}\)</span>, which makes it clear that as the variability of the weights increases, the ESS decreases. When all weights are equal to 1 (e.g., prior to estimating propensity score weights), the ESS is equal to the original sample size.</p>
+<p>When a weighting or matching specification yields an ESS that is too small to use for inference, this suggests a problem with the conditoning specification that should be rectified. A low ESS typcially arises from highly variable weights, which can occur when some units have very small or very large propensity scores; this is known as the problem of “extreme weights”, for which multiple solutions have been proposed. These solutions include using a different model to estimate the weights (e.g., using logistic regression instead of a classification tree), changing the estimand (e.g., targeting the ATO rather than the ATE), trimming the weights (which can change the estimand as well), or using a method that specifically aims to reduce the variability of the weights, like stable balancing weights <span class="citation" data-cites="zubizarretaStableWeightsThat2015">(<a href="references.html#ref-zubizarretaStableWeightsThat2015" role="doc-biblioref">Zubizarreta 2015</a>)</span> or entropy balancing <span class="citation" data-cites="hainmuellerEntropyBalancingCausal2012">(<a href="references.html#ref-hainmuellerEntropyBalancingCausal2012" role="doc-biblioref">Hainmueller 2012</a>)</span>.</p>
+<p>One often finds that balance, representativeness, and ESS pull in opposite directions, which requires users to manage a trade-off between bias, generalizability, and precision. For example, matching with a caliper often yields excellent balance, but by dropping units from both treatment groups worsens representativeness and decreases the ESS. Propensity score weighting for the ATE may ensure representativeness, but it may be hard to achieve balance, and if one does, it may be that that balance comes at the cost of a decreased ESS. There is no single method that can perfectly optimize all three, but the best methods allow the user to incorporate substantive information into making these trade-offs to best suit the data at hand and research question.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-ben-michaelBalancingActCausal2021" class="csl-entry" role="listitem">
+Ben-Michael, Eli, Avi Feller, David A. Hirshberg, and José R. Zubizarreta. 2021. <span>“The <span>Balancing Act</span> in <span>Causal Inference</span>.”</span> <em>arXiv:2110.14831 [Stat]</em>, October. <a href="https://arxiv.org/abs/2110.14831">https://arxiv.org/abs/2110.14831</a>.
+</div>
+<div id="ref-hainmuellerEntropyBalancingCausal2012" class="csl-entry" role="listitem">
+Hainmueller, J. 2012. <span>“Entropy Balancing for Causal Effects: A Multivariate Reweighting Method to Produce Balanced Samples in Observational Studies.”</span> <em>Political Analysis</em> 20 (1): 25–46. <a href="https://doi.org/10.1093/pan/mpr025">https://doi.org/10.1093/pan/mpr025</a>.
+</div>
+<div id="ref-hoMatchingNonparametricPreprocessing2007" class="csl-entry" role="listitem">
+Ho, Daniel E., Kosuke Imai, Gary King, and Elizabeth A. Stuart. 2007. <span>“Matching as Nonparametric Preprocessing for Reducing Model Dependence in Parametric Causal Inference.”</span> <em>Political Analysis</em> 15 (3): 199–236. <a href="https://doi.org/10.1093/pan/mpl013">https://doi.org/10.1093/pan/mpl013</a>.
+</div>
+<div id="ref-maoPropensityScoreWeighting2018" class="csl-entry" role="listitem">
+Mao, Huzhang, Liang Li, and Tom Greene. 2018. <span>“Propensity Score Weighting Analysis and Treatment Effect Discovery.”</span> <em>Statistical Methods in Medical Research</em>, June, 096228021878117. <a href="https://doi.org/10.1177/0962280218781171">https://doi.org/10.1177/0962280218781171</a>.
+</div>
+<div id="ref-stuartPrognosticScorebasedBalance2013" class="csl-entry" role="listitem">
+Stuart, Elizabeth A., Brian K. Lee, and Finbarr P. Leacy. 2013. <span>“Prognostic Score-Based Balance Measures Can Be a Useful Diagnostic for Propensity Score Methods in Comparative Effectiveness Research.”</span> <em>Journal of Clinical Epidemiology</em> 66 (8): S84. <a href="https://doi.org/10.1016/j.jclinepi.2013.01.013">https://doi.org/10.1016/j.jclinepi.2013.01.013</a>.
+</div>
+<div id="ref-zubizarretaStableWeightsThat2015" class="csl-entry" role="listitem">
+Zubizarreta, José R. 2015. <span>“Stable Weights That Balance Covariates for Estimation with Incomplete Outcome Data.”</span> <em>Journal of the American Statistical Association</em> 110 (511): 910–22. <a href="https://doi.org/10.1080/01621459.2015.1023805">https://doi.org/10.1080/01621459.2015.1023805</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./conditioning.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conditioning: matching and weighting</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./respecification.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Respecification</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
