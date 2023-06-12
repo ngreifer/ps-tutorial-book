@@ -1,6 +1,6 @@
 # Reporting the Analysis {#sec-reporting}
 
-Reporting the analysis accurately and completely is critical to ensuring the audience can correctly interpret the results of a study and replicate the methodology. Failure to report the main analytical strategy is commonly noted on systematic reviews of the use of propensity score analysis in medical research. The main aspects to report are the balancing method and its performance, the procedure for estimating the effect, the effect itself, and limitations of the conclusions.
+Reporting the analysis accurately and completely is critical to ensuring the audience can correctly interpret the results of a study and replicate the methodology. Failure to report the main analytic strategy is commonly noted on systematic reviews of the use of propensity score analysis in medical research. The main aspects to report are the balancing method and its performance, the procedure for estimating the effect, the effect itself, and limitations of the conclusions.
 
 There are often constraints on how much space one can use to describe results and methods, so it is okay to summarize some of this information, though ideally it should be available in its entirety somewhere in the article, possibly in supplementary materials.
 
@@ -41,6 +41,12 @@ It's also important to report the effect estimation procedure, as how the effect
 ## Reporting the effect estimate
 
 Of course, one needs to report the effect estimate itself. Ideally the estimate and its CI are on a natural, interpretable scale (e.g., the risk ratio rather than the log odds ratio), though it may also be useful to include the scale on which inference is performed. For example, one may have computed the log risk ratio in order to compute its standard error and p-value for the test that it is equal to 0 (i.e., that the risk ratio is equal to 1), which can be reported, but the critical clinically useful measure is the risk ratio itself and its CI.
+
+## Reporting software
+
+In order to ensure results are replicable, one must report the specific software used and the version of that software. For example, one must specify that they are running the analysis in R (including the specific version of R used) and must name and cite all R packages used in the analysis (and their version). Instructions for citing a specific R package can be found by running `citation("pkg_name")`, e.g., `citation("MatchIt")`. In some cases, using a specific function in an R package has additional citation requirements. For example, when using optimal pair matching in `MatchIt`, in addition to citing `MatchIt`, one must also cite `optmatch`, which `MatchIt` uses under the hood. This is explained the documentation for using optimal pair matching with `MatchIt`, which can be accessed using `?method_optimal`.
+
+Often, the packages cited will include `MatchIt` or `WeightIt` for performing the matching or weighting, any package mentioned in the documentation page for the specific method used, `cobalt` for assessing balance, and `marginaleffects` for estimating the treatment effect. For survival outcomes, the `survival` package might be used. Citing packages in critical for ensuring the work done by package authors is correctly attributed. It also ensures someone attempting to replicate one's work can do so without having to infer the software used for the analysis.
 
 ## Reporting limitations
 
