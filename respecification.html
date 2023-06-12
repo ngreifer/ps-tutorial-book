@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.340">
+<meta name="generator" content="quarto-1.3.361">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -79,7 +79,8 @@ div.csl-indent {
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -98,7 +99,7 @@ div.csl-indent {
       <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./running.html">Running the Analysis</a></li><li class="breadcrumb-item"><a href="./respecification.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Respecification</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -266,13 +267,19 @@ div.csl-indent {
 <li><p>Poor representativeness: use a method that strongly respects the estimand (e.g., entropy balancing, not cardinality matching, caliper matching, or overlap weighting); remove a caliper or exact matching restriction</p></li>
 </ul>
 <p>Having broad experience with the variety of matching and weighting methods available makes this process quick. Fortunately, the software we recommend and use in the examples, the R packages <code>MatchIt</code> and <code>WeightIt</code>, make switching between various specifications easy.</p>
-<p>To avoid endless respecification, it is a good idea to use methods design to optimize the evaluation criteria in a simple way. Often, the oldest and most commonly used methods are the worst in that that they perform poorly and require respecification to get right. For example, 1:1 propensity score matching with a caliper is the most commonly used propensity score method in medical research, but it is widely known to have many problems: 1) it hampers representativeness because the caliper discards units from both treatment groups <span class="citation" data-cites="rosenbaumBiasDueIncomplete1985">(<a href="references.html#ref-rosenbaumBiasDueIncomplete1985" role="doc-biblioref">Rosenbaum and Rubin 1985</a>)</span>, 2) it reduces the effective sample size by dropping many units from the sample, 3) it can make balance worse when used thoughtlessly <span class="citation" data-cites="kingWhyPropensityScores2019">(<a href="references.html#ref-kingWhyPropensityScores2019" role="doc-biblioref">King and Nielsen 2019</a>)</span>, and 4) it has many specification parameters that need to be adjusted arbitrarily (e.g., the propensity score model, caliper width, matching order, etc.). Another popular but old method, propensity score weighting, also has many problems, including inability to achieve balance, low ESS due to extreme weights, and reduced representativeness when measures are taken to rectify the other problems.</p>
-<p>Methods that consistently perform well include entropy balancing and energy balancing, as these ensure balance and representativeness without requiring major respecification. Entropy balancing guarantees exact balance as measure by the SMD, but it may be necessary to include other terms to fully balance the covariate distributions. Energy balance balances the full covariate distribution, but can decrease ESS (though the trade-off between them can be managed with a single parameter). Though these methods are newer, they are beginning to see use in medical research <span class="citation" data-cites="bramante2022 sharma2023">(e.g., <a href="references.html#ref-bramante2022" role="doc-biblioref">Bramante et al. 2022</a>; <a href="references.html#ref-sharma2023" role="doc-biblioref">Sharma et al. 2023</a>)</span> and should be the first line of defense when adjusting for confounders over poorly performing but older methods.</p>
+<p>To avoid endless respecification, it is a good idea to use methods design to optimize the evaluation criteria in a simple way. Often, the oldest and most commonly used methods are the worst in that they perform poorly and require manual respecification to get right. For example, 1:1 propensity score matching with a caliper is the most commonly used propensity score method in medical research, but it is widely known to have many problems: 1) it hampers representativeness because the caliper discards units from both treatment groups <span class="citation" data-cites="rosenbaumBiasDueIncomplete1985">(<a href="references.html#ref-rosenbaumBiasDueIncomplete1985" role="doc-biblioref">Rosenbaum and Rubin 1985</a>)</span>, 2) it reduces the effective sample size by dropping many units from the sample, 3) it can make balance worse when used thoughtlessly <span class="citation" data-cites="kingWhyPropensityScores2019">(<a href="references.html#ref-kingWhyPropensityScores2019" role="doc-biblioref">King and Nielsen 2019</a>)</span>, and 4) it has many specification parameters that need to be adjusted arbitrarily (e.g., the propensity score model, caliper width, matching order, etc.). Another popular but old method, propensity score weighting, also has many problems, including inability to achieve balance, low ESS due to extreme weights, and reduced representativeness when measures are taken to rectify the other problems.</p>
+<p>Methods that consistently perform well include entropy balancing <span class="citation" data-cites="hainmuellerEntropyBalancingCausal2012">(<a href="references.html#ref-hainmuellerEntropyBalancingCausal2012" role="doc-biblioref">Hainmueller 2012</a>)</span> and energy balancing <span class="citation" data-cites="hulingEnergyBalancingCovariate2022">(<a href="references.html#ref-hulingEnergyBalancingCovariate2022" role="doc-biblioref">Huling and Mak, n.d.</a>)</span>, as these ensure balance and representativeness without requiring major respecification. Entropy balancing guarantees exact balance as measured by the SMD, but it may be necessary to include other terms to fully balance the covariate distributions. Energy balancing balances the full covariate distribution, but can decrease ESS (though the trade-off between them can be managed with a single parameter). Though these methods are newer, they are beginning to see use in medical research <span class="citation" data-cites="bramante2022 sharma2023">(e.g., <a href="references.html#ref-bramante2022" role="doc-biblioref">Bramante et al. 2022</a>; <a href="references.html#ref-sharma2023" role="doc-biblioref">Sharma et al. 2023</a>)</span> and should be the first line of defense when adjusting for confounders over poorly performing but older and more familiar methods.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-bramante2022" class="csl-entry" role="listitem">
 Bramante, Carolyn T., Steven G. Johnson, Victor Garcia, Michael D. Evans, Jeremy Harper, Kenneth J. Wilkins, Jared D. Huling, et al. 2022. <span>“Diabetes Medications and Associations with Covid-19 Outcomes in the N3C Database: A National Retrospective Cohort Study.”</span> Edited by Surasak Saokaew. <em>PLOS ONE</em> 17 (11): e0271574. <a href="https://doi.org/10.1371/journal.pone.0271574">https://doi.org/10.1371/journal.pone.0271574</a>.
+</div>
+<div id="ref-hainmuellerEntropyBalancingCausal2012" class="csl-entry" role="listitem">
+Hainmueller, J. 2012. <span>“Entropy Balancing for Causal Effects: A Multivariate Reweighting Method to Produce Balanced Samples in Observational Studies.”</span> <em>Political Analysis</em> 20 (1): 25–46. <a href="https://doi.org/10.1093/pan/mpr025">https://doi.org/10.1093/pan/mpr025</a>.
+</div>
+<div id="ref-hulingEnergyBalancingCovariate2022" class="csl-entry" role="listitem">
+Huling, Jared D., and Simon Mak. n.d. <span>“Energy Balancing of Covariate Distributions.”</span> <a href="https://doi.org/10.48550/arXiv.2004.13962">https://doi.org/10.48550/arXiv.2004.13962</a>.
 </div>
 <div id="ref-kingWhyPropensityScores2019" class="csl-entry" role="listitem">
 King, Gary, and Richard Nielsen. 2019. <span>“Why Propensity Scores Should Not Be Used for Matching.”</span> <em>Political Analysis</em>, May, 1–20. <a href="https://doi.org/10.1017/pan.2019.11">https://doi.org/10.1017/pan.2019.11</a>.

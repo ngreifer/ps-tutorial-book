@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.340">
+<meta name="generator" content="quarto-1.3.361">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="author" content="Noah Greifer">
+
 <title>Propensity Score Analysis for Medical Research: A Primer and Tutorial - 11&nbsp; Weighting</title>
 <style>
 code{white-space: pre-wrap;}
@@ -54,6 +57,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
@@ -73,7 +77,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -89,27 +94,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
+
+
 </head>
+
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
       <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./example.html">Example</a></li><li class="breadcrumb-item"><a href="./ex-weight.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Weighting</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Propensity Score Analysis for Medical Research: A Primer and Tutorial</a> 
         <div class="sidebar-tools-main">
@@ -124,7 +139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Introduction</span></a>
@@ -144,8 +159,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conceptual.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conceptual aspects of the analysis</span></span></a>
@@ -188,7 +203,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./reporting.html" class="sidebar-item-text sidebar-link">
@@ -203,8 +218,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./ex-match.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Matching</span></span></a>
@@ -217,7 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conclusion.html" class="sidebar-item-text sidebar-link">
@@ -231,14 +246,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
 <h1 class="title"><span id="sec-ex-weighting" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Weighting</span></span></h1>
 </div>
 
@@ -252,17 +271,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><p>Next, we’ll use weighting to target the ATE of RHC on death<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. We’ll use the <code>WeightIt</code> package, which provides an interface to many different weighting methods and has utilities for assessing the quality of the weights. For more details on this procedure, including effect estimation, see the <code>WeightIt</code> <a href="https://ngreifer.github.io/WeightIt/">documentation</a> and vignettes.</p>
+</header>
+
+<p>Next, we’ll use weighting to target the ATE of RHC on death<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. We’ll use the <code>WeightIt</code> package, which provides an interface to many different weighting methods and has utilities for assessing the quality of the weights. For more details on this procedure, including effect estimation, see the <code>WeightIt</code> <a href="https://ngreifer.github.io/WeightIt/">documentation</a> and vignettes.</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://ngreifer.github.io/WeightIt/">"WeightIt"</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"WeightIt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>First we’ll perform the most common weighting method, inverse probability weighting using a logistic regression propensity score.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">w1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ngreifer.github.io/WeightIt/reference/weightit.html">weightit</a></span><span class="op">(</span><span class="va">RHC</span> <span class="op">~</span> <span class="va">aps1</span> <span class="op">+</span> <span class="va">meanbp1</span> <span class="op">+</span> <span class="va">pafi1</span> <span class="op">+</span> <span class="va">crea1</span> <span class="op">+</span> <span class="va">hema1</span> <span class="op">+</span></span>
-<span>                <span class="va">paco21</span> <span class="op">+</span> <span class="va">surv2md1</span> <span class="op">+</span> <span class="va">resp1</span> <span class="op">+</span> <span class="va">card</span> <span class="op">+</span> <span class="va">edu</span> <span class="op">+</span></span>
-<span>                <span class="va">age</span> <span class="op">+</span> <span class="va">race</span> <span class="op">+</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">rhc</span>,</span>
-<span>               estimand <span class="op">=</span> <span class="st">"ATE"</span><span class="op">)</span></span>
-<span><span class="va">w1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>w1 <span class="ot">&lt;-</span> <span class="fu">weightit</span>(RHC <span class="sc">~</span> aps1 <span class="sc">+</span> meanbp1 <span class="sc">+</span> pafi1 <span class="sc">+</span> crea1 <span class="sc">+</span> hema1 <span class="sc">+</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                paco21 <span class="sc">+</span> surv2md1 <span class="sc">+</span> resp1 <span class="sc">+</span> card <span class="sc">+</span> edu <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                age <span class="sc">+</span> race <span class="sc">+</span> sex, <span class="at">data =</span> rhc,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">estimand =</span> <span class="st">"ATE"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>w1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>A weightit object
  - method: "glm" (propensity score weighting with GLM)
@@ -275,7 +296,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We’ll use <code>bal.tab()</code> again to assess balance.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">bal.tab</span><span class="op">(</span><span class="va">w1</span>, stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"m"</span>, <span class="st">"ks"</span><span class="op">)</span>, binary <span class="op">=</span> <span class="st">"std"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bal.tab</span>(w1, <span class="at">stats =</span> <span class="fu">c</span>(<span class="st">"m"</span>, <span class="st">"ks"</span>), <span class="at">binary =</span> <span class="st">"std"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Balance Measures
                Type Diff.Adj KS.Adj
@@ -304,11 +325,11 @@ Adjusted   2657.85 1509.52</code></pre>
 </div>
 <p>Balance look excellent using standard inverse probability weighting, and normally we might stop here. However, we’ll carry on in search of even better balance. We’ll use entropy balancing, which guarantees exact balance on the means of included covariates (but may not balance the rest of the covariate distributions).</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">w2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ngreifer.github.io/WeightIt/reference/weightit.html">weightit</a></span><span class="op">(</span><span class="va">RHC</span> <span class="op">~</span> <span class="va">aps1</span> <span class="op">+</span> <span class="va">meanbp1</span> <span class="op">+</span> <span class="va">pafi1</span> <span class="op">+</span> <span class="va">crea1</span> <span class="op">+</span> <span class="va">hema1</span> <span class="op">+</span></span>
-<span>                <span class="va">paco21</span> <span class="op">+</span> <span class="va">surv2md1</span> <span class="op">+</span> <span class="va">resp1</span> <span class="op">+</span> <span class="va">card</span> <span class="op">+</span> <span class="va">edu</span> <span class="op">+</span></span>
-<span>                <span class="va">age</span> <span class="op">+</span> <span class="va">race</span> <span class="op">+</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">rhc</span>,</span>
-<span>               estimand <span class="op">=</span> <span class="st">"ATE"</span>, method <span class="op">=</span> <span class="st">"entropy"</span><span class="op">)</span></span>
-<span><span class="va">w2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>w2 <span class="ot">&lt;-</span> <span class="fu">weightit</span>(RHC <span class="sc">~</span> aps1 <span class="sc">+</span> meanbp1 <span class="sc">+</span> pafi1 <span class="sc">+</span> crea1 <span class="sc">+</span> hema1 <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                paco21 <span class="sc">+</span> surv2md1 <span class="sc">+</span> resp1 <span class="sc">+</span> card <span class="sc">+</span> edu <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                age <span class="sc">+</span> race <span class="sc">+</span> sex, <span class="at">data =</span> rhc,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">estimand =</span> <span class="st">"ATE"</span>, <span class="at">method =</span> <span class="st">"entropy"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>w2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>A weightit object
  - method: "ebal" (entropy balancing)
@@ -318,9 +339,9 @@ Adjusted   2657.85 1509.52</code></pre>
  - estimand: ATE
  - covariates: aps1, meanbp1, pafi1, crea1, hema1, paco21, surv2md1, resp1, card, edu, age, race, sex</code></pre>
 </div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">bal.tab</span><span class="op">(</span><span class="va">w2</span>, binary <span class="op">=</span> <span class="st">"std"</span>, int <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>        poly <span class="op">=</span> <span class="fl">4</span>, thresholds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>m <span class="op">=</span> <span class="fl">.05</span><span class="op">)</span>,</span>
-<span>        disp.bal.tab <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bal.tab</span>(w2, <span class="at">binary =</span> <span class="st">"std"</span>, <span class="at">int =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">poly =</span> <span class="dv">4</span>, <span class="at">thresholds =</span> <span class="fu">c</span>(<span class="at">m =</span> .<span class="dv">05</span>),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">disp.bal.tab =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Balance tally for mean differences
                     count
@@ -339,11 +360,11 @@ Adjusted   3160.98 1542.59</code></pre>
 </div>
 <p>Here we included interactions and up to fourth powers of the covariates to assess balance more fully on the covariate distributions; although balance after entropy balancing was excellent, it might still be possible to improve on it. We could request that entropy balancing additionally balance specific powers of the covariates using the <code>moments</code> and <code>int</code> arguments. Instead, we’ll try energy balancing, which tends to have excellent performance at balancing the entire covariate distribution and doesn’t require manually specifying components to balance (but it can be a bit slow on larger datasets).</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">w3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ngreifer.github.io/WeightIt/reference/weightit.html">weightit</a></span><span class="op">(</span><span class="va">RHC</span> <span class="op">~</span> <span class="va">aps1</span> <span class="op">+</span> <span class="va">meanbp1</span> <span class="op">+</span> <span class="va">pafi1</span> <span class="op">+</span> <span class="va">crea1</span> <span class="op">+</span> <span class="va">hema1</span> <span class="op">+</span></span>
-<span>                <span class="va">paco21</span> <span class="op">+</span> <span class="va">surv2md1</span> <span class="op">+</span> <span class="va">resp1</span> <span class="op">+</span> <span class="va">card</span> <span class="op">+</span> <span class="va">edu</span> <span class="op">+</span></span>
-<span>                <span class="va">age</span> <span class="op">+</span> <span class="va">race</span> <span class="op">+</span> <span class="va">sex</span>, data <span class="op">=</span> <span class="va">rhc</span>,</span>
-<span>               estimand <span class="op">=</span> <span class="st">"ATE"</span>, method <span class="op">=</span> <span class="st">"energy"</span><span class="op">)</span></span>
-<span><span class="va">w3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>w3 <span class="ot">&lt;-</span> <span class="fu">weightit</span>(RHC <span class="sc">~</span> aps1 <span class="sc">+</span> meanbp1 <span class="sc">+</span> pafi1 <span class="sc">+</span> crea1 <span class="sc">+</span> hema1 <span class="sc">+</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                paco21 <span class="sc">+</span> surv2md1 <span class="sc">+</span> resp1 <span class="sc">+</span> card <span class="sc">+</span> edu <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                age <span class="sc">+</span> race <span class="sc">+</span> sex, <span class="at">data =</span> rhc,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">estimand =</span> <span class="st">"ATE"</span>, <span class="at">method =</span> <span class="st">"energy"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>w3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>A weightit object
  - method: "energy" (energy balancing)
@@ -353,9 +374,9 @@ Adjusted   3160.98 1542.59</code></pre>
  - estimand: ATE
  - covariates: aps1, meanbp1, pafi1, crea1, hema1, paco21, surv2md1, resp1, card, edu, age, race, sex</code></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">bal.tab</span><span class="op">(</span><span class="va">w3</span>, binary <span class="op">=</span> <span class="st">"std"</span>, int <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>        poly <span class="op">=</span> <span class="fl">4</span>, thresholds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>m <span class="op">=</span> <span class="fl">.05</span><span class="op">)</span>,</span>
-<span>        disp.bal.tab <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bal.tab</span>(w3, <span class="at">binary =</span> <span class="st">"std"</span>, <span class="at">int =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">poly =</span> <span class="dv">4</span>, <span class="at">thresholds =</span> <span class="fu">c</span>(<span class="at">m =</span> .<span class="dv">05</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">disp.bal.tab =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Balance tally for mean differences
                     count
@@ -375,23 +396,23 @@ Adjusted   2522.88 1212.94</code></pre>
 <p>We find that energy balancing was successful at balancing the full covariate distribution. We’ll carry on with our energy balancing results.</p>
 <p>To estimate the treatment effect, we will again use g-computation, aided by the <code>marginaleffects</code> package.</p>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://vincentarelbundock.github.io/marginaleffects/">"marginaleffects"</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"marginaleffects"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>First, we need to extract the weights from our <code>weightit</code> object, and then we fit the outcome model. Remember, this model is not to be interpreted.</p>
 <div class="cell">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rhc</span><span class="op">$</span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="va">w3</span><span class="op">$</span><span class="va">weights</span></span>
-<span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">death</span> <span class="op">~</span> <span class="va">RHC</span> <span class="op">*</span> <span class="op">(</span><span class="va">aps1</span> <span class="op">+</span> <span class="va">meanbp1</span> <span class="op">+</span> <span class="va">pafi1</span> <span class="op">+</span> <span class="va">crea1</span> <span class="op">+</span> <span class="va">hema1</span> <span class="op">+</span></span>
-<span>                            <span class="va">paco21</span> <span class="op">+</span> <span class="va">surv2md1</span> <span class="op">+</span> <span class="va">resp1</span> <span class="op">+</span> <span class="va">card</span> <span class="op">+</span> <span class="va">edu</span> <span class="op">+</span></span>
-<span>                            <span class="va">age</span> <span class="op">+</span> <span class="va">race</span> <span class="op">+</span> <span class="va">sex</span><span class="op">)</span>,</span>
-<span>           data <span class="op">=</span> <span class="va">rhc</span>, weights <span class="op">=</span> <span class="va">weights</span>, family <span class="op">=</span> <span class="va">quasibinomial</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>rhc<span class="sc">$</span>weights <span class="ot">&lt;-</span> w3<span class="sc">$</span>weights</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">glm</span>(death <span class="sc">~</span> RHC <span class="sc">*</span> (aps1 <span class="sc">+</span> meanbp1 <span class="sc">+</span> pafi1 <span class="sc">+</span> crea1 <span class="sc">+</span> hema1 <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                            paco21 <span class="sc">+</span> surv2md1 <span class="sc">+</span> resp1 <span class="sc">+</span> card <span class="sc">+</span> edu <span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                            age <span class="sc">+</span> race <span class="sc">+</span> sex),</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">data =</span> rhc, <span class="at">weights =</span> weights, <span class="at">family =</span> quasibinomial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next we’ll compute the marginal predictions and their ratio. Here we’ll request robust standard errors, which are generally appropriate for weighting for the ATE (though they may be conservative).</p>
 <div class="cell">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Marginal predictions</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/marginaleffects/man/predictions.html">avg_predictions</a></span><span class="op">(</span><span class="va">fit</span>, variables <span class="op">=</span> <span class="st">"RHC"</span>,</span>
-<span>                wts <span class="op">=</span> <span class="st">"weights"</span>,</span>
-<span>                vcov <span class="op">=</span> <span class="st">"HC3"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Marginal predictions</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">avg_predictions</span>(fit, <span class="at">variables =</span> <span class="st">"RHC"</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">wts =</span> <span class="st">"weights"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">vcov =</span> <span class="st">"HC3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  RHC Estimate Pr(&gt;|z|) 2.5 % 97.5 %
@@ -400,12 +421,12 @@ Adjusted   2522.88 1212.94</code></pre>
 
 Columns: RHC, estimate, p.value, conf.low, conf.high </code></pre>
 </div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Risk ratio</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/marginaleffects/man/comparisons.html">avg_comparisons</a></span><span class="op">(</span><span class="va">fit</span>, variables <span class="op">=</span> <span class="st">"RHC"</span>,</span>
-<span>                wts <span class="op">=</span> <span class="st">"weights"</span>,</span>
-<span>                vcov <span class="op">=</span> <span class="st">"HC3"</span>,</span>
-<span>                comparison <span class="op">=</span> <span class="st">"lnratioavg"</span>,</span>
-<span>                transform <span class="op">=</span> <span class="st">"exp"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Risk ratio</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">avg_comparisons</span>(fit, <span class="at">variables =</span> <span class="st">"RHC"</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">wts =</span> <span class="st">"weights"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">vcov =</span> <span class="st">"HC3"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">comparison =</span> <span class="st">"lnratioavg"</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">transform =</span> <span class="st">"exp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  Term              Contrast Estimate Pr(&gt;|z|) 2.5 % 97.5 %
@@ -418,11 +439,16 @@ Columns: term, contrast, estimate, p.value, conf.low, conf.high, predicted, pred
 <p>Again, it is useful to report balance to demonstrate the performance of the weights. Here, we could say that the largest SMD for the covariates was .004 and the largest KS statistic was .029, and the SMDs for all powers of the covariates up to 4 and two-way interactions were less than .021. The specific values for each covariate would not be required because this summary indicates that all covariates were balanced more than adequately.</p>
 
 
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
 <ol>
 <li id="fn1"><p>Note that the ATE can be targeted by matching (not 1:1 matching, but other methods) and the ATT and other estimands can be targeted by weighting; don’t think matching is for the ATT and weighting is for the ATE. Use whichever method yields the best performance and would be best understood by your audience.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Note, in this case, the conclusions would have been the same regardless of which weighting method we moved forward with.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -769,7 +795,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
       <a href="./ex-match.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Matching</span></span>
       </a>          
