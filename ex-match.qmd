@@ -75,7 +75,7 @@ fit <- glm(death ~ RHC * (aps1 + meanbp1 + pafi1 + crea1 + hema1 +
            data = md, weights = weights, family = quasibinomial)
 ```
 
-There is no value in examining this outcome model; the coefficients are uninterpretable and provide no information about the effects of the included predictors on the outcome. This model can be arbitrarily complicated and is not designed to be a useful predictive model for the outcome. Its sole purpose is to increase the precision of the resulting effect estimate. We will compute the marginal risks under treatment for each group and compute the risk ratio using g-computation. Here we specify arguments to `avg_predictions()` to use cluster-robust SEs that account for the matching and restrict the data to the treated units because we are estimating the ATT[^ex-match-3].
+There is no value in examining this outcome model; the coefficients are uninterpretable and provide no information about the effects of the included predictors on the outcome [@westreichTableFallacyPresenting2013]. This model can be arbitrarily complicated and is not designed to be a useful predictive model for the outcome. Its sole purpose is to increase the precision of the resulting effect estimate. We will compute the marginal risks under treatment for each group and compute the risk ratio using g-computation. Here we specify arguments to `avg_predictions()` to use cluster-robust SEs that account for the matching and restrict the data to the treated units because we are estimating the ATT[^ex-match-3].
 
 [^ex-match-3]: In practice, it is okay to omit the `newdata` argument, especially when balance is excellent.
 

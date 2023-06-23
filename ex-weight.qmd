@@ -29,7 +29,7 @@ We'll use `bal.tab()` again to assess balance.
 bal.tab(w1, stats = c("m", "ks"), binary = "std")
 ```
 
-Balance look excellent using standard inverse probability weighting, and normally we might stop here. However, we'll carry on in search of even better balance. We'll use entropy balancing, which guarantees exact balance on the means of included covariates (but may not balance the rest of the covariate distributions).
+Balance looks excellent using standard inverse probability weighting, and normally we might stop here. However, we'll carry on in search of even better balance. We'll use entropy balancing, which guarantees exact balance on the means of included covariates (but may not balance the rest of the covariate distributions).
 
 ```{r}
 w2 <- weightit(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
@@ -43,7 +43,7 @@ bal.tab(w2, binary = "std", int = TRUE,
         disp.bal.tab = FALSE)
 ```
 
-Here we included interactions and up to fourth powers of the covariates to assess balance more fully on the covariate distributions; although balance after entropy balancing was excellent, it might still be possible to improve on it. We could request that entropy balancing additionally balance specific powers of the covariates using the `moments` and `int` arguments. Instead, we'll try energy balancing, which tends to have excellent performance at balancing the entire covariate distribution and doesn't require manually specifying components to balance (but it can be a bit slow on larger datasets).
+Here we included interactions and up to fourth powers of the covariates to assess balance more fully on the covariate distributions; although balance after entropy balancing was excellent, it might still be possible to improve on it. We could request that entropy balancing additionally balances specific powers of the covariates using the `moments` and `int` arguments. Instead, we'll try energy balancing, which tends to have excellent performance at balancing the entire covariate distribution and doesn't require manually specifying components to balance (but it can be a bit slow on larger datasets).
 
 ```{r}
 w3 <- weightit(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
@@ -68,8 +68,10 @@ library("marginaleffects")
 First, we need to extract the weights from our `weightit` object, and then we fit the outcome model. Remember, this model is not to be interpreted.
 
 ```{r}
+# Bring the weights into the dataset
 rhc$weights <- w3$weights
 
+# Fit the outcome model
 fit <- glm(death ~ RHC * (aps1 + meanbp1 + pafi1 + crea1 + hema1 +
                             paco21 + surv2md1 + resp1 + card + edu +
                             age + race + sex),
@@ -92,7 +94,7 @@ avg_comparisons(fit, variables = "RHC",
                 transform = "exp")
 ```
 
-Here find evidence of a positive risk ratio overall, indicating that on average, receiving RHC increases the risk of death by 5%[^ex-weight-2].
+Here we find evidence of a positive risk ratio overall, indicating that on average, receiving RHC increases the risk of death by 5%[^ex-weight-2].
 
 [^ex-weight-2]: Note, in this case, the conclusions would have been the same regardless of which weighting method we moved forward with.
 

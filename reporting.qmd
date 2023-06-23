@@ -1,6 +1,6 @@
 # Reporting the Analysis {#sec-reporting}
 
-Reporting the analysis accurately and completely is critical to ensuring the audience can correctly interpret the results of a study and replicate the methodology. Failure to report the main analytic strategy is commonly noted on systematic reviews of the use of propensity score analysis in medical research. The main aspects to report are the balancing method and its performance, the procedure for estimating the effect, the effect itself, and limitations of the conclusions.
+Reporting the analysis accurately and completely is critical to ensuring the audience can correctly interpret the results of a study and replicate the methodology. Failure to report the main analytic strategy is commonly noted on systematic reviews of the use of propensity score analysis in medical research [@arguellesSystematicReviewPropensity2022; @zakrisonSystematicReviewPropensity2018]. The main aspects to report are the balancing method and its performance, the procedure for estimating the effect, the effect itself, and limitations of the conclusions.
 
 There are often constraints on how much space one can use to describe results and methods, so it is okay to summarize some of this information, though ideally it should be available in its entirety somewhere in the article, possibly in supplementary materials.
 
@@ -16,7 +16,7 @@ The balancing method is central to the validity of the analysis, so its nature a
 
 -   The covariate balance results of the conditioning procedure. Balance is often reported using a table or plot (e.g., a love/dot plot) that contains the balance statistics (e.g., SMD and KS statistic) for each covariate. Balance should also be summarized in a way that provides a more complete story than the univariate statistics computed on the original variables can tell, e.g., by mentioning the worst balance for all squares, cubes and fourth powers of the covariates and all two-way interactions (individual balance statistics on these do not need to be reported, but demonstrating that balance is achieved on these aspects of the covariate distribution lends more credibility to the results). For example, entropy balancing guarantees SMDs of zero on all covariate and requested transformations thereof; simply mentioning this fact and that entropy balancing was successful provides just as much information as presenting SMDs for each covariate individually.
 
--   The effective sample size of the adjusted sample. This should be reported for each treatment group separately. A nonsignificant result found in a sample with a low ESS would be interpreted exactly as it would be in an under-powered randomized trial, and it is important that readers understand the sample size context when judging the results off a study. The raw sample size does not provide this information; for example, weighting does not change the raw sample size but can dramatically reduce the effective sample size, and readers must be aware of that.
+-   The effective sample size of the adjusted sample. This should be reported for each treatment group separately. A nonsignificant result found in a sample with a low ESS would be interpreted exactly as it would be in any under-powered study, and it is important that readers understand the sample size context when judging the results of a study. The raw sample size does not provide this information; for example, weighting does not change the raw sample size but can dramatically reduce the effective sample size, and readers must be aware of that.
 
 Some of these aspects might be unfamiliar to a reader, and so it is useful to include a short description of them, especially if they are a newer method or would be confusing without proper context. For example, a sentence describing the use of entropy balancing might go as follows:
 
@@ -26,7 +26,7 @@ A footnote describing the ESS might go as follows:
 
 > The effective sample size in an estimate of the size of a hypothetical unweighted sample that carries the same precision of our weighted sample and reflects the loss in precision due to weighting, analogous to discarding units when matching.
 
-Of course, more detail on the methods is always better, but word count restrictions should not be an excuse for incompletely reporting the most critical part of a study's methodology.
+Of course, more detail on the methods is always better, and word count restrictions should not be an excuse for incompletely reporting the most critical part of a study's methodology.
 
 ## Reporting the effect estimation procedure
 
@@ -52,4 +52,4 @@ Often, the packages cited will include `MatchIt` or `WeightIt` for performing th
 
 In order to provide context for the estimate and prevent misinterpretations, it is important to report the limitations of the study. Limitations often come in the form of assumptions that cannot be verified that would change the interpretation of the results if false. For example, if it is impossible to verify that all confounders of the treatment and outcome have been collected and adjusted for, the estimate cannot be interpreted as causal and may be biased for the true causal effect, in which case the inability to make a definitive causal claim is a limitation. If the most useful or desired estimand was the ATE, but aspects of the sample and analysis required that the ATO be estimated instead to preserve precision or achieve balance, the inability to generalize the effect to the intended population would be a limitation.
 
-These are in addition to the limitations you would report even in a clinical trial, e.g., with respect to measurement error in the treatment, covariates, or outcome, timing of the outcome, treatment compliance, missing data, etc. The limitations section fo a paper does not have to be long but anticipating criticism of the paper by acknowledging its limitations can go a long way in getting it accepted by reviewers.
+These are in addition to the limitations you would report even in a clinical trial, e.g., with respect to measurement error in the treatment, covariates, or outcome, timing of the outcome, treatment compliance, missing data, etc. The limitations section of a paper does not have to be long but anticipating criticism of the paper by acknowledging its limitations can go a long way in getting it accepted by reviewers.

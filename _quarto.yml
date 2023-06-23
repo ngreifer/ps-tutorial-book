@@ -9,8 +9,9 @@ book:
   chapters:
     - index.qmd
     - planning.qmd
-    - part: running.qmd
+    - part: "Running the Analysis"
       chapters:
+        - running.qmd
         - conceptual.qmd
         - conditioning.qmd
         - assessing.qmd
@@ -19,8 +20,9 @@ book:
         - sensitivity.qmd
         - advanced.qmd
     - reporting.qmd
-    - part: example.qmd
+    - part: "Example"
       chapters:
+        - example.qmd
         - ex-match.qmd
         - ex-weight.qmd
     - conclusion.qmd

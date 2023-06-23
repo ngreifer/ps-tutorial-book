@@ -1,6 +1,6 @@
-# Example {#sec-example}
+# Example Data {#sec-example}
 
-Below, we'll demonstrate how to perform matching and weighting in R. We'll use the famous right-heart catheterization (RHC) dataset analyzed in XXX, which examines the effect of RHC on death by 60 days. @connorsEffectivenessRightHeart1996a used 1:1 matching with a caliper to estimate the effect, which corresponds to an ATO (though they provided no justification for this choice of estimand). It turns out this matters quite a bit; the ATT, ATC, and ATE differ from each other and lead to different conclusions about the risk of RHC.
+Below, we'll demonstrate how to perform matching and weighting in R. We'll use the famous right-heart catheterization (RHC) dataset analyzed in @connorsEffectivenessRightHeart1996a, which examines the effect of RHC on death by 60 days. @connorsEffectivenessRightHeart1996a used 1:1 matching with a caliper to estimate the effect, which corresponds to an ATO (though they provided no justification for this choice of estimand). It turns out this matters quite a bit; the ATT, ATC, and ATE differ from each other and lead to different conclusions about the risk of RHC.
 
 The choice of estimand depends on the policy implied by the analysis. Are we interested in examining whether RHC is harmful and should be withheld from patients receiving it? If so, we are interested in the ATT of RHC. Are we interested in examining whether RHC would benefit patients not receiving it? If so, we are interested in the ATC of RHC. Are we interested in the average effect of RHC for the whole study population? If so, we are interested in the ATE of RHC.
 
@@ -60,4 +60,4 @@ bal.tab(RHC ~ aps1 + meanbp1 + pafi1 + crea1 + hema1 +
         disp.bal.tab = FALSE)
 ```
 
-We can see that many covariates and their transformations (interactions, squares, and cubes) are not balanced based on our criteria for SMDs or KS statistics. We'll use matching and weighting below to attempt to achieve balance on the covariates.
+We can see that many covariates and their transformations (interactions, squares, and cubes) are not balanced based on our criteria for SMDs or KS statistics. We'll use matching and weighting in the next sections to attempt to achieve balance on the covariates.
