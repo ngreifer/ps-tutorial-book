@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.361">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Noah Greifer">
 
-<title>Propensity Score Analysis for Medical Research: A Primer and Tutorial - 8&nbsp; Advanced topics</title>
+<title>Propensity Score Analysis for Medical Research: A Primer and Tutorial - 9&nbsp; Advanced topics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -98,7 +98,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./running.html">Running the Analysis</a></li><li class="breadcrumb-item"><a href="./advanced.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced topics</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./running.html">Running the Analysis</a></li><li class="breadcrumb-item"><a href="./advanced.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Advanced topics</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -140,7 +140,7 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./running.html" class="sidebar-item-text sidebar-link">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
  <span class="menu-text">Running the Analysis</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -149,44 +149,50 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./running.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basic Steps</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./conceptual.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conceptual aspects of the analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conceptual aspects of the analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conditioning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conditioning: matching and weighting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Conditioning: matching and weighting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./assessing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Assessing quality</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Assessing quality</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./respecification.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Respecification</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Respecification</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./estimating.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Estimating the treatment effect</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Estimating the treatment effect</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./sensitivity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./advanced.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced topics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Advanced topics</span></span></a>
   </div>
 </li>
       </ul>
@@ -194,12 +200,12 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./reporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Reporting the Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Reporting the Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./example.html" class="sidebar-item-text sidebar-link">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
  <span class="menu-text">Example</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -208,14 +214,20 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./example.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Example Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./ex-match.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Matching</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Matching</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./ex-weight.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Weighting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Weighting</span></span></a>
   </div>
 </li>
       </ul>
@@ -223,7 +235,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -242,14 +254,14 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#subgroup-analysis" id="toc-subgroup-analysis" class="nav-link active" data-scroll-target="#subgroup-analysis"><span class="header-section-number">8.1</span> Subgroup analysis</a></li>
-  <li><a href="#multi-category-and-continuous-treatments" id="toc-multi-category-and-continuous-treatments" class="nav-link" data-scroll-target="#multi-category-and-continuous-treatments"><span class="header-section-number">8.2</span> Multi-category and continuous treatments</a>
+  <li><a href="#subgroup-analysis" id="toc-subgroup-analysis" class="nav-link active" data-scroll-target="#subgroup-analysis"><span class="header-section-number">9.1</span> Subgroup analysis</a></li>
+  <li><a href="#multi-category-and-continuous-treatments" id="toc-multi-category-and-continuous-treatments" class="nav-link" data-scroll-target="#multi-category-and-continuous-treatments"><span class="header-section-number">9.2</span> Multi-category and continuous treatments</a>
   <ul class="collapse">
-  <li><a href="#multi-category-treatments" id="toc-multi-category-treatments" class="nav-link" data-scroll-target="#multi-category-treatments"><span class="header-section-number">8.2.1</span> Multi-category treatments</a></li>
-  <li><a href="#continuous-treatments" id="toc-continuous-treatments" class="nav-link" data-scroll-target="#continuous-treatments"><span class="header-section-number">8.2.2</span> Continuous treatments</a></li>
+  <li><a href="#multi-category-treatments" id="toc-multi-category-treatments" class="nav-link" data-scroll-target="#multi-category-treatments"><span class="header-section-number">9.2.1</span> Multi-category treatments</a></li>
+  <li><a href="#continuous-treatments" id="toc-continuous-treatments" class="nav-link" data-scroll-target="#continuous-treatments"><span class="header-section-number">9.2.2</span> Continuous treatments</a></li>
   </ul></li>
-  <li><a href="#longitudinalsequential-treatments" id="toc-longitudinalsequential-treatments" class="nav-link" data-scroll-target="#longitudinalsequential-treatments"><span class="header-section-number">8.3</span> Longitudinal/sequential treatments</a></li>
-  <li><a href="#missing-data" id="toc-missing-data" class="nav-link" data-scroll-target="#missing-data"><span class="header-section-number">8.4</span> Missing data</a></li>
+  <li><a href="#longitudinalsequential-treatments" id="toc-longitudinalsequential-treatments" class="nav-link" data-scroll-target="#longitudinalsequential-treatments"><span class="header-section-number">9.3</span> Longitudinal/sequential treatments</a></li>
+  <li><a href="#missing-data" id="toc-missing-data" class="nav-link" data-scroll-target="#missing-data"><span class="header-section-number">9.4</span> Missing data</a></li>
   </ul>
 </nav>
     </div>
@@ -258,7 +270,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-advanced" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced topics</span></span></h1>
+<h1 class="title"><span id="sec-advanced" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Advanced topics</span></span></h1>
 </div>
 
 
@@ -273,33 +285,33 @@ div.csl-indent {
 
 </header>
 
-<p>The sections above describe propensity score analysis in the simplest case, that of a binary treatment administered at a single time point. In reality, research is often more complicated, and more complicated research questions require adjustments to to this simple case. Below, I’ll briefly outline some more complicated scenarios, including performing subgroup analysis, dealing with multi-category and continuous treatments, dealing with longitudinal/sequential treatments, and dealing with missing data.</p>
-<section id="subgroup-analysis" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="subgroup-analysis"><span class="header-section-number">8.1</span> Subgroup analysis</h2>
+<p>The previous sections describe propensity score analysis in the simplest case, that of a binary treatment administered at a single time point. In reality, research is often more complicated, and more complicated research questions require adjustments to to this simple case. Below, we briefly outline some more complicated scenarios, including performing subgroup analysis, dealing with multi-category and continuous treatments, dealing with longitudinal/sequential treatments, and dealing with missing data. In practice, one should consult with a biostatistician specially trained in these methods rather than attempt them oneself.</p>
+<section id="subgroup-analysis" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="subgroup-analysis"><span class="header-section-number">9.1</span> Subgroup analysis</h2>
 <p>Subgroup analysis is required to understand how treatments affect different types of patients and to be able to provide reasoned recommendations when information about patients is available (in contrast to the broad policy-based recommendations implied by the usual estimands). Subgroup analysis can be done simply by performing separate analyses within each subgroup <span class="citation" data-cites="greenExaminingModerationAnalyses2014">(<a href="references.html#ref-greenExaminingModerationAnalyses2014" role="doc-biblioref">Green and Stuart 2014</a>)</span>, though in some case it can be beneficial to share information (e.g., estimation of the propensity score or outcome model) across subgroups <span class="citation" data-cites="dongSubgroupBalancingPropensity2020">(<a href="references.html#ref-dongSubgroupBalancingPropensity2020" role="doc-biblioref">Dong et al. 2020</a>)</span>.</p>
-<p>It is also important to remember that performing subgroup analysis does not allow one to make a causal claim about the effect of subgroup membership on the treatment effect unless additional work is done to remove confounding from subgroup membership. For example, one may be interested in a subgroup analysis stratified by hospital. It may be that the treatment effect in one hospital differs from that in another, but that does not mean which hospital one goes to causes differences in the treatment effect (e.g., because of different quality of care); it may simply be that one hospital caters to patients for whom treatment is less effective (e.g., because of systemic issues that case people to suffer from comorbidities that change the treatment effect and live closer to one hospital than another). This distinction between a scenario in which subgroup membership causes treatment effect heterogeneity and one in which subgroup membership is merely associated with treatment effect heterogeneity is described in detail in <span class="citation" data-cites="vanderweeleDistinctionInteractionEffect2009">(<a href="references.html#ref-vanderweeleDistinctionInteractionEffect2009" role="doc-biblioref">VanderWeele 2009</a>)</span>.</p>
+<p>It is also important to remember that performing subgroup analysis does not allow one to make a causal claim about the effect of subgroup membership on the treatment effect unless additional work is done to remove confounding from subgroup membership. For example, one may be interested in a subgroup analysis stratified by hospital. It may be that the treatment effect in one hospital differs from that in another, but that does not mean which hospital one goes to causes differences in the treatment effect (e.g., because of different quality of care); it may simply be that one hospital caters to patients for whom treatment is less effective (e.g., because of systemic issues that cause people both to suffer from comorbidities that change the treatment effect and to live closer to one hospital than another). This distinction between a scenario in which subgroup membership causes treatment effect heterogeneity and one in which subgroup membership is merely associated with treatment effect heterogeneity is described in detail in <span class="citation" data-cites="vanderweeleDistinctionInteractionEffect2009">(<a href="references.html#ref-vanderweeleDistinctionInteractionEffect2009" role="doc-biblioref">VanderWeele 2009</a>)</span>.</p>
 </section>
-<section id="multi-category-and-continuous-treatments" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="multi-category-and-continuous-treatments"><span class="header-section-number">8.2</span> Multi-category and continuous treatments</h2>
-<p>Treatments do not have to be binary to be used with propensity score analysis. Methods also exist for multi-category and contionuous treatments. An example of a multi-category treatment might be drug type in a study comparing two drugs to each other and to control. <span class="citation" data-cites="strasserEstimatesSARSCoV2Omicron2022">(<a href="references.html#ref-strasserEstimatesSARSCoV2Omicron2022" role="doc-biblioref">Strasser et al. 2022</a>)</span> considered virus variant a multi-category exposure when examining the effect of COVID subvariant (Delta, Omicron, and Omicron BA.2) on patient health outcomes. An example of a continuous treatment might be the effect of pollutant exposure on mortality, as examined by <span class="citation" data-cites="wuMatchingGeneralizedPropensity2022">(<a href="references.html#ref-wuMatchingGeneralizedPropensity2022" role="doc-biblioref">Wu et al. 2022</a>)</span>.</p>
-<section id="multi-category-treatments" class="level3" data-number="8.2.1">
-<h3 data-number="8.2.1" class="anchored" data-anchor-id="multi-category-treatments"><span class="header-section-number">8.2.1</span> Multi-category treatments</h3>
-<p>Estimating effects for multi-category treatment involves adjusting the sample so that the distributions of covariates in all categories resemble each other and some target population corresponding to the estimand of interest. This can be done using matching <span class="citation" data-cites="lopezEstimationCausalEffects2017">(<a href="references.html#ref-lopezEstimationCausalEffects2017" role="doc-biblioref">Lopez and Gutman 2017</a>)</span> or weighting <span class="citation" data-cites="mccaffreyTutorialPropensityScore2013">(<a href="references.html#ref-mccaffreyTutorialPropensityScore2013" role="doc-biblioref">McCaffrey et al. 2013</a>)</span>. Instead of a single-valued propensity scoe, each unit has a vector-valued “generalized” propensity score corresponding to the probability of receiving each level of treatment <span class="citation" data-cites="imbensRolePropensityScore2000">(<a href="references.html#ref-imbensRolePropensityScore2000" role="doc-biblioref">Imbens 2000</a>)</span>. For example, for a three-level treatment, an individual unit may have a generalized propensity score of <span class="math inline">\([.1, .4, .5]\)</span>. <span class="citation" data-cites="mccaffreyTutorialPropensityScore2013">McCaffrey et al. (<a href="references.html#ref-mccaffreyTutorialPropensityScore2013" role="doc-biblioref">2013</a>)</span> and <span class="citation" data-cites="liPropensityScoreWeighting2019">Li and Li (<a href="references.html#ref-liPropensityScoreWeighting2019" role="doc-biblioref">2019</a>)</span> describe how to use these generalized propensity scores to compute weights. Currently, weighting methods are better developed and easier to use than matching methods for multi-category treatments and are available in <code>WeightIt</code>.</p>
+<section id="multi-category-and-continuous-treatments" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="multi-category-and-continuous-treatments"><span class="header-section-number">9.2</span> Multi-category and continuous treatments</h2>
+<p>Treatments do not have to be binary to be used with propensity score analysis. Methods also exist for multi-category and continuous treatments. An example of a multi-category treatment might be drug type in a study comparing two drugs to each other and to control. <span class="citation" data-cites="strasserEstimatesSARSCoV2Omicron2022">(<a href="references.html#ref-strasserEstimatesSARSCoV2Omicron2022" role="doc-biblioref">Strasser et al. 2022</a>)</span> considered virus variant a multi-category exposure when examining the effect of COVID subvariant (Delta, Omicron, and Omicron BA.2) on patient health outcomes. An example of a continuous treatment might be the effect of pollutant exposure on mortality, as examined by <span class="citation" data-cites="wuMatchingGeneralizedPropensity2022">(<a href="references.html#ref-wuMatchingGeneralizedPropensity2022" role="doc-biblioref">Wu et al. 2022</a>)</span>.</p>
+<section id="multi-category-treatments" class="level3" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="multi-category-treatments"><span class="header-section-number">9.2.1</span> Multi-category treatments</h3>
+<p>Estimating effects for multi-category treatment involves adjusting the sample so that the distributions of covariates in all categories resemble each other and some target population corresponding to the estimand of interest. This can be done using matching <span class="citation" data-cites="lopezEstimationCausalEffects2017">(<a href="references.html#ref-lopezEstimationCausalEffects2017" role="doc-biblioref">Lopez and Gutman 2017</a>)</span> or weighting <span class="citation" data-cites="mccaffreyTutorialPropensityScore2013">(<a href="references.html#ref-mccaffreyTutorialPropensityScore2013" role="doc-biblioref">McCaffrey et al. 2013</a>)</span>. Instead of a single-valued propensity score, each unit has a vector-valued “generalized” propensity score corresponding to the probability of receiving each level of treatment <span class="citation" data-cites="imbensRolePropensityScore2000">(<a href="references.html#ref-imbensRolePropensityScore2000" role="doc-biblioref">Imbens 2000</a>)</span>. For example, for a three-level treatment, an individual unit may have a generalized propensity score of <span class="math inline">\([.1, .4, .5]\)</span>. <span class="citation" data-cites="mccaffreyTutorialPropensityScore2013">McCaffrey et al. (<a href="references.html#ref-mccaffreyTutorialPropensityScore2013" role="doc-biblioref">2013</a>)</span> and <span class="citation" data-cites="liPropensityScoreWeighting2019">Li and Li (<a href="references.html#ref-liPropensityScoreWeighting2019" role="doc-biblioref">2019</a>)</span> describe how to use these generalized propensity scores to compute weights. Currently, weighting methods are better developed and easier to use than matching methods for multi-category treatments and are available in <code>WeightIt</code>.</p>
 </section>
-<section id="continuous-treatments" class="level3" data-number="8.2.2">
-<h3 data-number="8.2.2" class="anchored" data-anchor-id="continuous-treatments"><span class="header-section-number">8.2.2</span> Continuous treatments</h3>
-<p>The usual estimand for a continuous treatment is the average dose-response function (ADRF), which links the expected potential outcome (i.e., the outcome were everyone assigned to a single treatment value) to the corresponding treatment level. Propensity score analysis for continuous treatments involves adjusting the sample so that the treatment is independent from the covariates. This can be done using matching <span class="citation" data-cites="wuMatchingGeneralizedPropensity2022">(<a href="references.html#ref-wuMatchingGeneralizedPropensity2022" role="doc-biblioref">Wu et al. 2022</a>)</span> or weighting <span class="citation" data-cites="robinsMarginalStructuralModels2000 zhuBoostingAlgorithmEstimating2015 hulingIndependenceWeightsCausal2023a">(<a href="references.html#ref-robinsMarginalStructuralModels2000" role="doc-biblioref">Robins, Hernán, and Brumback 2000</a>; <a href="references.html#ref-zhuBoostingAlgorithmEstimating2015" role="doc-biblioref">Zhu, Coffman, and Ghosh 2015</a>; <a href="references.html#ref-hulingIndependenceWeightsCausal2023a" role="doc-biblioref">Huling, Greifer, and Chen 2023</a>)</span> (available in <code>WeightIt</code>). The propensity score is instead represented as a single-valued generalized propensity score corresponding to the conditional density of treatment given the covariates (i.e., rather than the probability, which would be 0 for a all values of a truly continuous treatment) <span class="citation" data-cites="hiranoPropensityScoreContinuous2005">(<a href="references.html#ref-hiranoPropensityScoreContinuous2005" role="doc-biblioref">Hirano and Imbens 2005</a>)</span>. Balance is often assessed using the correlations between the treatment and each covariate in the adjusted sample <span class="citation" data-cites="austinAssessingCovariateBalance2019">(<a href="references.html#ref-austinAssessingCovariateBalance2019" role="doc-biblioref">Austin 2019</a>)</span>, though more holistic measures such as the distance covariance have also been developed <span class="citation" data-cites="hulingIndependenceWeightsCausal2023a">(<a href="references.html#ref-hulingIndependenceWeightsCausal2023a" role="doc-biblioref">Huling, Greifer, and Chen 2023</a>)</span>. To estimate the ADRF, one can fit a flexible model for the outcome given the treatment in the weighted sample.</p>
+<section id="continuous-treatments" class="level3" data-number="9.2.2">
+<h3 data-number="9.2.2" class="anchored" data-anchor-id="continuous-treatments"><span class="header-section-number">9.2.2</span> Continuous treatments</h3>
+<p>The usual estimand for a continuous treatment is the average dose-response function (ADRF), which links the expected potential outcome (i.e., the average outcome if everyone was assigned to a single treatment value) to the corresponding treatment level. Propensity score analysis for continuous treatments involves adjusting the sample so that the treatment is independent from the covariates. This can be done using matching <span class="citation" data-cites="wuMatchingGeneralizedPropensity2022">(<a href="references.html#ref-wuMatchingGeneralizedPropensity2022" role="doc-biblioref">Wu et al. 2022</a>)</span> or weighting <span class="citation" data-cites="robinsMarginalStructuralModels2000 zhuBoostingAlgorithmEstimating2015 hulingIndependenceWeightsCausal2023a">(<a href="references.html#ref-robinsMarginalStructuralModels2000" role="doc-biblioref">Robins, Hernán, and Brumback 2000</a>; <a href="references.html#ref-zhuBoostingAlgorithmEstimating2015" role="doc-biblioref">Zhu, Coffman, and Ghosh 2015</a>; <a href="references.html#ref-hulingIndependenceWeightsCausal2023a" role="doc-biblioref">Huling, Greifer, and Chen 2023</a>)</span> (available in <code>WeightIt</code>). The propensity score is instead represented as a single-valued generalized propensity score corresponding to the conditional density of treatment given the covariates (i.e., rather than the probability, which would be 0 for a all values of a truly continuous treatment) <span class="citation" data-cites="hiranoPropensityScoreContinuous2005">(<a href="references.html#ref-hiranoPropensityScoreContinuous2005" role="doc-biblioref">Hirano and Imbens 2005</a>)</span>. Balance is often assessed using the correlations between the treatment and each covariate in the adjusted sample <span class="citation" data-cites="austinAssessingCovariateBalance2019">(<a href="references.html#ref-austinAssessingCovariateBalance2019" role="doc-biblioref">Austin 2019</a>)</span>, though more holistic measures such as the distance covariance have also been developed <span class="citation" data-cites="hulingIndependenceWeightsCausal2023a">(<a href="references.html#ref-hulingIndependenceWeightsCausal2023a" role="doc-biblioref">Huling, Greifer, and Chen 2023</a>)</span>. To estimate the ADRF, one can fit a flexible model for the outcome given the treatment in the weighted sample.</p>
 </section>
 </section>
-<section id="longitudinalsequential-treatments" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="longitudinalsequential-treatments"><span class="header-section-number">8.3</span> Longitudinal/sequential treatments</h2>
+<section id="longitudinalsequential-treatments" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="longitudinalsequential-treatments"><span class="header-section-number">9.3</span> Longitudinal/sequential treatments</h2>
 <p>Methods have been developed for estimating the effect of a treatment that can occur at multiple time points. For example, <span class="citation" data-cites="robinsMarginalStructuralModels2000">Robins, Hernán, and Brumback (<a href="references.html#ref-robinsMarginalStructuralModels2000" role="doc-biblioref">2000</a>)</span> described methods for estimating the effect of zidovudine (AZT) treatment on mortality in HIV-infected patients, where treatment was defined each day since start of follow-up as the those dose of AZT received that day. These special methods must be used when confounding is time-varying, i.e., confounders of subsequent treatment and the outcome are themselves affected by previous treatments. Simply adjusting for these time-varying confounders by regression adjustment or standard propensity score analysis causes the same problems that adjusting for any post-treatment variable does.</p>
 <p>The methods used for adjusting for time-varying confounding are called “g-methods” and are described in <span class="citation" data-cites="hernanCausalInferenceWhat2020">Hernán and Robins (<a href="references.html#ref-hernanCausalInferenceWhat2020" role="doc-biblioref">2020</a>)</span>. The simplest one is inverse probability weighting of marginal structural models, which essentially involves creating a propensity score weight at each time point and multiplying them together (available in <code>WeightIt</code>); ideally, this yields a scenario analogous to one in which treatment is randomized at each time point. <span class="citation" data-cites="thoemmesPrimerInverseProbability2016">Thoemmes and Ong (<a href="references.html#ref-thoemmesPrimerInverseProbability2016" role="doc-biblioref">2016</a>)</span> and <span class="citation" data-cites="robinsMarginalStructuralModels2000">Robins, Hernán, and Brumback (<a href="references.html#ref-robinsMarginalStructuralModels2000" role="doc-biblioref">2000</a>)</span> provide clear examples of the method.</p>
 </section>
-<section id="missing-data" class="level2" data-number="8.4">
-<h2 data-number="8.4" class="anchored" data-anchor-id="missing-data"><span class="header-section-number">8.4</span> Missing data</h2>
+<section id="missing-data" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="missing-data"><span class="header-section-number">9.4</span> Missing data</h2>
 <p>Missing data is often present in the analysis of real datasets. There are a variety of reasons why data could be missing: an administrative error, loss to follow-up, or patient refusal to provide information are some examples. Handling missing data generally is a serious topic that requires expertise to do correctly, though there are mainstream methods that are commonly used and have been shown to be compatible with propensity score analysis and can yield accurate results if certain assumption about why the data are missing are met <span class="citation" data-cites="chamPropensityScoreAnalysis2016">(<a href="references.html#ref-chamPropensityScoreAnalysis2016" role="doc-biblioref">Cham and West 2016</a>)</span>. The most common methods for dealing with missing data in propensity score analysis are multiple imputation <span class="citation" data-cites="rubinMultipleImputationNonresponse2004">(<a href="references.html#ref-rubinMultipleImputationNonresponse2004" role="doc-biblioref">Rubin 2004</a>)</span> and censoring weights <span class="citation" data-cites="hernanCausalInferenceWhat2020">(<a href="references.html#ref-hernanCausalInferenceWhat2020" role="doc-biblioref">Hernán and Robins 2020</a>, Ch 12.6)</span>.</p>
-<p>Multiple imputation involves making a guess about the true value of each missing value. This guess often comes from a predictive model that describes the relationships among variables in the data. Instead of making a single guess, multiple imputation involves making many guesses, each stored in a separate version of the dataset with the guesses filled in. The analysis occurs in each imputed dataset, and then the results are pooled across datasets to arrive at a final single estimate. Although there have been doubts about the best way to perform propensity score analysis with multiply imputed data, simulations frequently verify that the standard approach described above yields the most accurate results <span class="citation" data-cites="leyratPropensityScoreAnalysis2019">(<a href="references.html#ref-leyratPropensityScoreAnalysis2019" role="doc-biblioref">Leyrat et al. 2019</a>)</span>. The <code>MatchThem</code> package provides some utilities for matching and weighting with multiple imputed data <span class="citation" data-cites="pishgarMatchThemMatchingWeighting2021a">(<a href="references.html#ref-pishgarMatchThemMatchingWeighting2021a" role="doc-biblioref">Pishgar et al. 2021</a>)</span>, and <code>cobalt</code> supports assessing balance across imputations <span class="citation" data-cites="greiferCobaltCovariateBalance2020">(<a href="references.html#ref-greiferCobaltCovariateBalance2020" role="doc-biblioref">Greifer 2020</a>)</span>.</p>
+<p>Imputation involves making a guess about the true value of each missing value. This guess often comes from a predictive model that describes the relationships among variables in the data. Instead of making a single guess, multiple imputation involves making many guesses, each stored in a separate version of the dataset with the guesses filled in. The analysis occurs in each imputed dataset, and then the results are pooled across datasets to arrive at a final single estimate. Although there have been doubts about the best way to perform propensity score analysis with multiply imputed data, simulations frequently verify that the standard approach described above yields the most accurate results <span class="citation" data-cites="leyratPropensityScoreAnalysis2019">(<a href="references.html#ref-leyratPropensityScoreAnalysis2019" role="doc-biblioref">Leyrat et al. 2019</a>)</span>. The <code>MatchThem</code> package provides some utilities for matching and weighting with multiple imputed data <span class="citation" data-cites="pishgarMatchThemMatchingWeighting2021a">(<a href="references.html#ref-pishgarMatchThemMatchingWeighting2021a" role="doc-biblioref">Pishgar et al. 2021</a>)</span>, and <code>cobalt</code> supports assessing balance across imputations <span class="citation" data-cites="greiferCobaltCovariateBalance2020">(<a href="references.html#ref-greiferCobaltCovariateBalance2020" role="doc-biblioref">Greifer 2020</a>)</span>.</p>
 <p>Censoring weights are an alternative to imputation that are more commonly used when a single variable, e.g., the outcome, is missing for some units. Censoring weights discard any units with missing data and weight the remaining units to resemble the full sample (i.e., the original sample that included those with missing data) <span class="citation" data-cites="hernanCausalInferenceWhat2020">(<a href="references.html#ref-hernanCausalInferenceWhat2020" role="doc-biblioref">Hernán and Robins 2020</a>, Ch 12.6)</span>. Censoring weights are multiplied by propensity score weights when both are used to create a final set of weights that adjust for both confounding and censoring. Censoring weights are especially common with longitudinal treatments and in survival analysis.</p>
 
 
@@ -722,12 +734,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./sensitivity.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./reporting.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Reporting the Analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Reporting the Analysis</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

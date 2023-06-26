@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.361">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Noah Greifer">
 
-<title>Propensity Score Analysis for Medical Research: A Primer and Tutorial - 5&nbsp; Respecification</title>
+<title>Propensity Score Analysis for Medical Research: A Primer and Tutorial - 6&nbsp; Respecification</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -96,7 +96,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./running.html">Running the Analysis</a></li><li class="breadcrumb-item"><a href="./respecification.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Respecification</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./running.html">Running the Analysis</a></li><li class="breadcrumb-item"><a href="./respecification.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Respecification</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -138,7 +138,7 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./running.html" class="sidebar-item-text sidebar-link">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
  <span class="menu-text">Running the Analysis</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -147,44 +147,50 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./running.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basic Steps</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./conceptual.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conceptual aspects of the analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conceptual aspects of the analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conditioning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conditioning: matching and weighting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Conditioning: matching and weighting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./assessing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Assessing quality</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Assessing quality</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./respecification.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Respecification</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Respecification</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./estimating.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Estimating the treatment effect</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Estimating the treatment effect</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./sensitivity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./advanced.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced topics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Advanced topics</span></span></a>
   </div>
 </li>
       </ul>
@@ -192,12 +198,12 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./reporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Reporting the Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Reporting the Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./example.html" class="sidebar-item-text sidebar-link">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
  <span class="menu-text">Example</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -206,14 +212,20 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./example.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Example Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./ex-match.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Matching</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Matching</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./ex-weight.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Weighting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Weighting</span></span></a>
   </div>
 </li>
       </ul>
@@ -221,7 +233,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -243,7 +255,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-respecification" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Respecification</span></span></h1>
+<h1 class="title"><span id="sec-respecification" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Respecification</span></span></h1>
 </div>
 
 
@@ -261,14 +273,14 @@ div.csl-indent {
 <p>If a given specification is not adequate in that balance is too poor, the effective sample size is too small, or the sample is no longer representative of the target population, one must respecify. Respecification can involve changing some aspect of the conditioning strategy, such as changing a parameter involved in the matching or weighting or changing the model used to estimate propensity scores. Because there are so many parameters that can be changed and they can be changed in so many ways, it is impossible to give a complete account of the best way to respecify. One should try many specifications, examining patterns in how making those changes improves the quality of the resulting sample. As long as the outcome is not involved in this process, doing so will not invalidate inferences made at the end.</p>
 <p>There are some common tricks that can be used to nudge the respecification process in the right direction. Below are some common issues and some potential solutions.</p>
 <ul>
-<li><p>Poor balance as measured by SMDs: consider using an optimization-based method, like entropy balancing or cardinality matching; use a method that changes the estimand, like caliper matching or overlap weighting</p></li>
-<li><p>Poor balance beyond SMDs (e.g., on polynomial terms, variance ratios, or KS statistics): consider adding polynomial or interaction terms to the propensity score model; using a machine-learning method that flexibly models the propensity score; using an optimization-based method that balances the full distribution, like energy balancing; use coarsened exact matching to balance the full distribution approximately; add an exact matching constraint to a matching specification</p></li>
-<li><p>Low ESS: use a method to regularize the propensity score model (e.g., ridge or lasso regression); increase the matching ratio; use an optimization-based method that maximizes the ESS (e.g., profile matching or stable balancing weights); relax the caliper (if used); trim extreme weights; use overlap weighting</p></li>
-<li><p>Poor representativeness: use a method that strongly respects the estimand (e.g., entropy balancing, not cardinality matching, caliper matching, or overlap weighting); remove a caliper or exact matching restriction</p></li>
+<li><p>Poor balance as measured by SMDs: consider using an optimization-based method, like entropy balancing or cardinality matching or using a method that changes the estimand, like caliper matching or overlap weighting</p></li>
+<li><p>Poor balance beyond SMDs (e.g., on polynomial terms, variance ratios, or KS statistics): consider adding polynomial or interaction terms to the propensity score model; using a machine-learning method that flexibly models the propensity score; using an optimization-based method that balances the full distribution, like energy balancing; using coarsened exact matching to balance the full distribution approximately; or adding an exact matching constraint to a matching specification</p></li>
+<li><p>Low ESS: consider using a method to regularize the propensity score model (e.g., ridge or lasso regression); increasing the matching ratio; using an optimization-based method that maximizes the ESS (e.g., profile matching or stable balancing weights); relaxing the caliper (if used); trimming extreme weights; or using overlap weighting</p></li>
+<li><p>Poor representativeness: consider using a method that strongly respects the estimand (e.g., entropy balancing, not cardinality matching, caliper matching, or overlap weighting) or removing a caliper or exact matching restriction</p></li>
 </ul>
 <p>Having broad experience with the variety of matching and weighting methods available makes this process quick. Fortunately, the software we recommend and use in the examples, the R packages <code>MatchIt</code> and <code>WeightIt</code>, make switching between various specifications easy.</p>
-<p>To avoid endless respecification, it is a good idea to use methods design to optimize the evaluation criteria in a simple way. Often, the oldest and most commonly used methods are the worst in that they perform poorly and require manual respecification to get right. For example, 1:1 propensity score matching with a caliper is the most commonly used propensity score method in medical research, but it is widely known to have many problems: 1) it hampers representativeness because the caliper discards units from both treatment groups <span class="citation" data-cites="rosenbaumBiasDueIncomplete1985">(<a href="references.html#ref-rosenbaumBiasDueIncomplete1985" role="doc-biblioref">Rosenbaum and Rubin 1985</a>)</span>, 2) it reduces the effective sample size by dropping many units from the sample, 3) it can make balance worse when used thoughtlessly <span class="citation" data-cites="kingWhyPropensityScores2019">(<a href="references.html#ref-kingWhyPropensityScores2019" role="doc-biblioref">King and Nielsen 2019</a>)</span>, and 4) it has many specification parameters that need to be adjusted arbitrarily (e.g., the propensity score model, caliper width, matching order, etc.). Another popular but old method, propensity score weighting, also has many problems, including inability to achieve balance, low ESS due to extreme weights, and reduced representativeness when measures are taken to rectify the other problems.</p>
-<p>Methods that consistently perform well include entropy balancing <span class="citation" data-cites="hainmuellerEntropyBalancingCausal2012">(<a href="references.html#ref-hainmuellerEntropyBalancingCausal2012" role="doc-biblioref">Hainmueller 2012</a>)</span> and energy balancing <span class="citation" data-cites="hulingEnergyBalancingCovariate2022">(<a href="references.html#ref-hulingEnergyBalancingCovariate2022" role="doc-biblioref">Huling and Mak, n.d.</a>)</span>, as these ensure balance and representativeness without requiring major respecification. Entropy balancing guarantees exact balance as measured by the SMD, but it may be necessary to include other terms to fully balance the covariate distributions. Energy balancing balances the full covariate distribution, but can decrease ESS (though the trade-off between them can be managed with a single parameter). Though these methods are newer, they are beginning to see use in medical research <span class="citation" data-cites="bramante2022 sharma2023">(e.g., <a href="references.html#ref-bramante2022" role="doc-biblioref">Bramante et al. 2022</a>; <a href="references.html#ref-sharma2023" role="doc-biblioref">Sharma et al. 2023</a>)</span> and should be the first line of defense when adjusting for confounders over poorly performing but older and more familiar methods.</p>
+<p>To avoid endless respecification, it is a good idea to use methods designed to optimize the evaluation criteria in a simple way. Often, the oldest and most commonly used methods are the worst in that they perform poorly and require manual respecification to get right. For example, 1:1 propensity score matching with a caliper is the most commonly used propensity score method in medical research, but it is widely known to have many problems: it hampers representativeness because the caliper discards units from both treatment groups <span class="citation" data-cites="rosenbaumBiasDueIncomplete1985">(<a href="references.html#ref-rosenbaumBiasDueIncomplete1985" role="doc-biblioref">Rosenbaum and Rubin 1985</a>)</span>, it reduces the effective sample size by dropping many units from the sample, it can make balance worse when used thoughtlessly <span class="citation" data-cites="kingWhyPropensityScores2019">(<a href="references.html#ref-kingWhyPropensityScores2019" role="doc-biblioref">King and Nielsen 2019</a>)</span>, and it has many specification parameters that need to be adjusted arbitrarily (e.g., the propensity score model, caliper width, matching order, etc.). Another popular but old method, propensity score weighting, also has many problems, including inability to achieve balance, low ESS due to extreme weights, and reduced representativeness when measures are taken to rectify the other problems.</p>
+<p>Methods that consistently perform well include entropy balancing <span class="citation" data-cites="hainmuellerEntropyBalancingCausal2012">(<a href="references.html#ref-hainmuellerEntropyBalancingCausal2012" role="doc-biblioref">Hainmueller 2012</a>)</span> and energy balancing <span class="citation" data-cites="hulingEnergyBalancingCovariate2022">(<a href="references.html#ref-hulingEnergyBalancingCovariate2022" role="doc-biblioref">Huling and Mak, n.d.</a>)</span>, as these ensure balance and representativeness without requiring major respecification. Entropy balancing guarantees exact balance as measured by the SMD, but it may be necessary to include other terms to fully balance the covariate distributions. Energy balancing balances the full covariate distribution, but can decrease ESS (though the trade-off between them can be managed with a single parameter). Though these methods are newer, they are beginning to see use in medical research <span class="citation" data-cites="bramante2022 sharma2023">(e.g., <a href="references.html#ref-bramante2022" role="doc-biblioref">Bramante et al. 2022</a>; <a href="references.html#ref-sharma2023" role="doc-biblioref">Sharma et al. 2023</a>)</span> and should be the first line of defense when adjusting for confounders rather than poorly performing but older and more familiar methods.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
@@ -644,12 +656,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./assessing.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Assessing quality</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Assessing quality</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./estimating.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Estimating the treatment effect</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Estimating the treatment effect</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

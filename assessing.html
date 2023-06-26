@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.361">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Noah Greifer">
 
-<title>Propensity Score Analysis for Medical Research: A Primer and Tutorial - 4&nbsp; Assessing quality</title>
+<title>Propensity Score Analysis for Medical Research: A Primer and Tutorial - 5&nbsp; Assessing quality</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -98,7 +98,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./running.html">Running the Analysis</a></li><li class="breadcrumb-item"><a href="./assessing.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Assessing quality</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./running.html">Running the Analysis</a></li><li class="breadcrumb-item"><a href="./assessing.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Assessing quality</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -140,7 +140,7 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./running.html" class="sidebar-item-text sidebar-link">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
  <span class="menu-text">Running the Analysis</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -149,44 +149,50 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./running.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basic Steps</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./conceptual.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conceptual aspects of the analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conceptual aspects of the analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conditioning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conditioning: matching and weighting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Conditioning: matching and weighting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./assessing.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Assessing quality</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Assessing quality</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./respecification.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Respecification</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Respecification</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./estimating.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Estimating the treatment effect</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Estimating the treatment effect</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./sensitivity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./advanced.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced topics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Advanced topics</span></span></a>
   </div>
 </li>
       </ul>
@@ -194,12 +200,12 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./reporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Reporting the Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Reporting the Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./example.html" class="sidebar-item-text sidebar-link">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
  <span class="menu-text">Example</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -208,14 +214,20 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./example.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Example Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./ex-match.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Matching</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Matching</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./ex-weight.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Weighting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Weighting</span></span></a>
   </div>
 </li>
       </ul>
@@ -223,7 +235,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -242,15 +254,15 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-balance" id="toc-sec-balance" class="nav-link active" data-scroll-target="#sec-balance"><span class="header-section-number">4.1</span> Covariate Balance</a>
+  <li><a href="#sec-balance" id="toc-sec-balance" class="nav-link active" data-scroll-target="#sec-balance"><span class="header-section-number">5.1</span> Covariate Balance</a>
   <ul class="collapse">
-  <li><a href="#graphical-balance-assessment" id="toc-graphical-balance-assessment" class="nav-link" data-scroll-target="#graphical-balance-assessment"><span class="header-section-number">4.1.1</span> Graphical balance assessment</a></li>
-  <li><a href="#univariate-balance-statistics" id="toc-univariate-balance-statistics" class="nav-link" data-scroll-target="#univariate-balance-statistics"><span class="header-section-number">4.1.2</span> Univariate balance statistics</a></li>
-  <li><a href="#multivariate-balance-statistics" id="toc-multivariate-balance-statistics" class="nav-link" data-scroll-target="#multivariate-balance-statistics"><span class="header-section-number">4.1.3</span> Multivariate balance statistics</a></li>
-  <li><a href="#dont-use-p-values" id="toc-dont-use-p-values" class="nav-link" data-scroll-target="#dont-use-p-values"><span class="header-section-number">4.1.4</span> Don’t use p-values</a></li>
+  <li><a href="#graphical-balance-assessment" id="toc-graphical-balance-assessment" class="nav-link" data-scroll-target="#graphical-balance-assessment"><span class="header-section-number">5.1.1</span> Graphical balance assessment</a></li>
+  <li><a href="#univariate-balance-statistics" id="toc-univariate-balance-statistics" class="nav-link" data-scroll-target="#univariate-balance-statistics"><span class="header-section-number">5.1.2</span> Univariate balance statistics</a></li>
+  <li><a href="#multivariate-balance-statistics" id="toc-multivariate-balance-statistics" class="nav-link" data-scroll-target="#multivariate-balance-statistics"><span class="header-section-number">5.1.3</span> Multivariate balance statistics</a></li>
+  <li><a href="#dont-use-p-values" id="toc-dont-use-p-values" class="nav-link" data-scroll-target="#dont-use-p-values"><span class="header-section-number">5.1.4</span> Don’t use p-values</a></li>
   </ul></li>
-  <li><a href="#sec-representativeness" id="toc-sec-representativeness" class="nav-link" data-scroll-target="#sec-representativeness"><span class="header-section-number">4.2</span> Representativeness</a></li>
-  <li><a href="#sec-ess" id="toc-sec-ess" class="nav-link" data-scroll-target="#sec-ess"><span class="header-section-number">4.3</span> Effective sample size</a></li>
+  <li><a href="#sec-representativeness" id="toc-sec-representativeness" class="nav-link" data-scroll-target="#sec-representativeness"><span class="header-section-number">5.2</span> Representativeness</a></li>
+  <li><a href="#sec-ess" id="toc-sec-ess" class="nav-link" data-scroll-target="#sec-ess"><span class="header-section-number">5.3</span> Effective sample size</a></li>
   </ul>
 </nav>
     </div>
@@ -259,7 +271,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-assessing" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Assessing quality</span></span></h1>
+<h1 class="title"><span id="sec-assessing" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Assessing quality</span></span></h1>
 </div>
 
 
@@ -275,53 +287,65 @@ div.csl-indent {
 </header>
 
 <p>A key step in propensity score analysis is assessing the quality of the matching or weighting specification. These methods are only effective at removing bias due to confounding when certain conditions are met, which we describe here. The three most important attributes used to assess a conditioning specification are 1) balance, 2) representativeness, and 3) effective sample size. We describe each of these in the following sections.</p>
-<section id="sec-balance" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="sec-balance"><span class="header-section-number">4.1</span> Covariate Balance</h2>
+<section id="sec-balance" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="sec-balance"><span class="header-section-number">5.1</span> Covariate Balance</h2>
 <p>Balance is the degree to which the treatment groups resemble each other on the covariates. A fully balanced sample is one in which the distributions of covariates in the treatment groups are identical. When balance is achieved, bias due to confounding by the observed confounders will be eliminated. Balance is central to the use of propensity score methods <span class="citation" data-cites="ben-michaelBalancingActCausal2021">(<a href="references.html#ref-ben-michaelBalancingActCausal2021" role="doc-biblioref">Ben-Michael et al. 2021</a>)</span>; indeed, the entire point of using these methods is to achieve balance. The primary benefit of randomization is that confounders (both observed and unobserved) are balanced by design (in expectation); propensity score methods seek to mimic this quality by adjusting the sample so that balance is achieved (though only on the observed covariates).</p>
-<p>In theory, conditioning on the propensity score via matching or weighting should yield balance in the sample <span class="citation" data-cites="rosenbaumCentralRolePropensity1983">(<a href="references.html#ref-rosenbaumCentralRolePropensity1983" role="doc-biblioref">Rosenbaum and Rubin 1983</a>)</span>; this is the key balancing property of propensity scores and why they are popular in the first place. However, in practice, they don’t always yield balance, which can be due to a number of factors, including incorrect specification of the propensity score model (if one is used), the conditioning method is not suited for the data used, or balance fundamentally cannot be achieved while retaining the desired estimand. Therefore, it is critical that balance be assessed before moving forward with effect estimation.</p>
-<p>This is what <span class="citation" data-cites="hoMatchingNonparametricPreprocessing2007">Ho et al. (<a href="references.html#ref-hoMatchingNonparametricPreprocessing2007" role="doc-biblioref">2007</a>)</span> describe as the “propensity score tautology”: conditioning on a good propensity score yields balance in the sample, but whether a propensity score is good depends on whether it yields balance. The implication of this is that we cannot rely on the theoretical balancing properties of the propensity score; we need to ensure that the conditioning specification is doing its job.</p>
-<p>Full balance means balance not just on individual covariates but on the full, joint distribution of covariates. For example, it may not be enough to have the same proportion of women and the same proportion of Black patients in the treatment groups; full balance requires the same proportion of Black women, non-Black women, Black men, and non-Black men in the treatment groups. Full balance can be hard to achieve and hard to assess, so most balance assessment method focus on the “marginal” (i.e., single-covariate) distributions; if balance is not achieved on individual covariates, it is not achieved on the full joint distribution either.</p>
-<p>Balance can be assessed graphically or numerically, and among numerical assessments, there are univariate (one covariate at a time) and multivariate (multiple covariates at a time) statistics.</p>
-<section id="graphical-balance-assessment" class="level3" data-number="4.1.1">
-<h3 data-number="4.1.1" class="anchored" data-anchor-id="graphical-balance-assessment"><span class="header-section-number">4.1.1</span> Graphical balance assessment</h3>
+<p>In theory, conditioning on the propensity score via matching or weighting should yield balance in the sample <span class="citation" data-cites="rosenbaumCentralRolePropensity1983">(<a href="references.html#ref-rosenbaumCentralRolePropensity1983" role="doc-biblioref">Rosenbaum and Rubin 1983</a>)</span>; this is the key balancing property of propensity scores and why they are popular in the first place. However, in practice, they don’t always yield balance, which can be due to a number of factors, including that the propensity score model (if one is used) is misspecified, the conditioning method is not suited for the data used, or balance fundamentally cannot be achieved while retaining the desired estimand. Therefore, it is critical that balance be assessed before moving forward with effect estimation.</p>
+<p>This is what <span class="citation" data-cites="hoMatchingNonparametricPreprocessing2007">Ho et al. (<a href="references.html#ref-hoMatchingNonparametricPreprocessing2007" role="doc-biblioref">2007</a>)</span> describe as the “propensity score tautology”: conditioning on a good propensity score yields balance in the sample, but whether a propensity score is good depends on whether it yields balance. The implication of this is that we cannot rely on the theoretical balancing properties of the propensity score; we need to empirically ensure that the conditioning specification is doing its job.</p>
+<p>Full balance means balance not just on individual covariates but on the full, joint distribution of covariates. For example, it may not be enough to have the same proportion of women and the same proportion of Black patients in the treatment groups; full balance requires the same proportion of Black women, non-Black women, Black men, and non-Black men in the treatment groups. Full balance can be hard to achieve and hard to assess, so most balance assessment methods focus on the “marginal” (i.e., single-covariate) distributions; if balance is not achieved on individual covariates, it is not achieved on the full joint distribution either.</p>
+<p>Balance can be assessed graphically or numerically, and among numerical assessments, there are univariate statistics (one covariate at a time) and multivariate statistics (multiple covariates at a time).</p>
+<section id="graphical-balance-assessment" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="graphical-balance-assessment"><span class="header-section-number">5.1.1</span> Graphical balance assessment</h3>
 <p>The most straightforward assessment of whether the distribution of a covariates is the same in the two treatment groups is simply to plot the distributions of the covariates and note any differences. Examples of distribution plots include histograms, kernel density plots, empirical cumulative distribution function (eCDF) plots, and bar graphs (for categorical variables). Dramatic differences in these plots suggests severe imbalance that must be corrected.</p>
+<p>See below fo an example taken from the documentation for the R package <code>cobalt</code>. The top panel shows the distributions of <code>age</code> in the treated and untreated groups, on which some imbalance remains because the distributions are not identical.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/balplot.png" class="img-fluid figure-img" alt="A pair of balance plots displaying varying degrees of covariate balance." width="318"></p>
+</figure>
+</div>
+<p>In the bottom panel, the distribution of categories of <code>race</code> is almost identical between the treated and untreated groups, indicating good balance on this covariate.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/balplot2.png" class="img-fluid figure-img" width="318"></p>
+</figure>
+</div>
 </section>
-<section id="univariate-balance-statistics" class="level3" data-number="4.1.2">
-<h3 data-number="4.1.2" class="anchored" data-anchor-id="univariate-balance-statistics"><span class="header-section-number">4.1.2</span> Univariate balance statistics</h3>
+<section id="univariate-balance-statistics" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="univariate-balance-statistics"><span class="header-section-number">5.1.2</span> Univariate balance statistics</h3>
 <p>Univariate balance statistics describe the difference in the distributions of one covariate at a time numerically. For binary covariates, the difference in the proportion of each category across treatment groups is an example of univariate balance statistic (called the raw difference in proportion). For continuous variables, several univariate balance statistics are commonly used:</p>
 <ul>
 <li><p>Standardized mean difference (SMD): <span class="math inline">\(\frac{\bar{x}_1-\bar{x}_0}{s}\)</span>, where <span class="math inline">\(s\)</span> is a measure of spread computed in the unadjusted sample. The SMD does not depend on the scale of the covariate and only assess differences in the covariate means, not other features of the distributions. Ideally these are as small as possible <span class="citation" data-cites="hoMatchingNonparametricPreprocessing2007">(<a href="references.html#ref-hoMatchingNonparametricPreprocessing2007" role="doc-biblioref">Ho et al. 2007</a>)</span>, though some authors recommend that they should be below .1. SMDs are the most commonly reported balance statistic.</p></li>
 <li><p>Variance ratios: <span class="math inline">\(s^2_1/s^2_0\)</span>. This complements the SMD by assessing balance on the variability of the distribution, not just the means. Ideally these are as close to 1 as possible.</p></li>
 <li><p>Kolmogorov-Smirnov (KS) statistics: <span class="math inline">\(\text{max} \left( |F_1(x) - F_0(x)| \right)\)</span>, where <span class="math inline">\(F(x)\)</span> is the eCDF of <span class="math inline">\(x\)</span>. This assesses balance on the entire marginal distribution of the covariate, not just the means or variability. Ideally these are as small as possible.</p></li>
 </ul>
-<p>These statistics should also be computed not just on the covariate, but also on transformations of it, such as the square or cube or interactions between covariates <span class="citation" data-cites="austinMovingBestPractice2015">(<a href="references.html#ref-austinMovingBestPractice2015" role="doc-biblioref">Austin and Stuart 2015</a>)</span>.</p>
-<p>Balance should not be assessed on the propensity score itself; not only is this a conceptually invalid way to assess balance because a propensity score can only be considered useful when it balances the covariates <span class="citation" data-cites="hoMatchingNonparametricPreprocessing2007">(<a href="references.html#ref-hoMatchingNonparametricPreprocessing2007" role="doc-biblioref">Ho et al. 2007</a>)</span>, empirically there is no association between balance on the propensity score and low bias in the effect estimation <span class="citation" data-cites="stuartPrognosticScorebasedBalance2013">(<a href="references.html#ref-stuartPrognosticScorebasedBalance2013" role="doc-biblioref">Stuart, Lee, and Leacy 2013</a>)</span>. The propensity score is sometimes used a heuristic to assess overlap (e.g., to assess whether the failure of propensity score weighting or matching is due to large differences in the propensity score distribution between groups) and to assess why a matching method might be failing (e.g., if nearest neighbor matching cannot even balance the propensity scores, it has little hope for balancing the covariates).</p>
+<p>These statistics should also be computed not just on each covariate, but also on transformations of it, such as the square or cube or interactions between covariates <span class="citation" data-cites="austinMovingBestPractice2015">(<a href="references.html#ref-austinMovingBestPractice2015" role="doc-biblioref">Austin and Stuart 2015</a>)</span>.</p>
+<p>Balance should not be assessed on the propensity score itself; not only is this a conceptually invalid way to assess balance because a propensity score can only be considered useful when it balances the covariates <span class="citation" data-cites="hoMatchingNonparametricPreprocessing2007">(<a href="references.html#ref-hoMatchingNonparametricPreprocessing2007" role="doc-biblioref">Ho et al. 2007</a>)</span>, empirically there is no association between balance on the propensity score and low bias in the effect estimate <span class="citation" data-cites="stuartPrognosticScorebasedBalance2013">(<a href="references.html#ref-stuartPrognosticScorebasedBalance2013" role="doc-biblioref">Stuart, Lee, and Leacy 2013</a>)</span>. The propensity score is sometimes used a heuristic to assess overlap (e.g., to assess whether the failure of propensity score weighting or matching is due to large differences in the propensity score distribution between groups) and to assess why a matching method might be failing (e.g., if nearest neighbor matching cannot even balance the propensity scores, it has little hope for balancing the covariates).</p>
 </section>
-<section id="multivariate-balance-statistics" class="level3" data-number="4.1.3">
-<h3 data-number="4.1.3" class="anchored" data-anchor-id="multivariate-balance-statistics"><span class="header-section-number">4.1.3</span> Multivariate balance statistics</h3>
-<p>A multivariate balance statistic is a single (scalar) number that attempts to summarize balance for a sample. They are used less often in assessing balance and more to compare between conditioning specifications. Examples include the largest or average absolute SMD across covariates and the largest or average KS statistic across covariates. Some multivariate balance statistics attempt to assess balance not just on the marginal covariate distributions but on the joint distribution; examples include the <span class="math inline">\(L_1\)</span> statistic <span class="citation" data-cites="iacusMultivariateMatchingMethods2011">(<a href="references.html#ref-iacusMultivariateMatchingMethods2011" role="doc-biblioref">Iacus, King, and Porro 2011</a>)</span>, which sums raw differences in proportion across a multi-dimensional histogram of the covariates, and the energy distance <span class="citation" data-cites="hulingEnergyBalancingCovariate2022">(<a href="references.html#ref-hulingEnergyBalancingCovariate2022" role="doc-biblioref">Huling and Mak, n.d.</a>)</span>, which computes the average distance between the joint covariate eCDFs. These statistics are not typically reported because their scale depends on the distribution and number of covariates, but they can be used to compare between specifications.</p>
+<section id="multivariate-balance-statistics" class="level3" data-number="5.1.3">
+<h3 data-number="5.1.3" class="anchored" data-anchor-id="multivariate-balance-statistics"><span class="header-section-number">5.1.3</span> Multivariate balance statistics</h3>
+<p>A multivariate balance statistic is a single (scalar) number that attempts to summarize balance for a sample. They are used less often in assessing balance and more to compare balance between conditioning specifications. Examples include the largest or average absolute SMD across covariates and the largest or average KS statistic across covariates. Some multivariate balance statistics attempt to assess balance not just on the marginal covariate distributions but on the joint distribution; examples include the <span class="math inline">\(L_1\)</span> statistic <span class="citation" data-cites="iacusMultivariateMatchingMethods2011">(<a href="references.html#ref-iacusMultivariateMatchingMethods2011" role="doc-biblioref">Iacus, King, and Porro 2011</a>)</span>, which sums raw differences in proportion across a multi-dimensional histogram of the covariates, and the energy distance <span class="citation" data-cites="hulingEnergyBalancingCovariate2022">(<a href="references.html#ref-hulingEnergyBalancingCovariate2022" role="doc-biblioref">Huling and Mak, n.d.</a>)</span>, which computes the average distance between the joint covariate eCDFs. These statistics are not typically reported because their scale depends on the distribution and number of covariates, but they can be used to compare between specifications.</p>
 </section>
-<section id="dont-use-p-values" class="level3" data-number="4.1.4">
-<h3 data-number="4.1.4" class="anchored" data-anchor-id="dont-use-p-values"><span class="header-section-number">4.1.4</span> Don’t use p-values</h3>
-<p>One might be tempted to use a hypothesis test to assess whether the distributions of the covariates differs between groups. For example, one might use the p-value on a t-test, chi-square test, Mann-Whitney U test, or KS test to test whether two distributions are the same. One shold not do this to assess balance in observational studies, either before or after conditioning. There are several reasons to avoid p-values:</p>
+<section id="dont-use-p-values" class="level3" data-number="5.1.4">
+<h3 data-number="5.1.4" class="anchored" data-anchor-id="dont-use-p-values"><span class="header-section-number">5.1.4</span> Don’t use p-values</h3>
+<p>One might be tempted to use a hypothesis test to assess whether the distributions of the covariates differs between groups. For example, one might use the p-value on a t-test, chi-square test, Mann-Whitney U test, or KS test to test whether two distributions are the same. One should <strong>not</strong> do this to assess balance in observational studies, either before or after conditioning. There are several reasons to avoid p-values:</p>
 <ol type="1">
 <li><p>Hypothesis tests typically make reference to a population distribution, but balance is a quality of the sample</p></li>
-<li><p>Hypothesis tests depend on the sample size, so shrinking your sample size (e.g., through subset selection) will appear to make balance better even if ti makes it worse</p></li>
+<li><p>Hypothesis tests depend on the sample size, so shrinking your sample size (e.g., through subset selection) will appear to make balance better even if it makes it worse</p></li>
 <li><p>P-values suggest a significance threshold that might be invalid; <span class="math inline">\(p = .1\)</span> might still indicate severe imbalance despite being nonsignificant (at the <span class="math inline">\(\alpha = .05\)</span> level).</p></li>
 </ol>
 <p>Instead, use the sample balance statistics described above. See <span class="citation" data-cites="imaiMisunderstandingsExperimentalistsObservationalists2008">Imai, King, and Stuart (<a href="references.html#ref-imaiMisunderstandingsExperimentalistsObservationalists2008" role="doc-biblioref">2008</a>)</span> and <span class="citation" data-cites="aliReportingCovariateSelection2015">Ali et al. (<a href="references.html#ref-aliReportingCovariateSelection2015" role="doc-biblioref">2015</a>)</span> for further explanation on why p-values should not be used or reported.</p>
 </section>
 </section>
-<section id="sec-representativeness" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="sec-representativeness"><span class="header-section-number">4.2</span> Representativeness</h2>
-<p>Representativeness refers to how generalizable an effect estimate is to the population for whom one wants to make inferences. Even if the original sample is representative of a meaningful population (e.g., all patients with a given disease), conditioning may distort the sample in such a way as to change its representativeness. The reason this is so critical to consider is that different methods exchange representativeness for balance; for example, matching with a caliper or using overlap weights both change the target population to one that differs from the full sample or one of the treatment groups, but in doing so general dramatically improve balance, especially when the groups are very different from each other.</p>
-<p>Representativeness can also be thought of as balance between the adjusted sample and the original sample (or target population), and can be assessed in the same way, i.e., by examining the differences in covariate distributions between the adjusted sample and the target population. Typically, this is done by simply examining the distribution of covariates in the adjusted sample and in the target population and assessing heuristically whether they are close enough for the inference to be informative. This is sometimes known as “three-way” balance, i.e., balance between the treated and control groups, between the treated group and the target population, and between the control group and the target population <span class="citation" data-cites="chanGloballyEfficientNonparametric2016">(<a href="references.html#ref-chanGloballyEfficientNonparametric2016" role="doc-biblioref">Chan, Yam, and Zhang 2016</a>)</span>.</p>
+<section id="sec-representativeness" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="sec-representativeness"><span class="header-section-number">5.2</span> Representativeness</h2>
+<p>Representativeness refers to how generalizable an effect estimate is to the population for whom one wants to make inferences. Even if the original sample is representative of a meaningful population (e.g., all patients with a given disease), matching or weighting may distort the sample in such a way as to change its representativeness. The reason this is so critical to consider is that different methods exchange representativeness for balance; for example, matching with a caliper or using overlap weights both change the target population to one that differs from the full sample or one of the treatment groups, but in doing so general dramatically improve balance, especially when the groups are very different from each other.</p>
+<p>Representativeness can also be thought of as balance between the adjusted sample and the original sample (or target population), and can be assessed in the same way, i.e., by examining the differences in covariate distributions between the adjusted sample and the target population. This is sometimes known as “three-way” balance, i.e., balance between the treated and control groups, between the treated group and the target population, and between the control group and the target population <span class="citation" data-cites="chanGloballyEfficientNonparametric2016">(<a href="references.html#ref-chanGloballyEfficientNonparametric2016" role="doc-biblioref">Chan, Yam, and Zhang 2016</a>)</span>. Typically, this is done by simply examining the distribution of covariates in the adjusted sample and in the target population and assessing heuristically whether they are close enough for the inference to be informative.</p>
 <p>In some cases, representativeness is less important than ensuring groups are comparable, such as when attempting to discover whether treatment exists for any group rather than for a specific group <span class="citation" data-cites="maoPropensityScoreWeighting2018">(<a href="references.html#ref-maoPropensityScoreWeighting2018" role="doc-biblioref">Mao, Li, and Greene 2018</a>)</span>. In these cases, ensuring representativeness is less critical, but it remains important to understand for which population the estimated effect generalizes.</p>
 </section>
-<section id="sec-ess" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="sec-ess"><span class="header-section-number">4.3</span> Effective sample size</h2>
+<section id="sec-ess" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="sec-ess"><span class="header-section-number">5.3</span> Effective sample size</h2>
 <p>Matching via subset selection discards units, which leaves the remaining sample smaller than the original sample. In some cases, many units are discarded, and the remaining sample is too small to detect effects. Thus, it is important that any matching method not only achieve balance (and representativeness) but also preserve sample size.</p>
-<p>It might seem like weighting, full matching, or subclassification would prevent this problem because no units are discarded with these methods, but the weights resulting from these methods actually do induce a decrease in precision similar to shrinking the sample size. To capture this effect, the effective sample size (ESS) is used, which corresponds to the size of an unweighted sample that carries as much precision as the weighted sample <span class="citation" data-cites="ridgewayAssessingEffectRace2006">(<a href="references.html#ref-ridgewayAssessingEffectRace2006" role="doc-biblioref">Ridgeway 2006</a>)</span>.</p>
+<p>It might seem like weighting, full matching, or subclassification would prevent this problem because no units are discarded with these methods, but the weights resulting from these methods actually do induce a decrease in precision similar to shrinking the sample size. To capture this effect, the effective sample size (ESS) is used, which corresponds to the size of a hypothetical unweighted sample that carries as much precision as the weighted sample <span class="citation" data-cites="ridgewayAssessingEffectRace2006">(<a href="references.html#ref-ridgewayAssessingEffectRace2006" role="doc-biblioref">Ridgeway 2006</a>)</span>.</p>
 <p>The ESS is computed in each treatment group as <span class="math inline">\(\left(\sum_n{w}\right)^2/\sum_n{w_i^2}\)</span>. When weights are scaled to have a mean of 1 in each treatment group, the ESS can be written as <span class="math inline">\(\frac{n}{1+\text{Var}(w)}\)</span>, which makes it clear that as the variability of the weights increases, the ESS decreases. When all weights are equal to 1 (e.g., prior to estimating propensity score weights), the ESS is equal to the original sample size.</p>
 <p>When a weighting or matching specification yields an ESS that is too small to use for inference, this suggests a problem with the conditioning specification that should be rectified. A low ESS typically arises from highly variable weights, which can occur when some units have very small or very large propensity scores; this is known as the problem of “extreme weights”, for which multiple solutions have been proposed. These solutions include using a different model to estimate the weights (e.g., using logistic regression instead of a classification tree), changing the estimand (e.g., targeting the ATO rather than the ATE), trimming the weights (which can change the estimand as well), or using a method that specifically aims to reduce the variability of the weights, like stable balancing weights <span class="citation" data-cites="zubizarretaStableWeightsThat2015">(<a href="references.html#ref-zubizarretaStableWeightsThat2015" role="doc-biblioref">Zubizarreta 2015</a>)</span> or entropy balancing <span class="citation" data-cites="hainmuellerEntropyBalancingCausal2012">(<a href="references.html#ref-hainmuellerEntropyBalancingCausal2012" role="doc-biblioref">Hainmueller 2012</a>)</span>.</p>
 <p>One often finds that balance, representativeness, and ESS pull in opposite directions, which requires users to manage a trade-off between bias, generalizability, and precision. For example, matching with a caliper often yields excellent balance but, by dropping units from both treatment groups, worsens representativeness and decreases the ESS. Propensity score weighting for the ATE may ensure representativeness, but it may be hard to achieve balance, and if one does, it may be that that balance comes at the cost of a decreased ESS due to extreme weights. There is no single method that can perfectly optimize all three, but the best methods allow the user to incorporate substantive information into making these trade-offs to best suit the data at hand and research question.</p>
@@ -725,12 +749,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./conditioning.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conditioning: matching and weighting</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Conditioning: matching and weighting</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./respecification.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Respecification</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Respecification</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

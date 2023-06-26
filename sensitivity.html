@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.361">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Noah Greifer">
 
-<title>Propensity Score Analysis for Medical Research: A Primer and Tutorial - 7&nbsp; Sensitivity analysis</title>
+<title>Propensity Score Analysis for Medical Research: A Primer and Tutorial - 8&nbsp; Sensitivity analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -96,7 +96,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./running.html">Running the Analysis</a></li><li class="breadcrumb-item"><a href="./sensitivity.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./running.html">Running the Analysis</a></li><li class="breadcrumb-item"><a href="./sensitivity.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -138,7 +138,7 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./running.html" class="sidebar-item-text sidebar-link">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
  <span class="menu-text">Running the Analysis</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -147,44 +147,50 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./running.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Basic Steps</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./conceptual.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Conceptual aspects of the analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conceptual aspects of the analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conditioning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conditioning: matching and weighting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Conditioning: matching and weighting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./assessing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Assessing quality</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Assessing quality</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./respecification.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Respecification</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Respecification</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./estimating.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Estimating the treatment effect</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Estimating the treatment effect</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./sensitivity.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./advanced.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced topics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Advanced topics</span></span></a>
   </div>
 </li>
       </ul>
@@ -192,12 +198,12 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./reporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Reporting the Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Reporting the Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./example.html" class="sidebar-item-text sidebar-link">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
  <span class="menu-text">Example</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -206,14 +212,20 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./example.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Example Data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./ex-match.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Matching</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Matching</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./ex-weight.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Weighting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Weighting</span></span></a>
   </div>
 </li>
       </ul>
@@ -221,7 +233,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -243,7 +255,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-sensitivity" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></h1>
+<h1 class="title"><span id="sec-sensitivity" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Sensitivity analysis</span></span></h1>
 </div>
 
 
@@ -259,7 +271,7 @@ div.csl-indent {
 </header>
 
 <p>Sensitivity analysis broadly refers to assessing the sensitivity of results to violations of some of the assumptions made. In propensity score analysis, it usually refers to sensitivity to the assumption of satisfaction of the backdoor criterion, i.e., no unmeasured confounding. There is no simple way to test whether observed results are confounded or not; instead, we assess how much our estimates would change for different degrees of hypothetical confounding and, in particular, how strong confounding would have to be to change our inferences (i.e., on the presence or direction of the effect). Sensitivity analysis is an area of ongoing research; presently, there is no single best method to use or one that has achieved widespread adoption.</p>
-<p><span class="citation" data-cites="liuIntroductionSensitivityAnalysis2013">Liu, Kuramoto, and Stuart (<a href="references.html#ref-liuIntroductionSensitivityAnalysis2013" role="doc-biblioref">2013</a>)</span> provide an accessible introduction to sensitivity analysis, though much work has been done since. <span class="citation" data-cites="dagostinomcgowanSensitivityAnalysesUnmeasured2022">D’Agostino McGowan (<a href="references.html#ref-dagostinomcgowanSensitivityAnalysesUnmeasured2022" role="doc-biblioref">2022</a>)</span> provide a more modern review along with a description of software that implements many of the methods described. Perhaps the most common method of assessing sensitivity to unmeasured confounding is a single-number summary called the “E-value” <span class="citation" data-cites="vanderweeleSensitivityAnalysisObservational2017 haneuseUsingEValueAssess2019">(<a href="references.html#ref-vanderweeleSensitivityAnalysisObservational2017" role="doc-biblioref">VanderWeele and Ding 2017</a>; <a href="references.html#ref-haneuseUsingEValueAssess2019" role="doc-biblioref">Haneuse, VanderWeele, and Arterburn 2019</a>)</span>, though it is also one of the most controversial and misinterpreted <span class="citation" data-cites="ioannidisLimitationsMisinterpretationsEValues2019 vanderweeleCorrectingMisinterpretationsEValue2019">(<a href="references.html#ref-ioannidisLimitationsMisinterpretationsEValues2019" role="doc-biblioref">Ioannidis, Tan, and Blum 2019</a>; <a href="references.html#ref-vanderweeleCorrectingMisinterpretationsEValue2019" role="doc-biblioref">VanderWeele, Mathur, and Ding 2019</a>)</span>. The E-value is a transformation of the effect estimate that corresponds to the minimum strength of association (on the risk ratio scale) that a hypothetical unmeasured confounder would have to have with the treatment and outcome to fully explain away an observed effect estimate.</p>
+<p><span class="citation" data-cites="dagostinomcgowanSensitivityAnalysesUnmeasured2022">D’Agostino McGowan (<a href="references.html#ref-dagostinomcgowanSensitivityAnalysesUnmeasured2022" role="doc-biblioref">2022</a>)</span> provide a review of sensitivity analysis methods along with a description of software that implements many of them. Perhaps the most common method of assessing sensitivity to unmeasured confounding is a single-number summary called the “E-value” <span class="citation" data-cites="vanderweeleSensitivityAnalysisObservational2017 haneuseUsingEValueAssess2019">(<a href="references.html#ref-vanderweeleSensitivityAnalysisObservational2017" role="doc-biblioref">VanderWeele and Ding 2017</a>; <a href="references.html#ref-haneuseUsingEValueAssess2019" role="doc-biblioref">Haneuse, VanderWeele, and Arterburn 2019</a>)</span>, though it is also one of the most controversial and misinterpreted <span class="citation" data-cites="ioannidisLimitationsMisinterpretationsEValues2019 vanderweeleCorrectingMisinterpretationsEValue2019">(<a href="references.html#ref-ioannidisLimitationsMisinterpretationsEValues2019" role="doc-biblioref">Ioannidis, Tan, and Blum 2019</a>; <a href="references.html#ref-vanderweeleCorrectingMisinterpretationsEValue2019" role="doc-biblioref">VanderWeele, Mathur, and Ding 2019</a>)</span>. The E-value is a transformation of the effect estimate that corresponds to the minimum strength of association (on the risk ratio scale) that a hypothetical unmeasured confounder would have to have with the treatment and outcome to fully explain away an observed effect estimate.</p>
 <p>Because there are no agreed-upon standards for reporting sensitivity to unmeasured confounding and the methods that exist either depend on the analysis method used or are on a particular (non-universal) scale, we cannot recommend a specific approach and instead recommend researchers attend carefully to developments in this area and follow the norms of their respective fields.</p>
 
 
@@ -272,9 +284,6 @@ Haneuse, Sebastien, Tyler J. VanderWeele, and David Arterburn. 2019. <span>“Us
 </div>
 <div id="ref-ioannidisLimitationsMisinterpretationsEValues2019" class="csl-entry" role="listitem">
 Ioannidis, John P. A., Yuan Jin Tan, and Manuel R. Blum. 2019. <span>“Limitations and Misinterpretations of e-Values for Sensitivity Analyses of Observational Studies.”</span> <em>Annals of Internal Medicine</em> 170 (2): 108–11. <a href="https://doi.org/10.7326/M18-2159">https://doi.org/10.7326/M18-2159</a>.
-</div>
-<div id="ref-liuIntroductionSensitivityAnalysis2013" class="csl-entry" role="listitem">
-Liu, Weiwei, S. Janet Kuramoto, and Elizabeth A. Stuart. 2013. <span>“An Introduction to Sensitivity Analysis for Unobserved Confounding in Nonexperimental Prevention Research.”</span> <em>Prevention Science</em> 14 (6): 570–80. <a href="https://doi.org/10.1007/s11121-012-0339-5">https://doi.org/10.1007/s11121-012-0339-5</a>.
 </div>
 <div id="ref-vanderweeleSensitivityAnalysisObservational2017" class="csl-entry" role="listitem">
 VanderWeele, Tyler J., and Peng Ding. 2017. <span>“Sensitivity Analysis in Observational Research: Introducing the E-Value.”</span> <em>Annals of Internal Medicine</em> 167 (4): 268. <a href="https://doi.org/10.7326/M16-2607">https://doi.org/10.7326/M16-2607</a>.
@@ -636,12 +645,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./estimating.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Estimating the treatment effect</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Estimating the treatment effect</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./advanced.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced topics</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Advanced topics</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
